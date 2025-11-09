@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Real-time Warehouse Monitoring Tool",
+    "company": "Amazon",
+    "date": "2024",
+    "description": "Backend tool for monitoring warehouse fullness across 30+ EU warehouses, used by 100+ users daily.",
+    "stack": ["AWS", "Python", "SQL", "Redshift", "Lambda"],
+    "link": ""
+  },
+  {
+    "title": "Daily Onboarding Reporting Dashboard",
+    "company": "Amazon",
+    "date": "2024",
+    "description": "Dashboard to monitor onboarding program for EU warehouse new hires, enabling confirmed savings of $12MM.",
+    "stack": ["Quicksight", "AWS", "SQL"],
+    "link": ""
+  },
+  {
+    "title": "Automated Market Monitoring Tool",
+    "company": "Datasite",
+    "date": "2020",
+    "description": "Centralized tool to monitor the merger and acquisitions market using Salesforce and Thomson Reuters Financial database.",
+    "stack": ["SQL Server", "Power BI", "Looker"],
+    "link": ""
+  }
+]

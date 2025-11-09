@@ -1,0 +1,9 @@
+{
+  "name": "Jon Ugarte",
+  "email": "jonugarte@gmail.com",
+  "phone": "(+34) 611 056 204",
+  "location": "Barcelona, Spain",
+  "interests": ["Surfing", "Swimming", "Retro Games", "Movies", "Electric Guitar"],
+  "summary": "Data Engineer and Business Intelligence professional with experience in **Python**, **SQL**, **AWS**, and **React**. Focused on building scalable data infrastructure and operational dashboards to optimize business processes across large networks.",
+  "photo": null
+}

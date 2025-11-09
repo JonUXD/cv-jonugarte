@@ -1,0 +1,107 @@
+[
+  {
+    "company": "Amazon",
+    "department": "Operations - EU ACES",
+    "location": "Barcelona, Spain",
+    "start_date": "Jun, 2021",
+    "end_date": "Present",
+    "roles": [
+      {
+        "title": "Business Intelligence Engineer II (L5)",
+        "start_date": "Jan, 2024",
+        "end_date": "Present",
+        "description": [
+          "Provided the cloud infrastructure to a team of 50+ business analysts and project managers.",
+          "Developed the backend of a real time monitoring tool of the warehouse fullness, deployed in all the EU network (30+ warehouses) and used daily by more than 100 users.",
+          "Created a daily reporting dashboard to monitor a new onboarding program for all EU warehouse new hires, enabling confirmed savings of $12MM.",
+          "Leveraged LLM to create summaries of employee surveys in operations with improvement recommendations.",
+          "Onboarded surveys for 10+ trainings deployed in the EU network."
+        ],
+        "stack": ["AWS", "SQL", "Python", "Redshift", "RDS", "Lambda", "AWS CDK", "Quicksight"],
+        "projects": []
+      },
+      {
+        "title": "Business Intelligence Engineer I (L4)",
+        "start_date": "Jun, 2021",
+        "end_date": "Dec, 2023",
+        "location": "London, UK",
+        "description": [
+          "Maintained a 1PB Redshift database with over 100 daily users. Reduced congestion times of the database during peak by over 50% by creating Workload Management rules.",
+          "Onboarded more than 15 new team members onto the data infrastructure (database users, dashboard creation access, etc.)",
+          "Created 10+ daily reporting dashboards to support operations with over 2K unique users and 150K views, enabling savings of over 6MM."
+        ],
+        "stack": ["AWS", "SQL", "Python", "Redshift", "RDS"],
+        "projects": []
+      }
+    ]
+  },
+  {
+    "company": "Datasite",
+    "location": "London, UK",
+    "start_date": "Jan, 2018",
+    "end_date": "May, 2021",
+    "roles": [
+      {
+        "title": "Data Analyst",
+        "start_date": "Sep, 2019",
+        "end_date": "May, 2021",
+        "description": [
+          "Created a mostly-automated process to identify the transactions hosted in the platform to highlight in the main webpage. The webpage generated over 20 new leads and landed five new deals in the first 6 months (estimated revenue $300K).",
+          "Created Salesforce reports to identify new leads and opportunities, leading to over 20 business opportunities.",
+          "Used Google Analytics to analyze engagement with the webpage.",
+          "Developed an automated and centralized tool to monitor the merger and acquisitions market with Thomson Reuters Financial database.",
+          "Developed an automated report on Power BI shared company wide combining internal data from Salesforce, Thomson Reuters and Application Data."
+        ],
+        "stack": ["Power BI", "SQL Server", "Looker", "Salesforce Analytics", "Google Analytics"],
+        "projects": []
+      },
+      {
+        "title": "Project Manager",
+        "start_date": "Jun, 2018",
+        "end_date": "Aug, 2019",
+        "description": [
+          "Managed over 100 transactions with high profile customers (investment bankers, lawyers) with a combined revenue of $50MM.",
+          "Lead training sessions on the use of the platform."
+        ],
+        "stack": [],
+        "projects": []
+      }
+    ]
+  },
+  {
+    "company": "UBS Investment Bank",
+    "location": "City of London, UK",
+    "start_date": "Jan, 2017",
+    "end_date": "Dec, 2017",
+    "roles": [
+      {
+        "title": "Analyst Intern, Corporate Social Responsibility",
+        "start_date": "Sep, 2017",
+        "end_date": "Dec, 2017",
+        "description": [
+          "Managed UBS’s volunteering program for over 10K employees.",
+          "Owned the volunteering reporting, tracking each employee’s volunteering hours for UK government organisms.",
+          "Managed the DBS checks of partner associations."
+        ],
+        "stack": [],
+        "projects": []
+      }
+    ]
+  },
+  {
+    "company": "Bildutruck",
+    "location": "San Sebastian, Spain",
+    "start_date": "Jan, 2012",
+    "end_date": "Dec, 2016",
+    "roles": [
+      {
+        "title": "International Transport Manager",
+        "description": [
+          "Managed portfolio of 50 clients with an annual revenue of 3 MM, while managing a fleet of 50 trucks across Europe."
+        ],
+        "stack": [],
+        "projects": []
+      }
+    ]
+  }
+]

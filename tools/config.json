@@ -1,0 +1,5 @@
+{
+  "include_extensions": [".tsx", ".ts", ".js", ".json", ".css", ".md", ".html"],
+  "exclude_folders": ["node_modules", "dist", ".git"],
+  "exclude_files": [".env", ".DS_Store"]
+}
