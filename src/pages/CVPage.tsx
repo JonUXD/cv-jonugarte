@@ -17,8 +17,22 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           {bioData.name}
         </Typography>
-        <Typography variant="body1">{bioData.summary}</Typography>
-        <Typography variant="body2" sx={{ marginTop: 1 }}>
+        {bioData.summary && (
+          <Box sx={{ marginBottom: 1 }}>
+            <ReactMarkdown
+              components={{
+                p: ({ children }) => (
+                  <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                    {children}
+                  </Typography>
+                ),
+              }}
+            >
+              {bioData.summary}
+            </ReactMarkdown>
+          </Box>
+        )}
+        <Typography variant="body2">
           {bioData.email} ❖ {bioData.phone} ❖ {bioData.location}
         </Typography>
       </Box>
@@ -42,18 +56,34 @@ const CVPage: React.FC = () => {
               <Card key={i} sx={{ marginY: 1 }}>
                 <CardContent>
                   <Typography variant="h6">{role.title}</Typography>
-                  <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                    {role.start_date ? `${role.start_date} – ${role.end_date}` : ""}
-                  </Typography>
+                  {role.start_date && (
+                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                      {role.start_date} – {role.end_date}
+                    </Typography>
+                  )}
 
                   {/* Description */}
-                  <Box sx={{ marginTop: 1 }}>
-                    {role.description.map((desc: string, j: number) => (
-                      <ReactMarkdown key={j}>{`- ${desc}`}</ReactMarkdown>
-                    ))}
-                  </Box>
+                  {role.description?.length > 0 && (
+                    <Box sx={{ marginTop: 1 }}>
+                      <ul style={{ margin: 0, paddingLeft: "1.2em" }}>
+                        {role.description.map((desc: string, j: number) => (
+                          <li key={j}>
+                            <ReactMarkdown
+                              components={{
+                                // Replace <p> with <span> to avoid nested <p> inside <li>
+                                p: ({ children }) => <span>{children}</span>,
+                              }}
+                            >
+                              {desc}
+                            </ReactMarkdown>
+                          </li>
+                        ))}
+                      </ul>
+                    </Box>
+                  )}
 
-                  {/* Stack */}
+
+                  {/* Stack / Technical Skills */}
                   {role.stack?.length > 0 && (
                     <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
                       {role.stack.map((tech: string, k: number) => (
@@ -82,12 +112,26 @@ const CVPage: React.FC = () => {
               <Box sx={{ marginTop: 1 }}>
                 {edu.thesis && (
                   <Box sx={{ marginBottom: 0.5 }}>
-                    <ReactMarkdown>{`**Thesis:** ${edu.thesis}`}</ReactMarkdown>
+                    <ReactMarkdown
+                      components={{
+                        p: ({ children }) => (
+                          <Typography variant="body2" sx={{ marginBottom: 0.5 }}>
+                            {children}
+                          </Typography>
+                        ),
+                      }}
+                    >
+                      {`**Thesis:** ${edu.thesis}`}
+                    </ReactMarkdown>
                   </Box>
                 )}
                 {edu.grades && (
                   <Box>
-                    <ReactMarkdown>{`**Grades:** ${JSON.stringify(edu.grades)}`}</ReactMarkdown>
+                    {Object.entries(edu.grades as Record<string, string>).map(([subject, value], g) => (
+                      <Typography key={g} variant="body2">
+                        <strong>{subject}:</strong> {value}
+                      </Typography>
+                    ))}
                   </Box>
                 )}
               </Box>
@@ -102,16 +146,11 @@ const CVPage: React.FC = () => {
           Skills & Technical Skills
         </Typography>
         {skillsData.skills.map((category: any, idx: number) => (
-          <Box key={idx} sx={{ marginBottom: 1 }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: "bold", marginBottom: 0.5 }}>
-              {category.category}:
-            </Typography>
-            <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap" }}>
-              {category.items.map((item: string, i: number) => (
-                <SkillChip key={i} label={item} />
-              ))}
-            </Stack>
-          </Box>
+          <Stack key={idx} direction="row" spacing={1} sx={{ flexWrap: "wrap", marginBottom: 1 }}>
+            {category.items.map((item: string, i: number) => (
+              <SkillChip key={i} label={item} />
+            ))}
+          </Stack>
         ))}
       </Box>
     </Box>

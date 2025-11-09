@@ -26,10 +26,8 @@ def is_text_file(file_path):
 
 def should_skip(file_path):
     """Check if file or folder should be skipped."""
-    # Skip files explicitly excluded
     if os.path.basename(file_path) in EXCLUDE_FILES:
         return True
-    # Skip any part of path that is in excluded folders
     for part in file_path.split(os.sep):
         if part in EXCLUDE_FOLDERS:
             return True
@@ -37,8 +35,8 @@ def should_skip(file_path):
 
 def collect_files_text(root_path):
     all_texts = []
+    file_stats = []  # Store file name and number of characters
     for dirpath, dirnames, filenames in os.walk(root_path):
-        # Skip excluded folders
         dirnames[:] = [d for d in dirnames if d not in EXCLUDE_FOLDERS]
         for file in filenames:
             file_path = os.path.join(dirpath, file)
@@ -48,23 +46,28 @@ def collect_files_text(root_path):
                 try:
                     with open(file_path, "r", encoding="utf-8") as f:
                         content = f.read()
-                    # Relative path from project root
                     rel_path = os.path.relpath(file_path, PROJECT_ROOT)
                     all_texts.append(f"--- {rel_path} ---\n{content}\n")
+                    file_stats.append((rel_path, len(content)))
                 except Exception as e:
                     print(f"Warning: Could not read {file_path}: {e}")
-    return all_texts
+    return all_texts, file_stats
 
 def main():
     print("Collecting text files...")
-    texts = collect_files_text(PROJECT_ROOT)
+    texts, file_stats = collect_files_text(PROJECT_ROOT)
     print(f"Collected {len(texts)} files.")
 
+    # Write all code to output file
     print(f"Writing output to {OUTPUT_FILE} ...")
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("\n".join(texts))
-
     print("Done!")
+
+    # Print file sizes in characters
+    print("\nFile Character Counts:")
+    for file, char_count in file_stats:
+        print(f"{file}: {char_count} characters")
 
 if __name__ == "__main__":
     main()

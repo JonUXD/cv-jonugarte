@@ -23,7 +23,7 @@ const Experience: React.FC = () => (
               </Typography>
 
               <List dense>
-                {role.responsibilities.map((resp: string, k: number) => (
+                {role.description.map((resp: string, k: number) => (
                   <ListItem key={k} sx={{ display: "list-item", paddingLeft: 2 }}>
                     <ReactMarkdown>{resp}</ReactMarkdown>
                   </ListItem>

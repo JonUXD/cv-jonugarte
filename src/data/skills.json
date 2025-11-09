@@ -1,26 +1,12 @@
 {
   "skills": [
     {
-      "category": "Business & Data Skills",
-      "items": ["Database Management", "Project Management", "Data Architecture", "Cloud Architecture"]
+      "category": "Skills",
+      "items": ["Database Management", "Project Management", "Data Architecture", "Cloud Architecture", "AWS Cloud Practitioner"]
     },
     {
-      "category": "Certifications",
-      "items": ["AWS Cloud Practitioner"]
-    }
-  ],
-  "technicalSkills": [
-    {
-      "category": "Programming Languages",
-      "items": ["Python", "SQL", "R"]
-    },
-    {
-      "category": "Cloud & Data Tools",
-      "items": ["AWS", "Redshift", "Lambda", "Quicksight"]
-    },
-    {
-      "category": "BI & Analytics",
-      "items": ["Power BI", "Looker", "Salesforce Analytics", "Google Analytics"]
+      "category": "Technical Skills",
+      "items": ["Python", "SQL", "R", "AWS", "Redshift", "Lambda", "Quicksight", "Power BI", "Looker", "Salesforce Analytics", "Google Analytics"]
     }
   ]
 }
