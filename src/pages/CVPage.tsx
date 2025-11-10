@@ -5,9 +5,21 @@ import ReactMarkdown from "react-markdown";
 import bioData from "../data/bio.json";
 import experienceData from "../data/experience.json";
 import educationData from "../data/education.json";
-import skillsData from "../data/skills.json";
+import skillsRaw from "../data/skills.json";
 
 import SkillChip from "../components/SkillChip";
+
+// Types
+import type { SkillCategory, SkillsData } from "../types";
+import type { ExperienceData, ExperienceRole } from "../types";
+import type { EducationData, EducationItem, Grade } from "../types";
+import type { Bio } from "../types";
+
+// Cast JSON data to proper types
+const bio: Bio = bioData;
+const experience: ExperienceData = experienceData;
+const education: EducationData = educationData;
+const skillsData: SkillsData = skillsRaw;
 
 const CVPage: React.FC = () => {
   return (
@@ -15,9 +27,9 @@ const CVPage: React.FC = () => {
       {/* Bio Section */}
       <Box sx={{ marginBottom: 3 }}>
         <Typography variant="h4" gutterBottom>
-          {bioData.name}
+          {bio.name}
         </Typography>
-        {bioData.summary && (
+        {bio.summary && (
           <Box sx={{ marginBottom: 1 }}>
             <ReactMarkdown
               components={{
@@ -28,12 +40,12 @@ const CVPage: React.FC = () => {
                 ),
               }}
             >
-              {bioData.summary}
+              {bio.summary}
             </ReactMarkdown>
           </Box>
         )}
         <Typography variant="body2">
-          {bioData.email} ❖ {bioData.phone} ❖ {bioData.location}
+          {bio.email} ❖ {bio.phone} ❖ {bio.location}
         </Typography>
       </Box>
 
@@ -42,7 +54,7 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           Work Experience
         </Typography>
-        {experienceData.map((exp: any, idx: number) => (
+        {experience.map((exp, idx) => (
           <Box key={idx} sx={{ marginBottom: 2 }}>
             <Typography variant="h5" gutterBottom>
               {exp.company} {exp.department ? `- ${exp.department}` : ""}
@@ -52,7 +64,7 @@ const CVPage: React.FC = () => {
             </Typography>
 
             {/* Roles */}
-            {exp.roles.map((role: any, i: number) => (
+            {exp.roles.map((role: ExperienceRole, i: number) => (
               <Card key={i} sx={{ marginY: 1 }}>
                 <CardContent>
                   <Typography variant="h6">{role.title}</Typography>
@@ -63,14 +75,13 @@ const CVPage: React.FC = () => {
                   )}
 
                   {/* Description */}
-                  {role.description?.length > 0 && (
+                  {(role.description || []).length > 0 && (
                     <Box sx={{ marginTop: 1 }}>
                       <ul style={{ margin: 0, paddingLeft: "1.2em" }}>
-                        {role.description.map((desc: string, j: number) => (
+                        {(role.description || []).map((desc, j) => (
                           <li key={j}>
                             <ReactMarkdown
                               components={{
-                                // Replace <p> with <span> to avoid nested <p> inside <li>
                                 p: ({ children }) => <span>{children}</span>,
                               }}
                             >
@@ -82,11 +93,10 @@ const CVPage: React.FC = () => {
                     </Box>
                   )}
 
-
                   {/* Stack / Technical Skills */}
-                  {role.stack?.length > 0 && (
+                  {(role.stack || []).length > 0 && (
                     <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
-                      {role.stack.map((tech: string, k: number) => (
+                      {(role.stack || []).map((tech, k) => (
                         <SkillChip key={k} label={tech} />
                       ))}
                     </Stack>
@@ -103,7 +113,7 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           Education
         </Typography>
-        {educationData.map((edu: any, idx: number) => (
+        {education.map((edu: EducationItem, idx) => (
           <Card key={idx} sx={{ marginBottom: 2 }}>
             <CardContent>
               <Typography variant="h6">
@@ -125,11 +135,11 @@ const CVPage: React.FC = () => {
                     </ReactMarkdown>
                   </Box>
                 )}
-                {edu.grades && (
+                {(edu.grades || []).length > 0 && (
                   <Box>
-                    {Object.entries(edu.grades as Record<string, string>).map(([subject, value], g) => (
+                    {(edu.grades || []).map((grade: Grade, g) => (
                       <Typography key={g} variant="body2">
-                        <strong>{subject}:</strong> {value}
+                        <strong>{grade.subject}:</strong> {grade.score}
                       </Typography>
                     ))}
                   </Box>
@@ -145,9 +155,9 @@ const CVPage: React.FC = () => {
         <Typography variant="h5" gutterBottom>
           Skills & Technical Skills
         </Typography>
-        {skillsData.skills.map((category: any, idx: number) => (
+        {skillsData.skills.map((category: SkillCategory, idx: number) => (
           <Stack key={idx} direction="row" spacing={1} sx={{ flexWrap: "wrap", marginBottom: 1 }}>
-            {category.items.map((item: string, i: number) => (
+            {category.items.map((item, i) => (
               <SkillChip key={i} label={item} />
             ))}
           </Stack>

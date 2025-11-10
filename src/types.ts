@@ -1,57 +1,79 @@
-// src/types.ts
+// ------------------------
+// Bio
+// ------------------------
 export interface Bio {
   name: string;
   email: string;
-  phone?: string;
-  location?: string;
-  interests?: string[];
+  phone: string;
+  location: string;
   summary?: string;
-  photo?: string | null;
+  interests?: string[];
 }
 
+// ------------------------
+// Projects
+// ------------------------
 export interface Project {
   title: string;
-  company?: string;
-  date?: string;
-  description?: string;
+  company: string;
+  date: string;
+  description: string;
   stack?: string[];
   link?: string;
 }
 
-export interface Role {
+export type ProjectsData = Project[];
+
+// ------------------------
+// Experience
+// ------------------------
+export interface ExperienceRole {
   title: string;
   start_date?: string;
   end_date?: string;
-  location?: string;
   description?: string[];
   stack?: string[];
-  projects?: Project[];
 }
 
-export interface CompanyExperience {
+export interface ExperienceItem {
   company: string;
   department?: string;
-  location?: string;
-  start_date?: string;
-  end_date?: string;
-  roles: Role[];
+  start_date: string;
+  end_date: string;
+  location: string;
+  roles: ExperienceRole[];
 }
 
-export interface Education {
-  institution: string;
+export type ExperienceData = ExperienceItem[];
+
+// ------------------------
+// Education
+// ------------------------
+export interface Grade {
+  subject: string;
+  score: string;
+}
+
+export interface EducationItem {
   degree: string;
-  location?: string;
-  graduation_date?: string;
+  institution: string;
+  location: string;
+  graduation_date: string;
   thesis?: string;
-  grades?: Record<string, string>;
   erasmus?: string;
+  grades?: Grade[]; // now a list, optional
 }
 
+export type EducationData = EducationItem[];
+
+// ------------------------
+// Skills
+// ------------------------
 export interface SkillCategory {
   category: string;
   items: string[];
 }
 
-export interface SkillsFile {
+export interface SkillsData {
   skills: SkillCategory[];
 }

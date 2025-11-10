@@ -4,12 +4,12 @@
     "degree": "MSc Data Science",
     "location": "London, UK",
     "graduation_date": "Jun, 2020",
-    "grades": {
-      "overall": "Distinction (80%)",
-      "Machine Learning": "95%",
-      "Data Mining": "88%",
-      "Statistical Analysis and Modelling": "89%"
-    },
+    "grades": [
+      { "subject": "overall", "score": "Distinction (80%)" },
+      { "subject": "Machine Learning", "score": "95%" },
+      { "subject": "Data Mining", "score": "88%" },
+      { "subject": "Statistical Analysis and Modelling", "score": "89%" }
+    ],
     "thesis": "A clustering based approach to segmenting user activity within an SaaS application"
   },
   {
@@ -17,9 +17,9 @@
     "degree": "Bachelor in Business Administration, Major Finance",
     "location": "San Sebastian, Spain",
     "graduation_date": "Jun, 2010",
-    "grades": {
-      "overall": "75%"
-    },
+    "grades": [
+      { "subject": "overall", "score": "75%" }
+    ],
     "erasmus": "University of Economics, Prague, CZ"
   }
 ]
