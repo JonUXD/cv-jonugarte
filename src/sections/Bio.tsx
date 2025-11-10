@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardContent, Typography, Box, Avatar } from "@mui/material";
 import bioData from "../data/bio.json";
+import bio from "../types"
 
 const Bio: React.FC = () => (
   <Card sx={{ marginBottom: 3 }}>
