@@ -53,6 +53,7 @@
     "module": "ESNext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "resolveJsonModule": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -404,6 +405,91 @@ button:focus-visible {
 }
 
 
+--- src/types.ts ---
+// ------------------------
+// Bio
+// ------------------------
+export interface Bio {
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  summary?: string;
+  interests?: string[];
+}
+
+// ------------------------
+// Projects
+// ------------------------
+export interface Project {
+  title: string;
+  company: string;
+  date: string;
+  summary: string;
+  description: string;
+  highlights?: string[];
+  stack?: string[];
+  experience_ref?: string;
+}
+
+
+export type ProjectsData = Project[];
+
+// ------------------------
+// Experience
+// ------------------------
+export interface ExperienceRole {
+  title: string;
+  start_date?: string;
+  end_date?: string;
+  description?: string[];
+  stack?: string[];
+}
+
+export interface ExperienceItem {
+  company: string;
+  department?: string;
+  start_date: string;
+  end_date: string;
+  location: string;
+  roles: ExperienceRole[];
+}
+
+export type ExperienceData = ExperienceItem[];
+
+// ------------------------
+// Education
+// ------------------------
+export interface Grade {
+  subject: string;
+  score: string;
+}
+
+export interface EducationItem {
+  degree: string;
+  institution: string;
+  location: string;
+  graduation_date: string;
+  thesis?: string;
+  erasmus?: string;
+  grades?: Grade[]; // now a list, optional
+}
+
+export type EducationData = EducationItem[];
+
+// ------------------------
+// Skills
+// ------------------------
+export interface SkillCategory {
+  category: string;
+  items: string[];
+}
+
+export interface SkillsData {
+  skills: SkillCategory[];
+}
+
+
 --- src/sections/Experience.tsx ---
 import React from "react";
 import experienceData from "../data/experience.json";
@@ -464,6 +550,7 @@ export default Experience;
 import React from "react";
 import { Card, CardContent, Typography, Box, Avatar } from "@mui/material";
 import bioData from "../data/bio.json";
+import bio from "../types"
 
 const Bio: React.FC = () => (
   <Card sx={{ marginBottom: 3 }}>
@@ -633,12 +720,12 @@ export default theme;
     "degree": "MSc Data Science",
     "location": "London, UK",
     "graduation_date": "Jun, 2020",
-    "grades": {
-      "overall": "Distinction (80%)",
-      "Machine Learning": "95%",
-      "Data Mining": "88%",
-      "Statistical Analysis and Modelling": "89%"
-    },
+    "grades": [
+      { "subject": "overall", "score": "Distinction (80%)" },
+      { "subject": "Machine Learning", "score": "95%" },
+      { "subject": "Data Mining", "score": "88%" },
+      { "subject": "Statistical Analysis and Modelling", "score": "89%" }
+    ],
     "thesis": "A clustering based approach to segmenting user activity within an SaaS application"
   },
   {
@@ -646,9 +733,9 @@ export default theme;
     "degree": "Bachelor in Business Administration, Major Finance",
     "location": "San Sebastian, Spain",
     "graduation_date": "Jun, 2010",
-    "grades": {
-      "overall": "75%"
-    },
+    "grades": [
+      { "subject": "overall", "score": "75%" }
+    ],
     "erasmus": "University of Economics, Prague, CZ"
   }
 ]
@@ -675,7 +762,8 @@ export default theme;
           "Onboarded surveys for 10+ trainings deployed in the EU network."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS", "Lambda", "AWS CDK", "Quicksight"],
-        "projects": []
+        "projects": [],
+        "role_id": "Amazon_202401_Business_Intelligence_Engineer_II_L5"
       },
       {
         "title": "Business Intelligence Engineer I (L4)",
@@ -688,7 +776,8 @@ export default theme;
           "Created 10+ daily reporting dashboards to support operations with over 2K unique users and 150K views, enabling savings of over 6MM."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS"],
-        "projects": []
+        "projects": [],
+        "role_id": "Amazon_202106_Business_Intelligence_Engineer_I_L4"
       }
     ]
   },
@@ -710,7 +799,8 @@ export default theme;
           "Developed an automated report on Power BI shared company wide combining internal data from Salesforce, Thomson Reuters and Application Data."
         ],
         "stack": ["Power BI", "SQL Server", "Looker", "Salesforce Analytics", "Google Analytics"],
-        "projects": []
+        "projects": [],
+        "role_id": "Datasite_201909_Data_Analyst"
       },
       {
         "title": "Project Manager",
@@ -721,7 +811,8 @@ export default theme;
           "Lead training sessions on the use of the platform."
         ],
         "stack": [],
-        "projects": []
+        "projects": [],
+        "role_id": "Datasite_201806_Project_Manager"
       }
     ]
   },
@@ -741,7 +832,8 @@ export default theme;
           "Managed the DBS checks of partner associations."
         ],
         "stack": [],
-        "projects": []
+        "projects": [],
+        "role_id": "UBS_201709_Analyst_Intern_Corporate_Social_Responsibility"
       }
     ]
   },
@@ -757,7 +849,8 @@ export default theme;
           "Managed portfolio of 50 clients with an annual revenue of 3 MM, while managing a fleet of 50 trucks across Europe."
         ],
         "stack": [],
-        "projects": []
+        "projects": [],
+        "role_id": "Bildutruck_201201_International_Transport_Manager"
       }
     ]
   }
@@ -770,7 +863,8 @@ export default theme;
     "title": "Real-time Warehouse Monitoring Tool",
     "company": "Amazon",
     "date": "2024",
-    "description": "Backend tool for monitoring warehouse fullness across 30+ EU warehouses, used by 100+ users daily.",
+    "summary": "Monitors warehouse fullness across EU fulfillment centers in real time.",
+    "description": "Backend tool for monitoring warehouse fullness deployed in 30+ EU fulfillment centers. Used daily by over 100 users, providing actionable insights to optimize operational throughput.",
     "stack": ["AWS", "Python", "SQL", "Redshift", "Lambda"],
     "link": ""
   },
@@ -778,7 +872,8 @@ export default theme;
     "title": "Daily Onboarding Reporting Dashboard",
     "company": "Amazon",
     "date": "2024",
-    "description": "Dashboard to monitor onboarding program for EU warehouse new hires, enabling confirmed savings of $12MM.",
+    "summary": "Dashboard tracking new hire onboarding programs across EU fulfillment centers.",
+    "description": "Provides a consolidated view of onboarding program metrics for EU warehouse new hires. Enables teams to monitor completion, calculate savings, and inform decisions based on training effectiveness.",
     "stack": ["Quicksight", "AWS", "SQL"],
     "link": ""
   },
@@ -786,8 +881,114 @@ export default theme;
     "title": "Automated Market Monitoring Tool",
     "company": "Datasite",
     "date": "2020",
-    "description": "Centralized tool to monitor the merger and acquisitions market using Salesforce and Thomson Reuters Financial database.",
+    "summary": "Centralized tool to track M&A market activity using multiple financial data sources.",
+    "description": "Aggregates data from Salesforce and Thomson Reuters Financial database to monitor merger and acquisition activity. Provides automated insights to support business development and strategy decisions.",
     "stack": ["SQL Server", "Power BI", "Looker"],
+    "link": ""
+  },
+  {
+    "title": "Amazon Central Operations Cost Optimization",
+    "company": "Amazon",
+    "date": "2024",
+    "summary": "Reduced AWS infrastructure costs for live data pipelines in operations.",
+    "description": "Implemented optimizations on SQS, Lambda, and data ingestion pipelines to reduce operational costs by 57%, contributing to the EU fulfillment center cost-saving initiatives.",
+    "stack": ["AWS", "Python", "SQL", "Redshift"],
+    "highlights": [
+      "Reduced Lambda invocations by up to 83%",
+      "Lowered SQS message volume by up to 90%",
+      "Projected annual savings of $48,000 for ACES fleet"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Employee Engagement Analytics Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Improved onboarding experience for warehouse employees across EU fulfillment centers.",
+    "description": "Developed a comprehensive system for scheduling, compliance tracking, and KPI monitoring of onboarding programs. Delivered measurable reductions in unexpected attrition and absences, while providing actionable insights to Learning & Development teams.",
+    "stack": ["AWS", "SQL", "Python", "Quicksight"],
+    "highlights": [
+      "Reduced unexpected attrition by 846 basis points",
+      "Generated $7.15M in savings YTD 2024",
+      "Implemented row-level security in dashboards"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Performance and Learning Metrics Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Centralized dashboard for warehouse permissions and training compliance.",
+    "description": "Built a scalable dashboard to monitor personnel permissions, training completion, and compliance across EU fulfillment centers. Enabled centralized cleaning of permission violations and reduced operational inefficiencies.",
+    "stack": ["AWS", "SQL", "Quicksight"],
+    "highlights": [
+      "Managed 1.2M capability-level violations",
+      "Reduced total violations by 98% within 4 months",
+      "Achieved consistent 6-hour data refresh rate"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Warehouse Throughput Optimization",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Live tool to reduce dock congestion and optimize container flow.",
+    "description": "Developed a real-time recommendation system for dock management in EU fulfillment centers. Enabled proactive trailer scheduling, container positioning, and congestion reduction, improving operational safety and efficiency.",
+    "stack": ["Python", "SQL", "AWS"],
+    "highlights": [
+      "Implemented live dashboards for container and dock status",
+      "Used by ~1,000 unique users with 200,000+ API calls",
+      "Enhanced decision-making for peak operations"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Training Effectiveness Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Centralized platform to measure and improve training impact.",
+    "description": "Consolidated multiple learning data sources into a single dashboard, providing metrics on learner satisfaction, knowledge retention, and skill application. Enabled targeted interventions and strategic decision-making for Learning & Development programs.",
+    "stack": ["SQL", "Quicksight", "Python", "AWS"],
+    "highlights": [
+      "Tracked 74 unique users with 132 weekly accesses",
+      "Improved post-training assessment scores by 15%",
+      "Enabled data-driven coaching and curriculum improvements"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Language Training Effectiveness Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Enhanced onboarding for non-native language speakers.",
+    "description": "Created a system to match instructors with associates based on language, shift, and process. Provided analytics to Learning Managers to optimize training allocation and improve onboarding efficiency.",
+    "stack": ["SQL", "Python", "Quicksight", "AWS"],
+    "highlights": [
+      "Supported onboarding across all European fulfillment centers",
+      "Improved resource allocation and training planning",
+      "Enhanced associate experience for non-native speakers"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Cross-Skill Training Utilization Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Tool to track and optimize cross-training of warehouse associates.",
+    "description": "Redesigned cross-training system to track subprocess-level skills and validate competency through certifications. Prioritized workforce allocation based on proficiency and labor gaps, enabling operational flexibility and cost savings.",
+    "stack": ["Python", "SQL", "AWS"],
+    "highlights": [
+      "Increased cross-training pool by 7%",
+      "Identified 10K additional eligible employees",
+      "Contributed $27.5M in net cost avoidance"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
     "link": ""
   }
 ]
@@ -825,37 +1026,65 @@ import React from "react";
 import projectsData from "../data/projects.json";
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Stack, Chip, Box } from "@mui/material";
+import type { Project } from "../types";
 
-const ProjectsPage: React.FC = () => (
-  <Box sx={{ padding: 2 }}>
-    <Typography variant="h4" gutterBottom>
-      Projects
-    </Typography>
+const projects = projectsData as Project[];
 
-    {projectsData.map((project, i) => (
-      <Card key={i} sx={{ marginBottom: 2 }}>
-        <CardContent>
-          <Typography variant="h5">{project.title}</Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            {project.company}
+// Helper: convert date string to a number for sorting
+const parseDate = (dateStr: string) => {
+  const parsed = parseInt(dateStr);
+  return isNaN(parsed) ? 0 : parsed;
+};
+
+// Group projects by company
+const projectsByCompany = projects.reduce((acc, project) => {
+  if (!acc[project.company]) acc[project.company] = [];
+  acc[project.company].push(project);
+  return acc;
+}, {} as Record<string, Project[]>);
+
+const ProjectsPage: React.FC = () => {
+  return (
+    <Box sx={{ padding: 2 }}>
+      <Typography variant="h4" gutterBottom>
+        Projects
+      </Typography>
+
+      {Object.entries(projectsByCompany).map(([company, companyProjects]) => (
+        <Box key={company} sx={{ marginBottom: 3 }}>
+          <Typography variant="h5" sx={{ marginBottom: 1 }}>
+            {company}
           </Typography>
 
-          <Box sx={{ marginTop: 1 }}>
-            <ReactMarkdown>{project.description}</ReactMarkdown>
-          </Box>
+          {companyProjects
+            .sort((a, b) => parseDate(b.date) - parseDate(a.date)) // newest first
+            .map((project) => (
+              <Card key={project.title} sx={{ marginBottom: 2 }}>
+                <CardContent>
+                  <Typography variant="h6">{project.title}</Typography>
+                  <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                    {project.date}
+                  </Typography>
 
-          {project.stack?.length > 0 && (
-            <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
-              {project.stack.map((tech: string, j: number) => (
-                <Chip key={j} label={tech} size="small" />
-              ))}
-            </Stack>
-          )}
-        </CardContent>
-      </Card>
-    ))}
-  </Box>
-);
+                  <Box sx={{ marginTop: 1 }}>
+                    <ReactMarkdown>{project.description}</ReactMarkdown>
+                  </Box>
+
+                  {(project.stack || []).length > 0 && (
+                    <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
+                      {(project.stack || []).map((tech: string, j: number) => (
+                        <Chip key={j} label={tech} size="small" />
+                      ))}
+                    </Stack>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+        </Box>
+      ))}
+    </Box>
+  );
+};
 
 export default ProjectsPage;
 
@@ -865,6 +1094,9 @@ import React from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import bioData from "../data/bio.json";
 import ReactMarkdown from "react-markdown";
+import type { Bio } from "../types";
+
+const bio = bioData as Bio;
 
 const AboutMePage: React.FC = () => (
   <Card sx={{ margin: 3 }}>
@@ -873,15 +1105,15 @@ const AboutMePage: React.FC = () => (
         About Me
       </Typography>
 
-      {bioData.summary && (
+      {bio.summary && (
         <Box sx={{ marginBottom: 1 }}>
-          <ReactMarkdown>{bioData.summary}</ReactMarkdown>
+          <ReactMarkdown>{bio.summary}</ReactMarkdown>
         </Box>
       )}
 
-      {bioData.interests?.length > 0 && (
+      {(bio.interests || []).length > 0 && (
         <Typography variant="body2">
-          <strong>Interests:</strong> {bioData.interests.join(", ")}
+          <strong>Interests:</strong> {(bio.interests || []).join(", ")}
         </Typography>
       )}
     </CardContent>
@@ -899,9 +1131,21 @@ import ReactMarkdown from "react-markdown";
 import bioData from "../data/bio.json";
 import experienceData from "../data/experience.json";
 import educationData from "../data/education.json";
-import skillsData from "../data/skills.json";
+import skillsRaw from "../data/skills.json";
 
 import SkillChip from "../components/SkillChip";
+
+// Types
+import type { SkillCategory, SkillsData } from "../types";
+import type { ExperienceData, ExperienceRole } from "../types";
+import type { EducationData, EducationItem, Grade } from "../types";
+import type { Bio } from "../types";
+
+// Cast JSON data to proper types
+const bio: Bio = bioData;
+const experience: ExperienceData = experienceData;
+const education: EducationData = educationData;
+const skillsData: SkillsData = skillsRaw;
 
 const CVPage: React.FC = () => {
   return (
@@ -909,9 +1153,9 @@ const CVPage: React.FC = () => {
       {/* Bio Section */}
       <Box sx={{ marginBottom: 3 }}>
         <Typography variant="h4" gutterBottom>
-          {bioData.name}
+          {bio.name}
         </Typography>
-        {bioData.summary && (
+        {bio.summary && (
           <Box sx={{ marginBottom: 1 }}>
             <ReactMarkdown
               components={{
@@ -922,12 +1166,12 @@ const CVPage: React.FC = () => {
                 ),
               }}
             >
-              {bioData.summary}
+              {bio.summary}
             </ReactMarkdown>
           </Box>
         )}
         <Typography variant="body2">
-          {bioData.email} ❖ {bioData.phone} ❖ {bioData.location}
+          {bio.email} ❖ {bio.phone} ❖ {bio.location}
         </Typography>
       </Box>
 
@@ -936,7 +1180,7 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           Work Experience
         </Typography>
-        {experienceData.map((exp: any, idx: number) => (
+        {experience.map((exp, idx) => (
           <Box key={idx} sx={{ marginBottom: 2 }}>
             <Typography variant="h5" gutterBottom>
               {exp.company} {exp.department ? `- ${exp.department}` : ""}
@@ -946,7 +1190,7 @@ const CVPage: React.FC = () => {
             </Typography>
 
             {/* Roles */}
-            {exp.roles.map((role: any, i: number) => (
+            {exp.roles.map((role: ExperienceRole, i: number) => (
               <Card key={i} sx={{ marginY: 1 }}>
                 <CardContent>
                   <Typography variant="h6">{role.title}</Typography>
@@ -957,14 +1201,13 @@ const CVPage: React.FC = () => {
                   )}
 
                   {/* Description */}
-                  {role.description?.length > 0 && (
+                  {(role.description || []).length > 0 && (
                     <Box sx={{ marginTop: 1 }}>
                       <ul style={{ margin: 0, paddingLeft: "1.2em" }}>
-                        {role.description.map((desc: string, j: number) => (
+                        {(role.description || []).map((desc, j) => (
                           <li key={j}>
                             <ReactMarkdown
                               components={{
-                                // Replace <p> with <span> to avoid nested <p> inside <li>
                                 p: ({ children }) => <span>{children}</span>,
                               }}
                             >
@@ -976,11 +1219,10 @@ const CVPage: React.FC = () => {
                     </Box>
                   )}
 
-
                   {/* Stack / Technical Skills */}
-                  {role.stack?.length > 0 && (
+                  {(role.stack || []).length > 0 && (
                     <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
-                      {role.stack.map((tech: string, k: number) => (
+                      {(role.stack || []).map((tech, k) => (
                         <SkillChip key={k} label={tech} />
                       ))}
                     </Stack>
@@ -997,7 +1239,7 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           Education
         </Typography>
-        {educationData.map((edu: any, idx: number) => (
+        {education.map((edu: EducationItem, idx) => (
           <Card key={idx} sx={{ marginBottom: 2 }}>
             <CardContent>
               <Typography variant="h6">
@@ -1019,11 +1261,11 @@ const CVPage: React.FC = () => {
                     </ReactMarkdown>
                   </Box>
                 )}
-                {edu.grades && (
+                {(edu.grades || []).length > 0 && (
                   <Box>
-                    {Object.entries(edu.grades as Record<string, string>).map(([subject, value], g) => (
+                    {(edu.grades || []).map((grade: Grade, g) => (
                       <Typography key={g} variant="body2">
-                        <strong>{subject}:</strong> {value}
+                        <strong>{grade.subject}:</strong> {grade.score}
                       </Typography>
                     ))}
                   </Box>
@@ -1039,9 +1281,9 @@ const CVPage: React.FC = () => {
         <Typography variant="h5" gutterBottom>
           Skills & Technical Skills
         </Typography>
-        {skillsData.skills.map((category: any, idx: number) => (
+        {skillsData.skills.map((category: SkillCategory, idx: number) => (
           <Stack key={idx} direction="row" spacing={1} sx={{ flexWrap: "wrap", marginBottom: 1 }}>
-            {category.items.map((item: string, i: number) => (
+            {category.items.map((item, i) => (
               <SkillChip key={i} label={item} />
             ))}
           </Stack>
