@@ -3,7 +3,8 @@
     "title": "Real-time Warehouse Monitoring Tool",
     "company": "Amazon",
     "date": "2024",
-    "description": "Backend tool for monitoring warehouse fullness across 30+ EU warehouses, used by 100+ users daily.",
+    "summary": "Monitors warehouse fullness across EU fulfillment centers in real time.",
+    "description": "Backend tool for monitoring warehouse fullness deployed in 30+ EU fulfillment centers. Used daily by over 100 users, providing actionable insights to optimize operational throughput.",
     "stack": ["AWS", "Python", "SQL", "Redshift", "Lambda"],
     "link": ""
   },
@@ -11,7 +12,8 @@
     "title": "Daily Onboarding Reporting Dashboard",
     "company": "Amazon",
     "date": "2024",
-    "description": "Dashboard to monitor onboarding program for EU warehouse new hires, enabling confirmed savings of $12MM.",
+    "summary": "Dashboard tracking new hire onboarding programs across EU fulfillment centers.",
+    "description": "Provides a consolidated view of onboarding program metrics for EU warehouse new hires. Enables teams to monitor completion, calculate savings, and inform decisions based on training effectiveness.",
     "stack": ["Quicksight", "AWS", "SQL"],
     "link": ""
   },
@@ -19,8 +21,114 @@
     "title": "Automated Market Monitoring Tool",
     "company": "Datasite",
     "date": "2020",
-    "description": "Centralized tool to monitor the merger and acquisitions market using Salesforce and Thomson Reuters Financial database.",
+    "summary": "Centralized tool to track M&A market activity using multiple financial data sources.",
+    "description": "Aggregates data from Salesforce and Thomson Reuters Financial database to monitor merger and acquisition activity. Provides automated insights to support business development and strategy decisions.",
     "stack": ["SQL Server", "Power BI", "Looker"],
+    "link": ""
+  },
+  {
+    "title": "Amazon Central Operations Cost Optimization",
+    "company": "Amazon",
+    "date": "2024",
+    "summary": "Reduced AWS infrastructure costs for live data pipelines in operations.",
+    "description": "Implemented optimizations on SQS, Lambda, and data ingestion pipelines to reduce operational costs by 57%, contributing to the EU fulfillment center cost-saving initiatives.",
+    "stack": ["AWS", "Python", "SQL", "Redshift"],
+    "highlights": [
+      "Reduced Lambda invocations by up to 83%",
+      "Lowered SQS message volume by up to 90%",
+      "Projected annual savings of $48,000 for ACES fleet"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Employee Engagement Analytics Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Improved onboarding experience for warehouse employees across EU fulfillment centers.",
+    "description": "Developed a comprehensive system for scheduling, compliance tracking, and KPI monitoring of onboarding programs. Delivered measurable reductions in unexpected attrition and absences, while providing actionable insights to Learning & Development teams.",
+    "stack": ["AWS", "SQL", "Python", "Quicksight"],
+    "highlights": [
+      "Reduced unexpected attrition by 846 basis points",
+      "Generated $7.15M in savings YTD 2024",
+      "Implemented row-level security in dashboards"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Performance and Learning Metrics Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Centralized dashboard for warehouse permissions and training compliance.",
+    "description": "Built a scalable dashboard to monitor personnel permissions, training completion, and compliance across EU fulfillment centers. Enabled centralized cleaning of permission violations and reduced operational inefficiencies.",
+    "stack": ["AWS", "SQL", "Quicksight"],
+    "highlights": [
+      "Managed 1.2M capability-level violations",
+      "Reduced total violations by 98% within 4 months",
+      "Achieved consistent 6-hour data refresh rate"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Warehouse Throughput Optimization",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Live tool to reduce dock congestion and optimize container flow.",
+    "description": "Developed a real-time recommendation system for dock management in EU fulfillment centers. Enabled proactive trailer scheduling, container positioning, and congestion reduction, improving operational safety and efficiency.",
+    "stack": ["Python", "SQL", "AWS"],
+    "highlights": [
+      "Implemented live dashboards for container and dock status",
+      "Used by ~1,000 unique users with 200,000+ API calls",
+      "Enhanced decision-making for peak operations"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Training Effectiveness Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Centralized platform to measure and improve training impact.",
+    "description": "Consolidated multiple learning data sources into a single dashboard, providing metrics on learner satisfaction, knowledge retention, and skill application. Enabled targeted interventions and strategic decision-making for Learning & Development programs.",
+    "stack": ["SQL", "Quicksight", "Python", "AWS"],
+    "highlights": [
+      "Tracked 74 unique users with 132 weekly accesses",
+      "Improved post-training assessment scores by 15%",
+      "Enabled data-driven coaching and curriculum improvements"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Language Training Effectiveness Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Enhanced onboarding for non-native language speakers.",
+    "description": "Created a system to match instructors with associates based on language, shift, and process. Provided analytics to Learning Managers to optimize training allocation and improve onboarding efficiency.",
+    "stack": ["SQL", "Python", "Quicksight", "AWS"],
+    "highlights": [
+      "Supported onboarding across all European fulfillment centers",
+      "Improved resource allocation and training planning",
+      "Enhanced associate experience for non-native speakers"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
+    "link": ""
+  },
+  {
+    "title": "Cross-Skill Training Utilization Dashboard",
+    "company": "Amazon",
+    "date": "2023",
+    "summary": "Tool to track and optimize cross-training of warehouse associates.",
+    "description": "Redesigned cross-training system to track subprocess-level skills and validate competency through certifications. Prioritized workforce allocation based on proficiency and labor gaps, enabling operational flexibility and cost savings.",
+    "stack": ["Python", "SQL", "AWS"],
+    "highlights": [
+      "Increased cross-training pool by 7%",
+      "Identified 10K additional eligible employees",
+      "Contributed $27.5M in net cost avoidance"
+    ],
+    "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
     "link": ""
   }
 ]

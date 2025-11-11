@@ -18,7 +18,8 @@
           "Onboarded surveys for 10+ trainings deployed in the EU network."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS", "Lambda", "AWS CDK", "Quicksight"],
-        "projects": []
+        "projects": [],
+        "role_id": "Amazon_202401_Business_Intelligence_Engineer_II_L5"
       },
       {
         "title": "Business Intelligence Engineer I (L4)",
@@ -31,7 +32,8 @@
           "Created 10+ daily reporting dashboards to support operations with over 2K unique users and 150K views, enabling savings of over 6MM."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS"],
-        "projects": []
+        "projects": [],
+        "role_id": "Amazon_202106_Business_Intelligence_Engineer_I_L4"
       }
     ]
   },
@@ -46,14 +48,15 @@
         "start_date": "Sep, 2019",
         "end_date": "May, 2021",
         "description": [
-          "Created a mostly-automated process to identify the transactions hosted in the platform to highlight in the main webpage. The webpage generated over 20 new leads and landed five new deals in the first 6 months (estimated revenue $300K).",
+          "Created a mostly-automated process to identify the transactions hosted in the platform to highlight in the main webpage. The webpage generated over 20 new leads and landed five new deals in the first 6 months (estimated revenue **$300K**).",
           "Created Salesforce reports to identify new leads and opportunities, leading to over 20 business opportunities.",
           "Used Google Analytics to analyze engagement with the webpage.",
           "Developed an automated and centralized tool to monitor the merger and acquisitions market with Thomson Reuters Financial database.",
           "Developed an automated report on Power BI shared company wide combining internal data from Salesforce, Thomson Reuters and Application Data."
         ],
         "stack": ["Power BI", "SQL Server", "Looker", "Salesforce Analytics", "Google Analytics"],
-        "projects": []
+        "projects": [],
+        "role_id": "Datasite_201909_Data_Analyst"
       },
       {
         "title": "Project Manager",
@@ -64,7 +67,8 @@
           "Lead training sessions on the use of the platform."
         ],
         "stack": [],
-        "projects": []
+        "projects": [],
+        "role_id": "Datasite_201806_Project_Manager"
       }
     ]
   },
@@ -84,7 +88,8 @@
           "Managed the DBS checks of partner associations."
         ],
         "stack": [],
-        "projects": []
+        "projects": [],
+        "role_id": "UBS_201709_Analyst_Intern_Corporate_Social_Responsibility"
       }
     ]
   },
@@ -100,7 +105,8 @@
           "Managed portfolio of 50 clients with an annual revenue of 3 MM, while managing a fleet of 50 trucks across Europe."
         ],
         "stack": [],
-        "projects": []
+        "projects": [],
+        "role_id": "Bildutruck_201201_International_Transport_Manager"
       }
     ]
   }

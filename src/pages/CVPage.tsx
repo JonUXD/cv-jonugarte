@@ -9,6 +9,8 @@ import skillsRaw from "../data/skills.json";
 
 import SkillChip from "../components/SkillChip";
 
+import ExperienceCard from "../components/ExperienceCard";
+
 // Types
 import type { SkillCategory, SkillsData } from "../types";
 import type { ExperienceData, ExperienceRole } from "../types";
@@ -50,61 +52,13 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Work Experience */}
-      <Box sx={{ marginBottom: 3 }}>
+      <Box sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom>
           Work Experience
         </Typography>
+
         {experience.map((exp, idx) => (
-          <Box key={idx} sx={{ marginBottom: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              {exp.company} {exp.department ? `- ${exp.department}` : ""}
-            </Typography>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              {exp.start_date} – {exp.end_date} | {exp.location}
-            </Typography>
-
-            {/* Roles */}
-            {exp.roles.map((role: ExperienceRole, i: number) => (
-              <Card key={i} sx={{ marginY: 1 }}>
-                <CardContent>
-                  <Typography variant="h6">{role.title}</Typography>
-                  {role.start_date && (
-                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                      {role.start_date} – {role.end_date}
-                    </Typography>
-                  )}
-
-                  {/* Description */}
-                  {(role.description || []).length > 0 && (
-                    <Box sx={{ marginTop: 1 }}>
-                      <ul style={{ margin: 0, paddingLeft: "1.2em" }}>
-                        {(role.description || []).map((desc, j) => (
-                          <li key={j}>
-                            <ReactMarkdown
-                              components={{
-                                p: ({ children }) => <span>{children}</span>,
-                              }}
-                            >
-                              {desc}
-                            </ReactMarkdown>
-                          </li>
-                        ))}
-                      </ul>
-                    </Box>
-                  )}
-
-                  {/* Stack / Technical Skills */}
-                  {(role.stack || []).length > 0 && (
-                    <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
-                      {(role.stack || []).map((tech, k) => (
-                        <SkillChip key={k} label={tech} />
-                      ))}
-                    </Stack>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </Box>
+          <ExperienceCard key={idx} experience={exp} />
         ))}
       </Box>
 

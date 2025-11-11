@@ -17,10 +17,13 @@ export interface Project {
   title: string;
   company: string;
   date: string;
+  summary: string;
   description: string;
+  highlights?: string[];
   stack?: string[];
-  link?: string;
+  experience_ref?: string;
 }
+
 
 export type ProjectsData = Project[];
 
