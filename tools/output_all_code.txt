@@ -550,7 +550,6 @@ export default Experience;
 import React from "react";
 import { Card, CardContent, Typography, Box, Avatar } from "@mui/material";
 import bioData from "../data/bio.json";
-import bio from "../types"
 
 const Bio: React.FC = () => (
   <Card sx={{ marginBottom: 3 }}>
@@ -667,6 +666,63 @@ export default Education;
 
 
 --- src/components/ExperienceCard.tsx ---
+import React from "react";
+import { Card, CardContent, Typography, Stack, Box, Chip } from "@mui/material";
+import ReactMarkdown from "react-markdown";
+import type { ExperienceItem, ExperienceRole } from "../types";
+import SkillChip from "./SkillChip";
+
+interface ExperienceCardProps {
+  experience: ExperienceItem;
+}
+
+const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) => {
+  return (
+    <Card sx={{ mb: 3, p: 1 }} elevation={3}>
+      <CardContent>
+        <Typography variant="h5" gutterBottom>
+          {experience.company} {experience.department ? `— ${experience.department}` : ""} ({experience.location})
+        </Typography>
+        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+          {experience.start_date} – {experience.end_date}
+        </Typography>
+
+        {experience.roles.map((role: ExperienceRole, i) => (
+          <Box key={i} sx={{ mt: 2, mb: 1 }}>
+            <Typography variant="h6">{role.title}</Typography>
+            {role.start_date && (
+              <Typography variant="subtitle2" color="text.secondary">
+                {role.start_date} – {role.end_date}
+              </Typography>
+            )}
+
+            {(role.description || []).length > 0 && (
+              <Box component="ul" sx={{ pl: 2, mt: 1 }}>
+                {(role.description || []).map((desc, j) => (
+                  <li key={j}>
+                    <ReactMarkdown components={{ p: ({ children }) => <span>{children}</span> }}>
+                      {desc}
+                    </ReactMarkdown>
+                  </li>
+                ))}
+              </Box>
+            )}
+
+            {(role.stack || []).length > 0 && (
+              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", mt: 1 }}>
+                {(role.stack || []).map((tech, k) => (
+                  <SkillChip key={k} label={tech} />
+                ))}
+              </Stack>
+            )}
+          </Box>
+        ))}
+      </CardContent>
+    </Card>
+  );
+};
+
+export default ExperienceCard;
 
 
 --- src/components/SkillChip.tsx ---
@@ -792,7 +848,7 @@ export default theme;
         "start_date": "Sep, 2019",
         "end_date": "May, 2021",
         "description": [
-          "Created a mostly-automated process to identify the transactions hosted in the platform to highlight in the main webpage. The webpage generated over 20 new leads and landed five new deals in the first 6 months (estimated revenue $300K).",
+          "Created a mostly-automated process to identify the transactions hosted in the platform to highlight in the main webpage. The webpage generated over 20 new leads and landed five new deals in the first 6 months (estimated revenue **$300K**).",
           "Created Salesforce reports to identify new leads and opportunities, leading to over 20 business opportunities.",
           "Used Google Analytics to analyze engagement with the webpage.",
           "Developed an automated and centralized tool to monitor the merger and acquisitions market with Thomson Reuters Financial database.",
@@ -1135,6 +1191,8 @@ import skillsRaw from "../data/skills.json";
 
 import SkillChip from "../components/SkillChip";
 
+import ExperienceCard from "../components/ExperienceCard";
+
 // Types
 import type { SkillCategory, SkillsData } from "../types";
 import type { ExperienceData, ExperienceRole } from "../types";
@@ -1176,61 +1234,13 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Work Experience */}
-      <Box sx={{ marginBottom: 3 }}>
+      <Box sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom>
           Work Experience
         </Typography>
+
         {experience.map((exp, idx) => (
-          <Box key={idx} sx={{ marginBottom: 2 }}>
-            <Typography variant="h5" gutterBottom>
-              {exp.company} {exp.department ? `- ${exp.department}` : ""}
-            </Typography>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-              {exp.start_date} – {exp.end_date} | {exp.location}
-            </Typography>
-
-            {/* Roles */}
-            {exp.roles.map((role: ExperienceRole, i: number) => (
-              <Card key={i} sx={{ marginY: 1 }}>
-                <CardContent>
-                  <Typography variant="h6">{role.title}</Typography>
-                  {role.start_date && (
-                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                      {role.start_date} – {role.end_date}
-                    </Typography>
-                  )}
-
-                  {/* Description */}
-                  {(role.description || []).length > 0 && (
-                    <Box sx={{ marginTop: 1 }}>
-                      <ul style={{ margin: 0, paddingLeft: "1.2em" }}>
-                        {(role.description || []).map((desc, j) => (
-                          <li key={j}>
-                            <ReactMarkdown
-                              components={{
-                                p: ({ children }) => <span>{children}</span>,
-                              }}
-                            >
-                              {desc}
-                            </ReactMarkdown>
-                          </li>
-                        ))}
-                      </ul>
-                    </Box>
-                  )}
-
-                  {/* Stack / Technical Skills */}
-                  {(role.stack || []).length > 0 && (
-                    <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
-                      {(role.stack || []).map((tech, k) => (
-                        <SkillChip key={k} label={tech} />
-                      ))}
-                    </Stack>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </Box>
+          <ExperienceCard key={idx} experience={exp} />
         ))}
       </Box>
 
