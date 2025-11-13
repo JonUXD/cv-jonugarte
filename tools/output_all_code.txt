@@ -242,6 +242,7 @@ export default defineConfig({
 
 
 --- src/App.tsx ---
+// src/App.tsx
 import React, { useState } from "react";
 import { Tabs, Tab, Box } from "@mui/material";
 import CVPage from "./pages/CVPage";
@@ -250,25 +251,33 @@ import AboutMePage from "./pages/AboutMePage";
 
 const App: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(0);
-
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
   };
 
   return (
     <Box sx={{ width: "100%" }}>
-      {/* Tabs */}
-      <Tabs value={selectedTab} onChange={handleChange} centered>
-        <Tab label="CV" />
-        <Tab label="Projects" />
-        <Tab label="About Me" />
-      </Tabs>
+      {/* 1. Responsive container */}
+      <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, sm: 3, md: 4 } }}>
+        {/* 2. Tabs with your custom blue */}
+        <Tabs
+          value={selectedTab}
+          onChange={handleChange}
+          centered
+          textColor="primary"
+          indicatorColor="primary"
+        >
+          <Tab label="CV" />
+          <Tab label="Projects" />
+          <Tab label="About Me" />
+        </Tabs>
 
-      {/* Tab content */}
-      <Box sx={{ marginTop: 2 }}>
-        {selectedTab === 0 && <CVPage />}
-        {selectedTab === 1 && <ProjectsPage />}
-        {selectedTab === 2 && <AboutMePage />}
+        {/* 3. Page content */}
+        <Box sx={{ mt: 4 }}>
+          {selectedTab === 0 && <CVPage />}
+          {selectedTab === 1 && <ProjectsPage />}
+          {selectedTab === 2 && <AboutMePage />}
+        </Box>
       </Box>
     </Box>
   );
@@ -276,15 +285,20 @@ const App: React.FC = () => {
 
 export default App;
 
-
 --- src/main.tsx ---
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import theme from "./theme/theme";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
@@ -740,18 +754,6 @@ const SkillChip: React.FC<SkillChipProps> = ({ label }) => {
 export default SkillChip;
 
 
---- src/components/ProjectCard.tsx ---
-
-
---- src/components/Footer.tsx ---
-
-
---- src/components/Header.tsx ---
-
-
---- src/components/SectionTitle.tsx ---
-
-
 --- src/theme/theme.ts ---
 import { createTheme } from "@mui/material/styles";
 
@@ -1190,8 +1192,9 @@ import educationData from "../data/education.json";
 import skillsRaw from "../data/skills.json";
 
 import SkillChip from "../components/SkillChip";
-
 import ExperienceCard from "../components/ExperienceCard";
+
+import Skills from "../sections/Skills";
 
 // Types
 import type { SkillCategory, SkillsData } from "../types";
@@ -1287,17 +1290,8 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Skills & Technical Skills */}
-      <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          Skills & Technical Skills
-        </Typography>
-        {skillsData.skills.map((category: SkillCategory, idx: number) => (
-          <Stack key={idx} direction="row" spacing={1} sx={{ flexWrap: "wrap", marginBottom: 1 }}>
-            {category.items.map((item, i) => (
-              <SkillChip key={i} label={item} />
-            ))}
-          </Stack>
-        ))}
+      <Box sx={{ mb: 3 }}>
+        <Skills />
       </Box>
     </Box>
   );
