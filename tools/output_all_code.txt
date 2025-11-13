@@ -242,38 +242,54 @@ export default defineConfig({
 
 
 --- src/App.tsx ---
-// src/App.tsx
 import React, { useState } from "react";
-import { Tabs, Tab, Box } from "@mui/material";
+import { Tabs, Tab, Box, useMediaQuery, useTheme } from "@mui/material";
 import CVPage from "./pages/CVPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import AboutMePage from "./pages/AboutMePage";
 
+/**
+ * Main application component with responsive navigation
+ * Adapts tab layout for mobile and desktop screens
+ */
 const App: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(0);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      {/* 1. Responsive container */}
-      <Box sx={{ maxWidth: 1200, mx: "auto", px: { xs: 2, sm: 3, md: 4 } }}>
-        {/* 2. Tabs with your custom blue */}
+    <Box sx={{ width: "100%", minHeight: "100vh" }}>
+      <Box sx={{ 
+        maxWidth: 1200, 
+        mx: "auto", 
+        px: { xs: 1, sm: 2, md: 3 },
+        py: { xs: 1, sm: 2 }
+      }}>
         <Tabs
           value={selectedTab}
           onChange={handleChange}
-          centered
+          centered={!isMobile}
+          variant={isMobile ? "fullWidth" : "standard"}
           textColor="primary"
           indicatorColor="primary"
+          sx={{ 
+            mb: 2,
+            '& .MuiTab-root': {
+              fontWeight: 500,
+              fontSize: { xs: '0.9rem', sm: '1rem' }
+            }
+          }}
         >
           <Tab label="CV" />
           <Tab label="Projects" />
           <Tab label="About Me" />
         </Tabs>
 
-        {/* 3. Page content */}
-        <Box sx={{ mt: 4 }}>
+        <Box sx={{ mt: { xs: 2, sm: 3, md: 4 } }}>
           {selectedTab === 0 && <CVPage />}
           {selectedTab === 1 && <ProjectsPage />}
           {selectedTab === 2 && <AboutMePage />}
@@ -430,6 +446,7 @@ export interface Bio {
   location: string;
   summary?: string;
   interests?: string[];
+  photo?: string | null;
 }
 
 // ------------------------
@@ -444,20 +461,27 @@ export interface Project {
   highlights?: string[];
   stack?: string[];
   experience_ref?: string;
+  link?: string;
 }
-
 
 export type ProjectsData = Project[];
 
 // ------------------------
 // Experience
 // ------------------------
+export interface ExperienceProject {
+  title: string;
+  description?: string;
+}
+
 export interface ExperienceRole {
   title: string;
-  start_date?: string;
-  end_date?: string;
-  description?: string[];
+  start_date: string; 
+  end_date: string; 
+  description: string[];
   stack?: string[];
+  projects?: ExperienceProject[];
+  role_id?: string;
 }
 
 export interface ExperienceItem {
@@ -486,7 +510,7 @@ export interface EducationItem {
   graduation_date: string;
   thesis?: string;
   erasmus?: string;
-  grades?: Grade[]; // now a list, optional
+  grades?: Grade[];
 }
 
 export type EducationData = EducationItem[];
@@ -502,7 +526,6 @@ export interface SkillCategory {
 export interface SkillsData {
   skills: SkillCategory[];
 }
-
 
 --- src/sections/Experience.tsx ---
 import React from "react";
@@ -562,63 +585,123 @@ export default Experience;
 
 --- src/sections/Bio.tsx ---
 import React from "react";
-import { Card, CardContent, Typography, Box, Avatar } from "@mui/material";
+import { Card, CardContent, Typography, Box, Avatar, useTheme, useMediaQuery } from "@mui/material";
 import bioData from "../data/bio.json";
+import type { Bio } from "../types";
 
-const Bio: React.FC = () => (
-  <Card sx={{ marginBottom: 3 }}>
-    <CardContent sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-      {/* Optional profile picture */}
-      {bioData.photo && <Avatar alt={bioData.name} src={bioData.photo} sx={{ width: 80, height: 80 }} />}
-
-      <Box>
-        <Typography variant="h5" component="h2" gutterBottom>
-          {bioData.name}
-        </Typography>
-        <Typography variant="body1">
-          {bioData.email} ❖ {bioData.phone} ❖ {bioData.location}
-        </Typography>
-        {bioData.summary && (
-          <Typography variant="body2" sx={{ marginTop: 1 }}>
-            {bioData.summary}
-          </Typography>
+/**
+ * Bio component displays personal information and profile summary
+ * Uses primary color for the name and clean, professional styling
+ */
+const Bio: React.FC = () => {
+  const bio = bioData as Bio;
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  return (
+    <Card sx={{ marginBottom: 3 }}>
+      <CardContent sx={{ 
+        display: "flex", 
+        flexDirection: { xs: "column", sm: "row" },
+        alignItems: { xs: "flex-start", sm: "center" },
+        gap: 2,
+        textAlign: { xs: "center", sm: "left" }
+      }}>
+        {bio.photo && (
+          <Avatar 
+            alt={bio.name} 
+            src={bio.photo} 
+            sx={{ 
+              width: { xs: 60, sm: 80 }, 
+              height: { xs: 60, sm: 80 },
+              mx: { xs: "auto", sm: "0" }
+            }} 
+          />
         )}
-      </Box>
-    </CardContent>
-  </Card>
-);
+
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="h5" component="h2" gutterBottom color="primary.main">
+            {bio.name}
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+            {bio.email} ❖ {bio.phone} ❖ {bio.location}
+          </Typography>
+          {bio.summary && (
+            <Typography variant="body2" sx={{ marginTop: 1, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
+              {bio.summary}
+            </Typography>
+          )}
+        </Box>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default Bio;
-
 
 --- src/sections/Skills.tsx ---
 import React from "react";
 import skillsData from "../data/skills.json";
-import { Box, Typography, Chip, Stack } from "@mui/material";
+import { Box, Typography, Chip, Stack, useTheme, useMediaQuery } from "@mui/material";
 
-const Skills: React.FC = () => (
-  <Box sx={{ margin: 3 }}>
-    <Typography variant="h5" gutterBottom>
-      Skills & Technical Skills
-    </Typography>
+/**
+ * Skills component displays technical and professional skills
+ * Color-coded chips with cyan for technical skills and yellow for soft skills
+ */
+const Skills: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    {skillsData.skills.map((category: any, idx: number) => (
-      <Box key={idx} sx={{ marginBottom: 1 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold", marginBottom: 0.5 }}>
-          {category.category}:
-        </Typography>
-        <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap" }}>
-          {category.items.map((item: string, i: number) => (
-            <Chip key={i} label={item} size="small" />
-          ))}
-        </Stack>
-      </Box>
-    ))}
-  </Box>
-);
+  return (
+    <Box sx={{ margin: { xs: 2, sm: 3 } }}>
+      <Typography variant="h5" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem' } }}>
+        Skills & Technical Skills
+      </Typography>
+
+      {skillsData.skills.map((category: any, idx: number) => (
+        <Box key={idx} sx={{ marginBottom: 2 }}>
+          <Typography 
+            variant="subtitle1" 
+            sx={{ 
+              fontWeight: "bold", 
+              marginBottom: 1,
+              fontSize: { xs: '0.9rem', sm: '1rem' }
+            }}
+          >
+            {category.category}:
+          </Typography>
+          <Stack 
+            direction="row" 
+            spacing={1} 
+            sx={{ 
+              flexWrap: "wrap",
+              gap: 1,
+              '& .MuiChip-root': {
+                fontSize: { xs: '0.7rem', sm: '0.8125rem' },
+                height: { xs: 24, sm: 32 }
+              }
+            }}
+          >
+            {category.items.map((item: string, i: number) => (
+              <Chip 
+                key={i} 
+                label={item} 
+                size="small" 
+                color={
+                  category.category === "Technical Skills" 
+                    ? "primary"  // Cyan for technical skills
+                    : "accent"   // Yellow for soft skills
+                }
+              />
+            ))}
+          </Stack>
+        </Box>
+      ))}
+    </Box>
+  );
+};
 
 export default Skills;
-
 
 --- src/sections/ProjectsPreview.tsx ---
 import React from "react";
@@ -680,8 +763,8 @@ export default Education;
 
 
 --- src/components/ExperienceCard.tsx ---
-import React from "react";
-import { Card, CardContent, Typography, Stack, Box, Chip } from "@mui/material";
+import React, { memo } from "react";
+import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import SkillChip from "./SkillChip";
@@ -690,20 +773,26 @@ interface ExperienceCardProps {
   experience: ExperienceItem;
 }
 
-const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) => {
+/**
+ * ExperienceCard component displays work experience with consistent styling
+ * Uses primary color for company names and skill chips
+ */
+const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
   return (
-    <Card sx={{ mb: 3, p: 1 }} elevation={3}>
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          {experience.company} {experience.department ? `— ${experience.department}` : ""} ({experience.location})
+    <Card sx={{ mb: 3 }} elevation={2}>
+      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+        <Typography variant="h5" gutterBottom color="primary.main">
+          {experience.company} {experience.department ? `— ${experience.department}` : ""}
         </Typography>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          {experience.start_date} – {experience.end_date}
+          {experience.location} • {experience.start_date} – {experience.end_date}
         </Typography>
 
         {experience.roles.map((role: ExperienceRole, i) => (
           <Box key={i} sx={{ mt: 2, mb: 1 }}>
-            <Typography variant="h6">{role.title}</Typography>
+            <Typography variant="h6" color="text.primary">
+              {role.title}
+            </Typography>
             {role.start_date && (
               <Typography variant="subtitle2" color="text.secondary">
                 {role.start_date} – {role.end_date}
@@ -723,7 +812,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) => {
             )}
 
             {(role.stack || []).length > 0 && (
-              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", mt: 1 }}>
+              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", mt: 1, gap: 0.5 }}>
                 {(role.stack || []).map((tech, k) => (
                   <SkillChip key={k} label={tech} />
                 ))}
@@ -734,42 +823,263 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience }) => {
       </CardContent>
     </Card>
   );
-};
+});
 
 export default ExperienceCard;
 
-
 --- src/components/SkillChip.tsx ---
-import React from "react";
-import { Chip } from "@mui/material";
+import React, { memo } from "react";
+import { Chip, type ChipProps } from "@mui/material";
 
-interface SkillChipProps {
+/**
+ * Reusable chip component for displaying skills and technologies
+ * Extends Material-UI Chip with required label and sensible defaults
+ * Memoized to prevent unnecessary re-renders
+ */
+interface SkillChipProps extends Omit<ChipProps, 'label'> {
   label: string;
 }
 
-const SkillChip: React.FC<SkillChipProps> = ({ label }) => {
-  return <Chip label={label} size="small" color="primary" />;
-};
+const SkillChip: React.FC<SkillChipProps> = memo(({ 
+  label, 
+  size = 'small',
+  color = 'primary',
+  ...props 
+}) => {
+  return (
+    <Chip 
+      label={label} 
+      size={size}
+      color={color}
+      {...props}
+    />
+  );
+});
 
 export default SkillChip;
 
+--- src/components/LoadingSpinner.tsx ---
+import React from 'react';
+import { Box, CircularProgress, Typography } from '@mui/material';
+
+interface LoadingSpinnerProps {
+  message?: string;
+  size?: number;
+}
+
+/**
+ * Reusable loading spinner component for consistent loading states
+ * Provides visual feedback during data fetching or processing
+ */
+const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
+  message = "Loading...", 
+  size = 40 
+}) => {
+  return (
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="200px"
+    >
+      <CircularProgress size={size} />
+      {message && (
+        <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+          {message}
+        </Typography>
+      )}
+    </Box>
+  );
+};
+
+export default LoadingSpinner;
 
 --- src/theme/theme.ts ---
 import { createTheme } from "@mui/material/styles";
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    accent: Palette['primary'];
+    highlight: Palette['primary'];
+    attention: Palette['primary'];
+    alert: Palette['primary'];
+    vibrantPurple: Palette['primary'];
+    darkTeal: Palette['primary'];
+    deepPurple: Palette['primary'];
+    mutedGray: Palette['primary'];
+    lightGray: Palette['primary'];
+  }
+  interface PaletteOptions {
+    accent?: PaletteOptions['primary'];
+    highlight?: PaletteOptions['primary'];
+    attention?: PaletteOptions['primary'];
+    alert?: PaletteOptions['primary'];
+    vibrantPurple?: PaletteOptions['primary'];
+    darkTeal?: PaletteOptions['primary'];
+    deepPurple?: PaletteOptions['primary'];
+    mutedGray?: PaletteOptions['primary'];
+    lightGray?: PaletteOptions['primary'];
+  }
+}
+
+// Extend Button color props
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    accent: true;
+    highlight: true;
+    attention: true;
+    alert: true;
+    vibrantPurple: true;
+    darkTeal: true;
+    deepPurple: true;
+    mutedGray: true;
+    lightGray: true;
+  }
+}
+
+// Extend Chip color props
+declare module '@mui/material/Chip' {
+  interface ChipPropsColorOverrides {
+    accent: true;
+    highlight: true;
+    attention: true;
+    alert: true;
+    vibrantPurple: true;
+    darkTeal: true;
+    deepPurple: true;
+    mutedGray: true;
+    lightGray: true;
+  }
+}
+
+/**
+ * Custom theme for CV portfolio with complete color palette
+ * All 12 colors stored with meaningful naming for portfolio context
+ */
 const theme = createTheme({
   palette: {
+    // Core brand colors
     primary: {
-      main: "#1976d2"
+      main: "#05DBDB", // Bright cyan - main brand
+      light: "#40E1E1",
+      dark: "#04B6B6",
+      contrastText: "#1D1D1B",
     },
-    secondary: {
-      main: "#dc004e"
-    }
-  }
+    accent: {
+      main: "#FFCE61", // Warm yellow - secondary accents
+      light: "#FFD880",
+      dark: "#E6BA57",
+      contrastText: "#1D1D1B",
+    },
+    
+    // Semantic colors for portfolio context
+    highlight: {
+      main: "#14D392", // Mint green - achievements/skills
+      light: "#43DCA7",
+      dark: "#11BA7D",
+      contrastText: "#1D1D1B",
+    },
+    attention: {
+      main: "#FC9B00", // Orange - important notices/dates
+      light: "#FDB033",
+      dark: "#E08A00",
+      contrastText: "#1D1D1B",
+    },
+    alert: {
+      main: "#FF5E54", // Coral red - alerts/errors
+      light: "#FF7E76",
+      dark: "#E0544B",
+      contrastText: "#FFFFFF",
+    },
+    
+    // Additional colors stored for future use
+    vibrantPurple: {
+      main: "#C56AB6", // Creative projects/design
+      light: "#D188C5",
+      dark: "#B15CA3",
+      contrastText: "#FFFFFF",
+    },
+    darkTeal: {
+      main: "#177D89", // Professional/tech skills
+      light: "#4597A1",
+      dark: "#136A74",
+      contrastText: "#FFFFFF",
+    },
+    deepPurple: {
+      main: "#590959", // Deep accents/headings
+      light: "#7A3C7A",
+      dark: "#470747",
+      contrastText: "#FFFFFF",
+    },
+    mutedGray: {
+      main: "#8C979B", // Disabled/secondary text
+      light: "#A3ACAF",
+      dark: "#7A8589",
+      contrastText: "#FFFFFF",
+    },
+    lightGray: {
+      main: "#D1D1D8", // Borders/backgrounds
+      light: "#DEDEE3",
+      dark: "#B9B9C2",
+      contrastText: "#1D1D1B",
+    },
+    
+    // Background and text
+    background: {
+      default: "#FFFFFF",
+      paper: "#F8F9FA",
+    },
+    text: {
+      primary: "#1D1D1B",
+      secondary: "#5A5A58",
+    },
+    divider: "#DFDFDF",
+  },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h4: {
+      fontWeight: 600,
+      fontSize: "2rem",
+    },
+    h5: {
+      fontWeight: 600,
+      fontSize: "1.5rem",
+    },
+    h6: {
+      fontWeight: 500,
+      fontSize: "1.25rem",
+    },
+    body1: {
+      fontSize: "1rem",
+      lineHeight: 1.6,
+    },
+    body2: {
+      fontSize: "0.875rem",
+      lineHeight: 1.5,
+    },
+  },
+  components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          boxShadow: "0 2px 8px rgba(5, 219, 219, 0.1)",
+          border: "1px solid #DFDFDF",
+          borderRadius: 8,
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          fontWeight: 500,
+        },
+      },
+    },
+  },
 });
 
 export default theme;
-
 
 --- src/data/education.json ---
 [
@@ -820,7 +1130,6 @@ export default theme;
           "Onboarded surveys for 10+ trainings deployed in the EU network."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS", "Lambda", "AWS CDK", "Quicksight"],
-        "projects": [],
         "role_id": "Amazon_202401_Business_Intelligence_Engineer_II_L5"
       },
       {
@@ -834,7 +1143,6 @@ export default theme;
           "Created 10+ daily reporting dashboards to support operations with over 2K unique users and 150K views, enabling savings of over 6MM."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS"],
-        "projects": [],
         "role_id": "Amazon_202106_Business_Intelligence_Engineer_I_L4"
       }
     ]
@@ -857,7 +1165,6 @@ export default theme;
           "Developed an automated report on Power BI shared company wide combining internal data from Salesforce, Thomson Reuters and Application Data."
         ],
         "stack": ["Power BI", "SQL Server", "Looker", "Salesforce Analytics", "Google Analytics"],
-        "projects": [],
         "role_id": "Datasite_201909_Data_Analyst"
       },
       {
@@ -869,7 +1176,6 @@ export default theme;
           "Lead training sessions on the use of the platform."
         ],
         "stack": [],
-        "projects": [],
         "role_id": "Datasite_201806_Project_Manager"
       }
     ]
@@ -890,7 +1196,6 @@ export default theme;
           "Managed the DBS checks of partner associations."
         ],
         "stack": [],
-        "projects": [],
         "role_id": "UBS_201709_Analyst_Intern_Corporate_Social_Responsibility"
       }
     ]
@@ -907,7 +1212,6 @@ export default theme;
           "Managed portfolio of 50 clients with an annual revenue of 3 MM, while managing a fleet of 50 trucks across Europe."
         ],
         "stack": [],
-        "projects": [],
         "role_id": "Bildutruck_201201_International_Transport_Manager"
       }
     ]
@@ -1080,11 +1384,12 @@ export default theme;
 
 
 --- src/pages/ProjectsPage.tsx ---
-import React from "react";
+import React, { useState, useEffect } from "react";
 import projectsData from "../data/projects.json";
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Stack, Chip, Box } from "@mui/material";
 import type { Project } from "../types";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const projects = projectsData as Project[];
 
@@ -1101,25 +1406,53 @@ const projectsByCompany = projects.reduce((acc, project) => {
   return acc;
 }, {} as Record<string, Project[]>);
 
+/**
+ * ProjectsPage component displays portfolio projects with consistent styling
+ */
 const ProjectsPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <LoadingSpinner message="Loading projects..." />;
+  }
+
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ color: "primary.main" }}>
         Projects
       </Typography>
 
       {Object.entries(projectsByCompany).map(([company, companyProjects]) => (
-        <Box key={company} sx={{ marginBottom: 3 }}>
-          <Typography variant="h5" sx={{ marginBottom: 1 }}>
+        <Box key={company} sx={{ marginBottom: 4 }}>
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              marginBottom: 2,
+              color: "text.primary",
+              borderBottom: "1px solid",
+              borderColor: "divider",
+              paddingBottom: 1
+            }}
+          >
             {company}
           </Typography>
 
           {companyProjects
-            .sort((a, b) => parseDate(b.date) - parseDate(a.date)) // newest first
+            .sort((a, b) => parseDate(b.date) - parseDate(a.date))
             .map((project) => (
-              <Card key={project.title} sx={{ marginBottom: 2 }}>
+              <Card key={project.title} sx={{ marginBottom: 3 }}>
                 <CardContent>
-                  <Typography variant="h6">{project.title}</Typography>
+                  <Typography variant="h6" color="text.secondary">
+                    {project.title}
+                  </Typography>
                   <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                     {project.date}
                   </Typography>
@@ -1129,9 +1462,22 @@ const ProjectsPage: React.FC = () => {
                   </Box>
 
                   {(project.stack || []).length > 0 && (
-                    <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
+                    <Stack 
+                      direction="row" 
+                      spacing={1} 
+                      sx={{ 
+                        flexWrap: "wrap", 
+                        marginTop: 2,
+                        gap: 1 
+                      }}
+                    >
                       {(project.stack || []).map((tech: string, j: number) => (
-                        <Chip key={j} label={tech} size="small" />
+                        <Chip 
+                          key={j} 
+                          label={tech} 
+                          size="small" 
+                          color="primary"
+                        />
                       ))}
                     </Stack>
                   )}
@@ -1146,44 +1492,63 @@ const ProjectsPage: React.FC = () => {
 
 export default ProjectsPage;
 
-
 --- src/pages/AboutMePage.tsx ---
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import bioData from "../data/bio.json";
 import ReactMarkdown from "react-markdown";
 import type { Bio } from "../types";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const bio = bioData as Bio;
 
-const AboutMePage: React.FC = () => (
-  <Card sx={{ margin: 3 }}>
-    <CardContent>
-      <Typography variant="h4" gutterBottom>
-        About Me
-      </Typography>
+/**
+ * AboutMePage component displays personal information and interests
+ * Implements loading state pattern for consistent user experience
+ */
+const AboutMePage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
 
-      {bio.summary && (
-        <Box sx={{ marginBottom: 1 }}>
-          <ReactMarkdown>{bio.summary}</ReactMarkdown>
-        </Box>
-      )}
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 600);
 
-      {(bio.interests || []).length > 0 && (
-        <Typography variant="body2">
-          <strong>Interests:</strong> {(bio.interests || []).join(", ")}
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <LoadingSpinner message="Loading about me..." />;
+  }
+
+  return (
+    <Card sx={{ margin: 3 }}>
+      <CardContent>
+        <Typography variant="h4" gutterBottom>
+          About Me
         </Typography>
-      )}
-    </CardContent>
-  </Card>
-);
+
+        {bio.summary && (
+          <Box sx={{ marginBottom: 1 }}>
+            <ReactMarkdown>{bio.summary}</ReactMarkdown>
+          </Box>
+        )}
+
+        {(bio.interests || []).length > 0 && (
+          <Typography variant="body2">
+            <strong>Interests:</strong> {(bio.interests || []).join(", ")}
+          </Typography>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
 
 export default AboutMePage;
 
-
 --- src/pages/CVPage.tsx ---
-import React from "react";
-import { Box, Typography, Card, CardContent, Stack } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, Card, CardContent } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 
 import bioData from "../data/bio.json";
@@ -1191,57 +1556,47 @@ import experienceData from "../data/experience.json";
 import educationData from "../data/education.json";
 import skillsRaw from "../data/skills.json";
 
+import { default as Bio } from "../sections/Bio";
 import SkillChip from "../components/SkillChip";
 import ExperienceCard from "../components/ExperienceCard";
-
+import LoadingSpinner from "../components/LoadingSpinner";
 import Skills from "../sections/Skills";
 
 // Types
-import type { SkillCategory, SkillsData } from "../types";
-import type { ExperienceData, ExperienceRole } from "../types";
-import type { EducationData, EducationItem, Grade } from "../types";
-import type { Bio } from "../types";
-
-// Cast JSON data to proper types
-const bio: Bio = bioData;
-const experience: ExperienceData = experienceData;
-const education: EducationData = educationData;
-const skillsData: SkillsData = skillsRaw;
+import type { Bio as BioType, ExperienceData, EducationData, SkillsData, EducationItem, Grade } from "../types";
 
 const CVPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate async data loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Type assertions
+  const bio: BioType = bioData;
+  const experience: ExperienceData = experienceData as ExperienceData;
+  const education: EducationData = educationData;
+  const skillsData: SkillsData = skillsRaw;
+
+  if (isLoading) {
+    return <LoadingSpinner message="Loading CV..." />;
+  }
+
   return (
     <Box sx={{ padding: 3 }}>
-      {/* Bio Section */}
-      <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="h4" gutterBottom>
-          {bio.name}
-        </Typography>
-        {bio.summary && (
-          <Box sx={{ marginBottom: 1 }}>
-            <ReactMarkdown
-              components={{
-                p: ({ children }) => (
-                  <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                    {children}
-                  </Typography>
-                ),
-              }}
-            >
-              {bio.summary}
-            </ReactMarkdown>
-          </Box>
-        )}
-        <Typography variant="body2">
-          {bio.email} ❖ {bio.phone} ❖ {bio.location}
-        </Typography>
-      </Box>
+      {/* Bio Section - Use the actual Bio component */}
+      <Bio />
 
       {/* Work Experience */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom>
           Work Experience
         </Typography>
-
         {experience.map((exp, idx) => (
           <ExperienceCard key={idx} experience={exp} />
         ))}
@@ -1254,10 +1609,14 @@ const CVPage: React.FC = () => {
         </Typography>
         {education.map((edu: EducationItem, idx) => (
           <Card key={idx} sx={{ marginBottom: 2 }}>
-            <CardContent>
-              <Typography variant="h6">
-                {edu.degree} — {edu.institution} ({edu.location}, {edu.graduation_date})
+            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+              <Typography variant="h6" sx={{ lineHeight: 1.3 }}>
+                {edu.degree} — {edu.institution}
               </Typography>
+              <Typography variant="subtitle2" color="text.secondary">
+                {edu.location}, {edu.graduation_date}
+              </Typography>
+              
               <Box sx={{ marginTop: 1 }}>
                 {edu.thesis && (
                   <Box sx={{ marginBottom: 0.5 }}>
@@ -1298,4 +1657,3 @@ const CVPage: React.FC = () => {
 };
 
 export default CVPage;
-

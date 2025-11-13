@@ -18,7 +18,6 @@
           "Onboarded surveys for 10+ trainings deployed in the EU network."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS", "Lambda", "AWS CDK", "Quicksight"],
-        "projects": [],
         "role_id": "Amazon_202401_Business_Intelligence_Engineer_II_L5"
       },
       {
@@ -32,7 +31,6 @@
           "Created 10+ daily reporting dashboards to support operations with over 2K unique users and 150K views, enabling savings of over 6MM."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS"],
-        "projects": [],
         "role_id": "Amazon_202106_Business_Intelligence_Engineer_I_L4"
       }
     ]
@@ -55,7 +53,6 @@
           "Developed an automated report on Power BI shared company wide combining internal data from Salesforce, Thomson Reuters and Application Data."
         ],
         "stack": ["Power BI", "SQL Server", "Looker", "Salesforce Analytics", "Google Analytics"],
-        "projects": [],
         "role_id": "Datasite_201909_Data_Analyst"
       },
       {
@@ -67,7 +64,6 @@
           "Lead training sessions on the use of the platform."
         ],
         "stack": [],
-        "projects": [],
         "role_id": "Datasite_201806_Project_Manager"
       }
     ]
@@ -88,7 +84,6 @@
           "Managed the DBS checks of partner associations."
         ],
         "stack": [],
-        "projects": [],
         "role_id": "UBS_201709_Analyst_Intern_Corporate_Social_Responsibility"
       }
     ]
@@ -105,7 +100,6 @@
           "Managed portfolio of 50 clients with an annual revenue of 3 MM, while managing a fleet of 50 trucks across Europe."
         ],
         "stack": [],
-        "projects": [],
         "role_id": "Bildutruck_201201_International_Transport_Manager"
       }
     ]

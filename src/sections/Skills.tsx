@@ -1,26 +1,62 @@
 import React from "react";
 import skillsData from "../data/skills.json";
-import { Box, Typography, Chip, Stack } from "@mui/material";
+import { Box, Typography, Chip, Stack, useTheme, useMediaQuery } from "@mui/material";
 
-const Skills: React.FC = () => (
-  <Box sx={{ margin: 3 }}>
-    <Typography variant="h5" gutterBottom>
-      Skills & Technical Skills
-    </Typography>
+/**
+ * Skills component displays technical and professional skills
+ * Color-coded chips with cyan for technical skills and yellow for soft skills
+ */
+const Skills: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    {skillsData.skills.map((category: any, idx: number) => (
-      <Box key={idx} sx={{ marginBottom: 1 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: "bold", marginBottom: 0.5 }}>
-          {category.category}:
-        </Typography>
-        <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap" }}>
-          {category.items.map((item: string, i: number) => (
-            <Chip key={i} label={item} size="small" />
-          ))}
-        </Stack>
-      </Box>
-    ))}
-  </Box>
-);
+  return (
+    <Box sx={{ margin: { xs: 2, sm: 3 } }}>
+      <Typography variant="h5" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem' } }}>
+        Skills & Technical Skills
+      </Typography>
+
+      {skillsData.skills.map((category: any, idx: number) => (
+        <Box key={idx} sx={{ marginBottom: 2 }}>
+          <Typography 
+            variant="subtitle1" 
+            sx={{ 
+              fontWeight: "bold", 
+              marginBottom: 1,
+              fontSize: { xs: '0.9rem', sm: '1rem' }
+            }}
+          >
+            {category.category}:
+          </Typography>
+          <Stack 
+            direction="row" 
+            spacing={1} 
+            sx={{ 
+              flexWrap: "wrap",
+              gap: 1,
+              '& .MuiChip-root': {
+                fontSize: { xs: '0.7rem', sm: '0.8125rem' },
+                height: { xs: 24, sm: 32 }
+              }
+            }}
+          >
+            {category.items.map((item: string, i: number) => (
+              <Chip 
+                key={i} 
+                label={item} 
+                size="small" 
+                color={
+                  category.category === "Technical Skills" 
+                    ? "primary"  // Cyan for technical skills
+                    : "accent"   // Yellow for soft skills
+                }
+              />
+            ))}
+          </Stack>
+        </Box>
+      ))}
+    </Box>
+  );
+};
 
 export default Skills;

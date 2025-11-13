@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import projectsData from "../data/projects.json";
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Stack, Chip, Box } from "@mui/material";
 import type { Project } from "../types";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const projects = projectsData as Project[];
 
@@ -19,25 +20,53 @@ const projectsByCompany = projects.reduce((acc, project) => {
   return acc;
 }, {} as Record<string, Project[]>);
 
+/**
+ * ProjectsPage component displays portfolio projects with consistent styling
+ */
 const ProjectsPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <LoadingSpinner message="Loading projects..." />;
+  }
+
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ color: "primary.main" }}>
         Projects
       </Typography>
 
       {Object.entries(projectsByCompany).map(([company, companyProjects]) => (
-        <Box key={company} sx={{ marginBottom: 3 }}>
-          <Typography variant="h5" sx={{ marginBottom: 1 }}>
+        <Box key={company} sx={{ marginBottom: 4 }}>
+          <Typography 
+            variant="h5" 
+            sx={{ 
+              marginBottom: 2,
+              color: "text.primary",
+              borderBottom: "1px solid",
+              borderColor: "divider",
+              paddingBottom: 1
+            }}
+          >
             {company}
           </Typography>
 
           {companyProjects
-            .sort((a, b) => parseDate(b.date) - parseDate(a.date)) // newest first
+            .sort((a, b) => parseDate(b.date) - parseDate(a.date))
             .map((project) => (
-              <Card key={project.title} sx={{ marginBottom: 2 }}>
+              <Card key={project.title} sx={{ marginBottom: 3 }}>
                 <CardContent>
-                  <Typography variant="h6">{project.title}</Typography>
+                  <Typography variant="h6" color="text.secondary">
+                    {project.title}
+                  </Typography>
                   <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                     {project.date}
                   </Typography>
@@ -47,9 +76,22 @@ const ProjectsPage: React.FC = () => {
                   </Box>
 
                   {(project.stack || []).length > 0 && (
-                    <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", marginTop: 1 }}>
+                    <Stack 
+                      direction="row" 
+                      spacing={1} 
+                      sx={{ 
+                        flexWrap: "wrap", 
+                        marginTop: 2,
+                        gap: 1 
+                      }}
+                    >
                       {(project.stack || []).map((tech: string, j: number) => (
-                        <Chip key={j} label={tech} size="small" />
+                        <Chip 
+                          key={j} 
+                          label={tech} 
+                          size="small" 
+                          color="primary"
+                        />
                       ))}
                     </Stack>
                   )}

@@ -8,6 +8,7 @@ export interface Bio {
   location: string;
   summary?: string;
   interests?: string[];
+  photo?: string | null;
 }
 
 // ------------------------
@@ -22,20 +23,27 @@ export interface Project {
   highlights?: string[];
   stack?: string[];
   experience_ref?: string;
+  link?: string;
 }
-
 
 export type ProjectsData = Project[];
 
 // ------------------------
 // Experience
 // ------------------------
+export interface ExperienceProject {
+  title: string;
+  description?: string;
+}
+
 export interface ExperienceRole {
   title: string;
-  start_date?: string;
-  end_date?: string;
-  description?: string[];
+  start_date: string; 
+  end_date: string; 
+  description: string[];
   stack?: string[];
+  projects?: ExperienceProject[];
+  role_id?: string;
 }
 
 export interface ExperienceItem {
@@ -64,7 +72,7 @@ export interface EducationItem {
   graduation_date: string;
   thesis?: string;
   erasmus?: string;
-  grades?: Grade[]; // now a list, optional
+  grades?: Grade[];
 }
 
 export type EducationData = EducationItem[];

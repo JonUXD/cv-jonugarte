@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Typography, Card, CardContent, Stack } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, Card, CardContent } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 
 import bioData from "../data/bio.json";
@@ -8,27 +8,40 @@ import educationData from "../data/education.json";
 import skillsRaw from "../data/skills.json";
 
 import SkillChip from "../components/SkillChip";
-
 import ExperienceCard from "../components/ExperienceCard";
+import LoadingSpinner from "../components/LoadingSpinner";
+import Skills from "../sections/Skills";
 
 // Types
-import type { SkillCategory, SkillsData } from "../types";
-import type { ExperienceData, ExperienceRole } from "../types";
-import type { EducationData, EducationItem, Grade } from "../types";
-import type { Bio } from "../types";
-
-// Cast JSON data to proper types
-const bio: Bio = bioData;
-const experience: ExperienceData = experienceData;
-const education: EducationData = educationData;
-const skillsData: SkillsData = skillsRaw;
+import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem, Grade } from "../types";
 
 const CVPage: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate async data loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Type assertions
+  const bio: Bio = bioData;
+  const experience: ExperienceData = experienceData as ExperienceData;
+  const education: EducationData = educationData;
+  const skillsData: SkillsData = skillsRaw;
+
+  if (isLoading) {
+    return <LoadingSpinner message="Loading CV..." />;
+  }
+
   return (
     <Box sx={{ padding: 3 }}>
-      {/* Bio Section */}
+      {/* Bio Section - Manual implementation with cyan color */}
       <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom color="primary.main">
           {bio.name}
         </Typography>
         {bio.summary && (
@@ -56,7 +69,6 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           Work Experience
         </Typography>
-
         {experience.map((exp, idx) => (
           <ExperienceCard key={idx} experience={exp} />
         ))}
@@ -69,10 +81,14 @@ const CVPage: React.FC = () => {
         </Typography>
         {education.map((edu: EducationItem, idx) => (
           <Card key={idx} sx={{ marginBottom: 2 }}>
-            <CardContent>
-              <Typography variant="h6">
-                {edu.degree} — {edu.institution} ({edu.location}, {edu.graduation_date})
+            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+              <Typography variant="h6" sx={{ lineHeight: 1.3 }}>
+                {edu.degree} — {edu.institution}
               </Typography>
+              <Typography variant="subtitle2" color="text.secondary">
+                {edu.location}, {edu.graduation_date}
+              </Typography>
+              
               <Box sx={{ marginTop: 1 }}>
                 {edu.thesis && (
                   <Box sx={{ marginBottom: 0.5 }}>
@@ -105,17 +121,8 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Skills & Technical Skills */}
-      <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          Skills & Technical Skills
-        </Typography>
-        {skillsData.skills.map((category: SkillCategory, idx: number) => (
-          <Stack key={idx} direction="row" spacing={1} sx={{ flexWrap: "wrap", marginBottom: 1 }}>
-            {category.items.map((item, i) => (
-              <SkillChip key={i} label={item} />
-            ))}
-          </Stack>
-        ))}
+      <Box sx={{ mb: 3 }}>
+        <Skills />
       </Box>
     </Box>
   );
