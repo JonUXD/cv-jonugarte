@@ -8,7 +8,7 @@ interface LoadingSpinnerProps {
 
 /**
  * Reusable loading spinner component for consistent loading states
- * Provides visual feedback during data fetching or processing
+ * Uses primary cyan color to match the overall theme
  */
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ 
   message = "Loading...", 
@@ -22,9 +22,12 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       justifyContent="center"
       minHeight="200px"
     >
-      <CircularProgress size={size} />
+      <CircularProgress 
+        size={size} 
+        sx={{ color: 'primary.main' }} // Use your cyan color
+      />
       {message && (
-        <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
           {message}
         </Typography>
       )}

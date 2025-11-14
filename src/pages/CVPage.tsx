@@ -66,7 +66,7 @@ const CVPage: React.FC = () => {
 
       {/* Work Experience */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom color="primary.main">
           Work Experience
         </Typography>
         {experience.map((exp, idx) => (
@@ -76,7 +76,7 @@ const CVPage: React.FC = () => {
 
       {/* Education */}
       <Box sx={{ marginBottom: 3 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom color="primary.main">
           Education
         </Typography>
         {education.map((edu: EducationItem, idx) => (
@@ -122,6 +122,9 @@ const CVPage: React.FC = () => {
 
       {/* Skills & Technical Skills */}
       <Box sx={{ mb: 3 }}>
+        <Typography variant="h4" gutterBottom color="primary.main">
+          Skills & Technical Skills
+        </Typography>
         <Skills />
       </Box>
     </Box>

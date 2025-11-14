@@ -9,7 +9,7 @@ const bio = bioData as Bio;
 
 /**
  * AboutMePage component displays personal information and interests
- * Implements loading state pattern for consistent user experience
+ * Uses consistent color theme with primary cyan for headings
  */
 const AboutMePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,20 +29,25 @@ const AboutMePage: React.FC = () => {
   return (
     <Card sx={{ margin: 3 }}>
       <CardContent>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom color="primary.main">
           About Me
         </Typography>
 
         {bio.summary && (
-          <Box sx={{ marginBottom: 1 }}>
+          <Box sx={{ marginBottom: 2 }}>
             <ReactMarkdown>{bio.summary}</ReactMarkdown>
           </Box>
         )}
 
         {(bio.interests || []).length > 0 && (
-          <Typography variant="body2">
-            <strong>Interests:</strong> {(bio.interests || []).join(", ")}
-          </Typography>
+          <Box>
+            <Typography variant="h6" color="primary.main" gutterBottom>
+              Interests
+            </Typography>
+            <Typography variant="body1">
+              {(bio.interests || []).join(", ")}
+            </Typography>
+          </Box>
         )}
       </CardContent>
     </Card>
