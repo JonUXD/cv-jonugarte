@@ -1689,3 +1689,49 @@ const CVPage: React.FC = () => {
 };
 
 export default CVPage;
+
+================================================================================
+METADATA
+================================================================================
+
+Files Parsed: 31
+Total Characters: 48499
+
+File List:
+----------------------------------------
+README.md: 1580 characters
+eslint.config.js: 621 characters
+index.html: 361 characters
+package.json: 883 characters
+src/App.css: 606 characters
+src/App.tsx: 1649 characters
+src/components/ExperienceCard.tsx: 2284 characters
+src/components/LoadingSpinner.tsx: 872 characters
+src/components/SkillChip.tsx: 624 characters
+src/data/bio.json: 491 characters
+src/data/education.json: 861 characters
+src/data/experience.json: 4786 characters
+src/data/projects.json: 6875 characters
+src/data/skills.json: 390 characters
+src/index.css: 1154 characters
+src/main.tsx: 435 characters
+src/pages/AboutMePage.tsx: 1514 characters
+src/pages/CVPage.tsx: 4336 characters
+src/pages/ProjectsPage.tsx: 3318 characters
+src/sections/Bio.tsx: 1700 characters
+src/sections/Education.tsx: 1110 characters
+src/sections/Experience.tsx: 1930 characters
+src/sections/ProjectsPreview.tsx: 385 characters
+src/sections/Skills.tsx: 1871 characters
+src/theme/theme.ts: 4292 characters
+src/types.ts: 1673 characters
+tools/config.json: 202 characters
+tsconfig.app.json: 763 characters
+tsconfig.json: 119 characters
+tsconfig.node.json: 653 characters
+vite.config.ts: 161 characters
+
+Generated at:
+Local: 2025-11-14 07:36:25 
+UTC:   2025-11-14 06:36:25 UTC
+Timestamp: 1763102185

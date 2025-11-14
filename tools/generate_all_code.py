@@ -1,5 +1,7 @@
 import os
 import json
+from datetime import datetime
+import time
 
 # Paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))        # cv-jonugarte/tools/
@@ -62,6 +64,30 @@ def main():
     print(f"Writing output to {OUTPUT_FILE} ...")
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         f.write("\n".join(texts))
+        
+        # Add metadata section
+        f.write("\n" + "="*80 + "\n")
+        f.write("METADATA\n")
+        f.write("="*80 + "\n\n")
+        
+        # File statistics
+        f.write(f"Files Parsed: {len(texts)}\n")
+        f.write(f"Total Characters: {sum(stat[1] for stat in file_stats)}\n\n")
+        
+        # File list with character counts
+        f.write("File List:\n")
+        f.write("-" * 40 + "\n")
+        for file_path, char_count in sorted(file_stats):
+            f.write(f"{file_path}: {char_count} characters\n")
+        
+        # Timestamps
+        local_time = datetime.now()
+        utc_time = datetime.utcnow()
+        f.write(f"\nGenerated at:\n")
+        f.write(f"Local: {local_time.strftime('%Y-%m-%d %H:%M:%S %Z')}\n")
+        f.write(f"UTC:   {utc_time.strftime('%Y-%m-%d %H:%M:%S UTC')}\n")
+        f.write(f"Timestamp: {int(time.time())}\n")
+    
     print("Done!")
 
     # Print file sizes in characters
