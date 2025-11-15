@@ -21,7 +21,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
           {experience.company} {experience.department ? `— ${experience.department}` : ""}
         </Typography>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          {experience.location} • {formatDateRange(experience.start_date, experience.end_date)}
+          {experience.location.display} • {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
         {experience.roles.map((role: ExperienceRole, i) => (

@@ -38,7 +38,7 @@ const Bio: React.FC = () => {
             {bio.name}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-            {bio.email} ❖ {bio.phone} ❖ {bio.location}
+            {bio.email} ❖ {bio.phone} ❖ {bio.location.display}
           </Typography>
           {bio.summary && (
             <Typography variant="body2" sx={{ marginTop: 1, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>

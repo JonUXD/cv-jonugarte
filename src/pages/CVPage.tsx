@@ -12,6 +12,8 @@ import ExperienceCard from "../components/ExperienceCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Skills from "../sections/Skills";
 
+import { formatDateForDisplay } from "../utils/dateUtils"
+
 // Types
 import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem, Grade } from "../types";
 
@@ -60,7 +62,7 @@ const CVPage: React.FC = () => {
           </Box>
         )}
         <Typography variant="body2">
-          {bio.email} ❖ {bio.phone} ❖ {bio.location}
+          {bio.email} ❖ {bio.phone} ❖ {bio.location.display}
         </Typography>
       </Box>
 
@@ -86,7 +88,7 @@ const CVPage: React.FC = () => {
                 {edu.degree} — {edu.institution}
               </Typography>
               <Typography variant="subtitle2" color="text.secondary">
-                {edu.location}, {edu.graduation_date}
+                {edu.location.display}, {formatDateForDisplay(edu.graduation_date)}
               </Typography>
               
               <Box sx={{ marginTop: 1 }}>

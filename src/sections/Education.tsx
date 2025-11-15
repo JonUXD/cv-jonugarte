@@ -2,6 +2,7 @@ import React from "react";
 import educationData from "../data/education.json";
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Box } from "@mui/material";
+import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
 
 const Education: React.FC = () => (
   <div>
@@ -13,7 +14,7 @@ const Education: React.FC = () => (
       <Card key={i} sx={{ marginBottom: 3 }}>
         <CardContent>
           <Typography variant="h5">
-            {edu.degree} — {edu.institution} ({edu.location}, {edu.graduation_date})
+            {edu.degree} — {edu.institution} ({edu.location}, {formatDateForDisplay(edu.graduation_date)})
           </Typography>
 
           <Box sx={{ marginTop: 1 }}>

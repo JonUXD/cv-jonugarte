@@ -443,7 +443,7 @@ export interface Bio {
   name: string;
   email: string;
   phone: string;
-  location: string;
+  location: GeographicLocation;
   summary?: string;
   interests?: string[];
   photo?: string | null;
@@ -489,7 +489,7 @@ export interface ExperienceItem {
   department?: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
   end_date: string; //ISO 8601 date format: YYYY-MM-DD
-  location: string;
+  location: GeographicLocation;
   roles: ExperienceRole[];
 }
 
@@ -506,7 +506,7 @@ export interface Grade {
 export interface EducationItem {
   degree: string;
   institution: string;
-  location: string;
+  location: GeographicLocation;
   graduation_date: string;
   thesis?: string;
   erasmus?: string;
@@ -527,6 +527,15 @@ export interface SkillsData {
   skills: SkillCategory[];
 }
 
+export interface GeographicLocation {
+  display: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  osm_id?: string;
+}
+
 --- src/sections/Experience.tsx ---
 import React from "react";
 import experienceData from "../data/experience.json";
@@ -544,7 +553,7 @@ const Experience: React.FC = () => (
       <Card key={i} sx={{ marginBottom: 3 }}>
         <CardContent>
           <Typography variant="h5" gutterBottom>
-            {company.company} {company.department ? `— ${company.department}` : ""} ({company.location})
+            {company.company} {company.department ? `— ${company.department}` : ""} ({company.location.display})
           </Typography>
 
           {company.roles.map((role: any, j: number) => (
@@ -625,7 +634,7 @@ const Bio: React.FC = () => {
             {bio.name}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
-            {bio.email} ❖ {bio.phone} ❖ {bio.location}
+            {bio.email} ❖ {bio.phone} ❖ {bio.location.display}
           </Typography>
           {bio.summary && (
             <Typography variant="body2" sx={{ marginTop: 1, fontSize: { xs: '0.8rem', sm: '0.875rem' } }}>
@@ -727,6 +736,7 @@ import React from "react";
 import educationData from "../data/education.json";
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Box } from "@mui/material";
+import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
 
 const Education: React.FC = () => (
   <div>
@@ -738,7 +748,7 @@ const Education: React.FC = () => (
       <Card key={i} sx={{ marginBottom: 3 }}>
         <CardContent>
           <Typography variant="h5">
-            {edu.degree} — {edu.institution} ({edu.location}, {edu.graduation_date})
+            {edu.degree} — {edu.institution} ({edu.location}, {formatDateForDisplay(edu.graduation_date)})
           </Typography>
 
           <Box sx={{ marginTop: 1 }}>
@@ -809,7 +819,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
           {experience.company} {experience.department ? `— ${experience.department}` : ""}
         </Typography>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          {experience.location} • {formatDateRange(experience.start_date, experience.end_date)}
+          {experience.location.display} • {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
         {experience.roles.map((role: ExperienceRole, i) => (
@@ -819,7 +829,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
             </Typography>
             {role.start_date && (
               <Typography variant="subtitle2" color="text.secondary">
-                {role.start_date} – {role.end_date}
+                {formatDateRange(role.start_date, role.end_date)}
               </Typography>
             )}
 
@@ -1113,7 +1123,11 @@ export default theme;
   {
     "institution": "London South Bank University",
     "degree": "MSc Data Science",
-    "location": "London, UK",
+    "location": {
+      "display": "London, United Kingdom",
+      "coordinates": {"lat": "51.49793", "lng": "-0.10189"},
+      "osm_id": "relation/14863884"
+    },
     "graduation_date": "2020-06-01",
     "grades": [
       { "subject": "overall", "score": "Distinction (80%)" },
@@ -1125,9 +1139,12 @@ export default theme;
   },
   {
     "institution": "University of the Basque Country",
-    "degree": "Bachelor in Business Administration, Major Finance",
-    "location": "San Sebastian, Spain",
-    "graduation_date": "2010-06-01",
+    "degree": "Bachelor in Business Administration, Finance Major",
+    "location": {
+      "display": "San Sebastian, Spain",
+      "coordinates": {"lat": "43.31114", "lng": "-2.01015"},
+      "osm_id": "way/140595757"
+    },    "graduation_date": "2010-06-01",
     "grades": [
       { "subject": "overall", "score": "75%" }
     ],
@@ -1141,7 +1158,11 @@ export default theme;
   {
     "company": "Amazon",
     "department": "Operations - EU ACES",
-    "location": "Barcelona, Spain",
+    "location": {
+      "display": "Barcelona, Spain",
+      "coordinates": {"lat": "41.40177", "lng": "2.19181"},
+      "osm_id": "way/445643700"
+  },
     "start_date": "2021-06-01",
     "end_date": null,
     "roles": [
@@ -1163,7 +1184,11 @@ export default theme;
         "title": "Business Intelligence Engineer I (L4)",
         "start_date": "2021-06-01",
         "end_date": "2023-12-31",
-        "location": "London, UK",
+        "location": {
+          "display": "London, United Kingdom",
+          "coordinates": {"lat": "51.52186", "lng": "-0.07914"},
+          "osm_id": "node/10759015539"
+        },
         "description": [
           "Maintained a 1PB Redshift database with over 100 daily users. Reduced congestion times of the database during peak by over 50% by creating Workload Management rules.",
           "Onboarded more than 15 new team members onto the data infrastructure (database users, dashboard creation access, etc.)",
@@ -1176,7 +1201,11 @@ export default theme;
   },
   {
     "company": "Datasite",
-    "location": "London, UK",
+    "location": {
+      "display": "London, United Kingdom",
+      "coordinates": {"lat": "51.52269", "lng": "-0.08511"},
+      "osm_id": "way/158054319"
+    },
     "start_date": "2018-01-01",
     "end_date": "2021-05-31",
     "roles": [
@@ -1209,7 +1238,11 @@ export default theme;
   },
   {
     "company": "UBS Investment Bank",
-    "location": "City of London, UK",
+    "location": {
+      "display": "London, United Kingdom",
+      "coordinates": {"lat": "51.5190", "lng": "-0.08331"},
+      "osm_id": "way/420528328"
+    },
     "start_date": "2017-01-01",
     "end_date": "2017-12-31",
     "roles": [
@@ -1229,7 +1262,11 @@ export default theme;
   },
   {
     "company": "Bildutruck",
-    "location": "San Sebastian, Spain",
+    "location": {
+      "display": "Irun, Spain",
+      "coordinates": {"lat": "43.33735", "lng": "-1.75308"},
+      "osm_id": "way/1450968526"
+    },
     "start_date": "2012-01-01",
     "end_date": "2016-12-31",
     "roles": [
@@ -1390,7 +1427,10 @@ export default theme;
   "name": "Jon Ugarte",
   "email": "jonugarte@gmail.com",
   "phone": "(+34) 611 056 204",
-  "location": "Barcelona, Spain",
+  "location": {
+    "display": "Barcelona, Spain",
+    "coordinates": {"lat": "41.38410", "lng": "2.17445"}
+  },
   "interests": ["Surfing", "Swimming", "Retro Games", "Movies", "Electric Guitar"],
   "summary": "Data Engineer and Business Intelligence professional with experience in **Python**, **SQL**, **AWS**, and **React**. Focused on building scalable data infrastructure and operational dashboards to optimize business processes across large networks.",
   "photo": null
@@ -1590,6 +1630,8 @@ import ExperienceCard from "../components/ExperienceCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Skills from "../sections/Skills";
 
+import { formatDateForDisplay } from "../utils/dateUtils"
+
 // Types
 import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem, Grade } from "../types";
 
@@ -1638,7 +1680,7 @@ const CVPage: React.FC = () => {
           </Box>
         )}
         <Typography variant="body2">
-          {bio.email} ❖ {bio.phone} ❖ {bio.location}
+          {bio.email} ❖ {bio.phone} ❖ {bio.location.display}
         </Typography>
       </Box>
 
@@ -1664,7 +1706,7 @@ const CVPage: React.FC = () => {
                 {edu.degree} — {edu.institution}
               </Typography>
               <Typography variant="subtitle2" color="text.secondary">
-                {edu.location}, {edu.graduation_date}
+                {edu.location.display}, {formatDateForDisplay(edu.graduation_date)}
               </Typography>
               
               <Box sx={{ marginTop: 1 }}>
@@ -1716,7 +1758,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 32
-Total Characters: 49442
+Total Characters: 50808
 
 File List:
 ----------------------------------------
@@ -1726,26 +1768,26 @@ index.html: 361 characters
 package.json: 883 characters
 src/App.css: 606 characters
 src/App.tsx: 1649 characters
-src/components/ExperienceCard.tsx: 2374 characters
+src/components/ExperienceCard.tsx: 2396 characters
 src/components/LoadingSpinner.tsx: 872 characters
 src/components/SkillChip.tsx: 624 characters
-src/data/bio.json: 491 characters
-src/data/education.json: 863 characters
-src/data/experience.json: 4862 characters
+src/data/bio.json: 570 characters
+src/data/education.json: 1116 characters
+src/data/experience.json: 5492 characters
 src/data/projects.json: 6935 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 435 characters
 src/pages/AboutMePage.tsx: 1514 characters
-src/pages/CVPage.tsx: 4336 characters
+src/pages/CVPage.tsx: 4433 characters
 src/pages/ProjectsPage.tsx: 3217 characters
-src/sections/Bio.tsx: 1700 characters
-src/sections/Education.tsx: 1110 characters
-src/sections/Experience.tsx: 2018 characters
+src/sections/Bio.tsx: 1708 characters
+src/sections/Education.tsx: 1208 characters
+src/sections/Experience.tsx: 2026 characters
 src/sections/ProjectsPreview.tsx: 385 characters
 src/sections/Skills.tsx: 1871 characters
 src/theme/theme.ts: 4292 characters
-src/types.ts: 1818 characters
+src/types.ts: 1989 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 202 characters
 tsconfig.app.json: 763 characters
@@ -1754,6 +1796,6 @@ tsconfig.node.json: 653 characters
 vite.config.ts: 161 characters
 
 Generated at:
-Local: 2025-11-15 17:57:22 
-UTC:   2025-11-15 16:57:22 UTC
-Timestamp: 1763225842
+Local: 2025-11-16 00:00:33 
+UTC:   2025-11-15 23:00:33 UTC
+Timestamp: 1763247633

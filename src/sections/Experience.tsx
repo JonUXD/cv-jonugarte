@@ -14,7 +14,7 @@ const Experience: React.FC = () => (
       <Card key={i} sx={{ marginBottom: 3 }}>
         <CardContent>
           <Typography variant="h5" gutterBottom>
-            {company.company} {company.department ? `— ${company.department}` : ""} ({company.location})
+            {company.company} {company.department ? `— ${company.department}` : ""} ({company.location.display})
           </Typography>
 
           {company.roles.map((role: any, j: number) => (

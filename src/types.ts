@@ -5,7 +5,7 @@ export interface Bio {
   name: string;
   email: string;
   phone: string;
-  location: string;
+  location: GeographicLocation;
   summary?: string;
   interests?: string[];
   photo?: string | null;
@@ -51,7 +51,7 @@ export interface ExperienceItem {
   department?: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
   end_date: string; //ISO 8601 date format: YYYY-MM-DD
-  location: string;
+  location: GeographicLocation;
   roles: ExperienceRole[];
 }
 
@@ -68,7 +68,7 @@ export interface Grade {
 export interface EducationItem {
   degree: string;
   institution: string;
-  location: string;
+  location: GeographicLocation;
   graduation_date: string;
   thesis?: string;
   erasmus?: string;
@@ -87,4 +87,13 @@ export interface SkillCategory {
 
 export interface SkillsData {
   skills: SkillCategory[];
+}
+
+export interface GeographicLocation {
+  display: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  osm_id?: string;
 }

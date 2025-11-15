@@ -2,7 +2,11 @@
   {
     "institution": "London South Bank University",
     "degree": "MSc Data Science",
-    "location": "London, UK",
+    "location": {
+      "display": "London, United Kingdom",
+      "coordinates": {"lat": 51.49793, "lng": -0.10189},
+      "osm_id": "relation/14863884"
+    },
     "graduation_date": "2020-06-01",
     "grades": [
       { "subject": "overall", "score": "Distinction (80%)" },
@@ -14,9 +18,12 @@
   },
   {
     "institution": "University of the Basque Country",
-    "degree": "Bachelor in Business Administration, Major Finance",
-    "location": "San Sebastian, Spain",
-    "graduation_date": "2010-06-01",
+    "degree": "Bachelor in Business Administration, Finance Major",
+    "location": {
+      "display": "San Sebastian, Spain",
+      "coordinates": {"lat": 43.31114, "lng": -2.01015},
+      "osm_id": "way/140595757"
+    },    "graduation_date": "2010-06-01",
     "grades": [
       { "subject": "overall", "score": "75%" }
     ],
