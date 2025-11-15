@@ -476,8 +476,8 @@ export interface ExperienceProject {
 
 export interface ExperienceRole {
   title: string;
-  start_date: string; 
-  end_date: string; 
+  start_date: string; //ISO 8601 date format: YYYY-MM-DD
+  end_date: string | null; //ISO 8601 date format: YYYY-MM-DD
   description: string[];
   stack?: string[];
   projects?: ExperienceProject[];
@@ -487,8 +487,8 @@ export interface ExperienceRole {
 export interface ExperienceItem {
   company: string;
   department?: string;
-  start_date: string;
-  end_date: string;
+  start_date: string; //ISO 8601 date format: YYYY-MM-DD
+  end_date: string; //ISO 8601 date format: YYYY-MM-DD
   location: string;
   roles: ExperienceRole[];
 }
@@ -532,6 +532,7 @@ import React from "react";
 import experienceData from "../data/experience.json";
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Box, List, ListItem } from "@mui/material";
+import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
 
 const Experience: React.FC = () => (
   <div>
@@ -549,7 +550,7 @@ const Experience: React.FC = () => (
           {company.roles.map((role: any, j: number) => (
             <Box key={j} sx={{ marginLeft: 2, marginBottom: 2 }}>
               <Typography variant="h6">
-                {role.title} ({role.start_date} – {role.end_date})
+                {role.title} {formatDateRange(role.start_date, role.end_date)}
               </Typography>
 
               <List dense>
@@ -762,12 +763,35 @@ const Education: React.FC = () => (
 export default Education;
 
 
+--- src/utils/dateUtils.ts ---
+/* 
+Converts a date like 1987-06-04 to a reader friendly Jun 2024
+*/
+export const formatDateForDisplay = (isoDate: string | null): string => {
+  if (!isoDate) return 'Present';
+  
+  const date = new Date(isoDate);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric'
+  });
+};
+
+/*
+ * Format date range for display
+ * Example: "2021-06-01", "2023-12-31" → "Jun 2021 – Dec 2023"
+ */
+export const formatDateRange = (startDate: string, endDate: string | null): string => {
+  return `${formatDateForDisplay(startDate)} – ${formatDateForDisplay(endDate)}`;
+};
+
 --- src/components/ExperienceCard.tsx ---
 import React, { memo } from "react";
 import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import SkillChip from "./SkillChip";
+import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
 
 interface ExperienceCardProps {
   experience: ExperienceItem;
@@ -785,7 +809,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
           {experience.company} {experience.department ? `— ${experience.department}` : ""}
         </Typography>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          {experience.location} • {experience.start_date} – {experience.end_date}
+          {experience.location} • {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
         {experience.roles.map((role: ExperienceRole, i) => (
@@ -1090,7 +1114,7 @@ export default theme;
     "institution": "London South Bank University",
     "degree": "MSc Data Science",
     "location": "London, UK",
-    "graduation_date": "Jun, 2020",
+    "graduation_date": "2020-06-01",
     "grades": [
       { "subject": "overall", "score": "Distinction (80%)" },
       { "subject": "Machine Learning", "score": "95%" },
@@ -1103,7 +1127,7 @@ export default theme;
     "institution": "University of the Basque Country",
     "degree": "Bachelor in Business Administration, Major Finance",
     "location": "San Sebastian, Spain",
-    "graduation_date": "Jun, 2010",
+    "graduation_date": "2010-06-01",
     "grades": [
       { "subject": "overall", "score": "75%" }
     ],
@@ -1118,13 +1142,13 @@ export default theme;
     "company": "Amazon",
     "department": "Operations - EU ACES",
     "location": "Barcelona, Spain",
-    "start_date": "Jun, 2021",
-    "end_date": "Present",
+    "start_date": "2021-06-01",
+    "end_date": null,
     "roles": [
       {
         "title": "Business Intelligence Engineer II (L5)",
-        "start_date": "Jan, 2024",
-        "end_date": "Present",
+        "start_date": "2024-01-01",
+        "end_date": null,
         "description": [
           "Provided the cloud infrastructure to a team of 50+ business analysts and project managers.",
           "Developed the backend of a real time monitoring tool of the warehouse fullness, deployed in all the EU network (30+ warehouses) and used daily by more than 100 users.",
@@ -1137,8 +1161,8 @@ export default theme;
       },
       {
         "title": "Business Intelligence Engineer I (L4)",
-        "start_date": "Jun, 2021",
-        "end_date": "Dec, 2023",
+        "start_date": "2021-06-01",
+        "end_date": "2023-12-31",
         "location": "London, UK",
         "description": [
           "Maintained a 1PB Redshift database with over 100 daily users. Reduced congestion times of the database during peak by over 50% by creating Workload Management rules.",
@@ -1153,13 +1177,13 @@ export default theme;
   {
     "company": "Datasite",
     "location": "London, UK",
-    "start_date": "Jan, 2018",
-    "end_date": "May, 2021",
+    "start_date": "2018-01-01",
+    "end_date": "2021-05-31",
     "roles": [
       {
         "title": "Data Analyst",
-        "start_date": "Sep, 2019",
-        "end_date": "May, 2021",
+        "start_date": "2019-09-01",
+        "end_date": "2021-05-31",
         "description": [
           "Created a mostly-automated process to identify the transactions hosted in the platform to highlight in the main webpage. The webpage generated over 20 new leads and landed five new deals in the first 6 months (estimated revenue **$300K**).",
           "Created Salesforce reports to identify new leads and opportunities, leading to over 20 business opportunities.",
@@ -1172,8 +1196,8 @@ export default theme;
       },
       {
         "title": "Project Manager",
-        "start_date": "Jun, 2018",
-        "end_date": "Aug, 2019",
+        "start_date": "2018-01-01",
+        "end_date": "2019-08-31",
         "description": [
           "Managed over 100 transactions with high profile customers (investment bankers, lawyers) with a combined revenue of $50MM.",
           "Lead training sessions on the use of the platform."
@@ -1186,13 +1210,13 @@ export default theme;
   {
     "company": "UBS Investment Bank",
     "location": "City of London, UK",
-    "start_date": "Jan, 2017",
-    "end_date": "Dec, 2017",
+    "start_date": "2017-01-01",
+    "end_date": "2017-12-31",
     "roles": [
       {
         "title": "Analyst Intern, Corporate Social Responsibility",
-        "start_date": "Sep, 2017",
-        "end_date": "Dec, 2017",
+        "start_date": "2017-01-01",
+        "end_date": "2017-12-31",
         "description": [
           "Managed UBS’s volunteering program for over 10K employees.",
           "Owned the volunteering reporting, tracking each employee’s volunteering hours for UK government organisms.",
@@ -1206,10 +1230,12 @@ export default theme;
   {
     "company": "Bildutruck",
     "location": "San Sebastian, Spain",
-    "start_date": "Jan, 2012",
-    "end_date": "Dec, 2016",
+    "start_date": "2012-01-01",
+    "end_date": "2016-12-31",
     "roles": [
       {
+        "start_date": "2012-01-01",
+        "end_date": "2016-12-31",
         "title": "International Transport Manager",
         "description": [
           "Managed portfolio of 50 clients with an annual revenue of 3 MM, while managing a fleet of 50 trucks across Europe."
@@ -1227,7 +1253,7 @@ export default theme;
   {
     "title": "Real-time Warehouse Monitoring Tool",
     "company": "Amazon",
-    "date": "2024",
+    "date": "2024-08-01",
     "summary": "Monitors warehouse fullness across EU fulfillment centers in real time.",
     "description": "Backend tool for monitoring warehouse fullness deployed in 30+ EU fulfillment centers. Used daily by over 100 users, providing actionable insights to optimize operational throughput.",
     "stack": ["AWS", "Python", "SQL", "Redshift", "Lambda"],
@@ -1236,7 +1262,7 @@ export default theme;
   {
     "title": "Daily Onboarding Reporting Dashboard",
     "company": "Amazon",
-    "date": "2024",
+    "date": "2024-05-01",
     "summary": "Dashboard tracking new hire onboarding programs across EU fulfillment centers.",
     "description": "Provides a consolidated view of onboarding program metrics for EU warehouse new hires. Enables teams to monitor completion, calculate savings, and inform decisions based on training effectiveness.",
     "stack": ["Quicksight", "AWS", "SQL"],
@@ -1245,7 +1271,7 @@ export default theme;
   {
     "title": "Automated Market Monitoring Tool",
     "company": "Datasite",
-    "date": "2020",
+    "date": "2019-11-01",
     "summary": "Centralized tool to track M&A market activity using multiple financial data sources.",
     "description": "Aggregates data from Salesforce and Thomson Reuters Financial database to monitor merger and acquisition activity. Provides automated insights to support business development and strategy decisions.",
     "stack": ["SQL Server", "Power BI", "Looker"],
@@ -1254,7 +1280,7 @@ export default theme;
   {
     "title": "Amazon Central Operations Cost Optimization",
     "company": "Amazon",
-    "date": "2024",
+    "date": "2024-11-01",
     "summary": "Reduced AWS infrastructure costs for live data pipelines in operations.",
     "description": "Implemented optimizations on SQS, Lambda, and data ingestion pipelines to reduce operational costs by 57%, contributing to the EU fulfillment center cost-saving initiatives.",
     "stack": ["AWS", "Python", "SQL", "Redshift"],
@@ -1269,7 +1295,7 @@ export default theme;
   {
     "title": "Employee Engagement Analytics Dashboard",
     "company": "Amazon",
-    "date": "2023",
+    "date": "2023-10-01",
     "summary": "Improved onboarding experience for warehouse employees across EU fulfillment centers.",
     "description": "Developed a comprehensive system for scheduling, compliance tracking, and KPI monitoring of onboarding programs. Delivered measurable reductions in unexpected attrition and absences, while providing actionable insights to Learning & Development teams.",
     "stack": ["AWS", "SQL", "Python", "Quicksight"],
@@ -1284,7 +1310,7 @@ export default theme;
   {
     "title": "Performance and Learning Metrics Dashboard",
     "company": "Amazon",
-    "date": "2023",
+    "date": "2023-02-01",
     "summary": "Centralized dashboard for warehouse permissions and training compliance.",
     "description": "Built a scalable dashboard to monitor personnel permissions, training completion, and compliance across EU fulfillment centers. Enabled centralized cleaning of permission violations and reduced operational inefficiencies.",
     "stack": ["AWS", "SQL", "Quicksight"],
@@ -1299,7 +1325,7 @@ export default theme;
   {
     "title": "Warehouse Throughput Optimization",
     "company": "Amazon",
-    "date": "2023",
+    "date": "2023-07-01",
     "summary": "Live tool to reduce dock congestion and optimize container flow.",
     "description": "Developed a real-time recommendation system for dock management in EU fulfillment centers. Enabled proactive trailer scheduling, container positioning, and congestion reduction, improving operational safety and efficiency.",
     "stack": ["Python", "SQL", "AWS"],
@@ -1314,7 +1340,7 @@ export default theme;
   {
     "title": "Training Effectiveness Dashboard",
     "company": "Amazon",
-    "date": "2023",
+    "date": "2023-10-01",
     "summary": "Centralized platform to measure and improve training impact.",
     "description": "Consolidated multiple learning data sources into a single dashboard, providing metrics on learner satisfaction, knowledge retention, and skill application. Enabled targeted interventions and strategic decision-making for Learning & Development programs.",
     "stack": ["SQL", "Quicksight", "Python", "AWS"],
@@ -1329,7 +1355,7 @@ export default theme;
   {
     "title": "Language Training Effectiveness Dashboard",
     "company": "Amazon",
-    "date": "2023",
+    "date": "2023-04-01",
     "summary": "Enhanced onboarding for non-native language speakers.",
     "description": "Created a system to match instructors with associates based on language, shift, and process. Provided analytics to Learning Managers to optimize training allocation and improve onboarding efficiency.",
     "stack": ["SQL", "Python", "Quicksight", "AWS"],
@@ -1344,7 +1370,7 @@ export default theme;
   {
     "title": "Cross-Skill Training Utilization Dashboard",
     "company": "Amazon",
-    "date": "2023",
+    "date": "2025-06-01",
     "summary": "Tool to track and optimize cross-training of warehouse associates.",
     "description": "Redesigned cross-training system to track subprocess-level skills and validate competency through certifications. Prioritized workforce allocation based on proficiency and labor gaps, enabling operational flexibility and cost savings.",
     "stack": ["Python", "SQL", "AWS"],
@@ -1393,14 +1419,9 @@ import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Stack, Chip, Box } from "@mui/material";
 import type { Project } from "../types";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { formatDateForDisplay } from '../utils/dateUtils';
 
 const projects = projectsData as Project[];
-
-// Helper: convert date string to a number for sorting
-const parseDate = (dateStr: string) => {
-  const parsed = parseInt(dateStr);
-  return isNaN(parsed) ? 0 : parsed;
-};
 
 // Group projects by company
 const projectsByCompany = projects.reduce((acc, project) => {
@@ -1449,7 +1470,7 @@ const ProjectsPage: React.FC = () => {
           </Typography>
 
           {companyProjects
-            .sort((a, b) => parseDate(b.date) - parseDate(a.date))
+            .sort((a, b) => b.date.localeCompare(a.date))
             .map((project) => (
               <Card key={project.title} sx={{ marginBottom: 3 }}>
                 <CardContent>
@@ -1457,7 +1478,7 @@ const ProjectsPage: React.FC = () => {
                     {project.title}
                   </Typography>
                   <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                    {project.date}
+                    {formatDateForDisplay(project.date)}
                   </Typography>
 
                   <Box sx={{ marginTop: 1 }}>
@@ -1694,8 +1715,8 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 31
-Total Characters: 48499
+Files Parsed: 32
+Total Characters: 49442
 
 File List:
 ----------------------------------------
@@ -1705,26 +1726,27 @@ index.html: 361 characters
 package.json: 883 characters
 src/App.css: 606 characters
 src/App.tsx: 1649 characters
-src/components/ExperienceCard.tsx: 2284 characters
+src/components/ExperienceCard.tsx: 2374 characters
 src/components/LoadingSpinner.tsx: 872 characters
 src/components/SkillChip.tsx: 624 characters
 src/data/bio.json: 491 characters
-src/data/education.json: 861 characters
-src/data/experience.json: 4786 characters
-src/data/projects.json: 6875 characters
+src/data/education.json: 863 characters
+src/data/experience.json: 4862 characters
+src/data/projects.json: 6935 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 435 characters
 src/pages/AboutMePage.tsx: 1514 characters
 src/pages/CVPage.tsx: 4336 characters
-src/pages/ProjectsPage.tsx: 3318 characters
+src/pages/ProjectsPage.tsx: 3217 characters
 src/sections/Bio.tsx: 1700 characters
 src/sections/Education.tsx: 1110 characters
-src/sections/Experience.tsx: 1930 characters
+src/sections/Experience.tsx: 2018 characters
 src/sections/ProjectsPreview.tsx: 385 characters
 src/sections/Skills.tsx: 1871 characters
 src/theme/theme.ts: 4292 characters
-src/types.ts: 1673 characters
+src/types.ts: 1818 characters
+src/utils/dateUtils.ts: 583 characters
 tools/config.json: 202 characters
 tsconfig.app.json: 763 characters
 tsconfig.json: 119 characters
@@ -1732,6 +1754,6 @@ tsconfig.node.json: 653 characters
 vite.config.ts: 161 characters
 
 Generated at:
-Local: 2025-11-14 07:36:25 
-UTC:   2025-11-14 06:36:25 UTC
-Timestamp: 1763102185
+Local: 2025-11-15 17:57:22 
+UTC:   2025-11-15 16:57:22 UTC
+Timestamp: 1763225842

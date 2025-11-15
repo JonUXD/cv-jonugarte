@@ -38,8 +38,8 @@ export interface ExperienceProject {
 
 export interface ExperienceRole {
   title: string;
-  start_date: string; 
-  end_date: string; 
+  start_date: string; //ISO 8601 date format: YYYY-MM-DD
+  end_date: string | null; //ISO 8601 date format: YYYY-MM-DD
   description: string[];
   stack?: string[];
   projects?: ExperienceProject[];
@@ -49,8 +49,8 @@ export interface ExperienceRole {
 export interface ExperienceItem {
   company: string;
   department?: string;
-  start_date: string;
-  end_date: string;
+  start_date: string; //ISO 8601 date format: YYYY-MM-DD
+  end_date: string; //ISO 8601 date format: YYYY-MM-DD
   location: string;
   roles: ExperienceRole[];
 }

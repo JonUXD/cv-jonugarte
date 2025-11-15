@@ -4,14 +4,9 @@ import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Stack, Chip, Box } from "@mui/material";
 import type { Project } from "../types";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { formatDateForDisplay } from '../utils/dateUtils';
 
 const projects = projectsData as Project[];
-
-// Helper: convert date string to a number for sorting
-const parseDate = (dateStr: string) => {
-  const parsed = parseInt(dateStr);
-  return isNaN(parsed) ? 0 : parsed;
-};
 
 // Group projects by company
 const projectsByCompany = projects.reduce((acc, project) => {
@@ -60,7 +55,7 @@ const ProjectsPage: React.FC = () => {
           </Typography>
 
           {companyProjects
-            .sort((a, b) => parseDate(b.date) - parseDate(a.date))
+            .sort((a, b) => b.date.localeCompare(a.date))
             .map((project) => (
               <Card key={project.title} sx={{ marginBottom: 3 }}>
                 <CardContent>
@@ -68,7 +63,7 @@ const ProjectsPage: React.FC = () => {
                     {project.title}
                   </Typography>
                   <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                    {project.date}
+                    {formatDateForDisplay(project.date)}
                   </Typography>
 
                   <Box sx={{ marginTop: 1 }}>

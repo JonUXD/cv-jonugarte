@@ -2,6 +2,7 @@ import React from "react";
 import experienceData from "../data/experience.json";
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Box, List, ListItem } from "@mui/material";
+import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
 
 const Experience: React.FC = () => (
   <div>
@@ -19,7 +20,7 @@ const Experience: React.FC = () => (
           {company.roles.map((role: any, j: number) => (
             <Box key={j} sx={{ marginLeft: 2, marginBottom: 2 }}>
               <Typography variant="h6">
-                {role.title} ({role.start_date} – {role.end_date})
+                {role.title} {formatDateRange(role.start_date, role.end_date)}
               </Typography>
 
               <List dense>

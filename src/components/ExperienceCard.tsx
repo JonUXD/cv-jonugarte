@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import SkillChip from "./SkillChip";
+import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
 
 interface ExperienceCardProps {
   experience: ExperienceItem;
@@ -20,7 +21,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
           {experience.company} {experience.department ? `— ${experience.department}` : ""}
         </Typography>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          {experience.location} • {experience.start_date} – {experience.end_date}
+          {experience.location} • {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
         {experience.roles.map((role: ExperienceRole, i) => (
@@ -30,7 +31,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
             </Typography>
             {role.start_date && (
               <Typography variant="subtitle2" color="text.secondary">
-                {role.start_date} – {role.end_date}
+                {formatDateRange(role.start_date, role.end_date)}
               </Typography>
             )}
 
