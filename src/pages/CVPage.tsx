@@ -42,7 +42,7 @@ const CVPage: React.FC = () => {
   return (
     <Box sx={{ padding: 3 }}>
       {/* Bio Section - Manual implementation with cyan color */}
-      <Box sx={{ marginBottom: 3 }}>
+      <Box sx={{ marginBottom: 6 }}>
         <Typography variant="h4" gutterBottom color="primary.main">
           {bio.name}
         </Typography>
@@ -67,7 +67,7 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Work Experience */}
-      <Box sx={{ mb: 3 }}>
+      <Box sx={{ marginBottom: 6 }}>
         <Typography variant="h4" gutterBottom color="primary.main">
           Work Experience
         </Typography>
@@ -77,7 +77,7 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Education */}
-      <Box sx={{ marginBottom: 3 }}>
+      <Box sx={{ marginBottom: 6 }}>
         <Typography variant="h4" gutterBottom color="primary.main">
           Education
         </Typography>
@@ -123,7 +123,7 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Skills & Technical Skills */}
-      <Box sx={{ mb: 3 }}>
+      <Box sx={{ marginBottom: 6 }}>
         <Typography variant="h4" gutterBottom color="primary.main">
           Skills & Technical Skills
         </Typography>
