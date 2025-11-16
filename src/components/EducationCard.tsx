@@ -15,7 +15,7 @@ const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
       <CardContent>
         {/* Updated Institution Header with Icon */}
         <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
-          <CompanyIcon companyName={education.institution} size={24} />
+          <CompanyIcon companyName={education.institution}/>
           <Typography variant="h5" sx={{ 
             fontWeight: 700,
             color: "text.primary",

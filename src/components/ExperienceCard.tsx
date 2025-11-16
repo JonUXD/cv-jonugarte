@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import SkillChip from "./SkillChip";
 import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
-import CompanyIcon from "./CompanyIcon"; // ← Add this import
+import CompanyIcon from "./CompanyIcon";
 
 interface ExperienceCardProps {
   experience: ExperienceItem;
@@ -14,9 +14,9 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
       <CardContent>
-        {/* Updated Company Header with Icon */}
+        {/* Company Header */}
         <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
-          <CompanyIcon companyName={experience.company} size={24} />
+          <CompanyIcon companyName={experience.company}/>
           <Typography variant="h5" sx={{ 
             fontWeight: 700,
             color: "text.primary",
@@ -25,13 +25,15 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
           </Typography>
         </Box>
         
+        {/* Company-level date range */}
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          {experience.location.display} • {formatDateRange(experience.start_date, experience.end_date)}
+          {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
-        {/* Rest of your existing code remains the same */}
+        {/* Roles */}
         {experience.roles.map((role: ExperienceRole, i) => (
           <Box key={i} sx={{ marginTop: 2, marginBottom: 1 }}>
+            {/* Role title with location */}
             <Typography variant="h6" sx={{ 
               fontWeight: 600,
               color: "text.primary",
@@ -39,12 +41,13 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
             }}>
               {role.title} {" | "} {role.department}
             </Typography>
-            {role.start_date && (
-              <Typography variant="subtitle2" color="text.secondary">
-                {formatDateRange(role.start_date, role.end_date)}
-              </Typography>
-            )}
+            
+            {/* Role-specific location and dates */}
+            <Typography variant="subtitle2" color="text.secondary">
+              {role.location.display} • {formatDateRange(role.start_date, role.end_date)}
+            </Typography>
 
+            {/* Description */}
             {(role.description || []).length > 0 && (
               <Box component="ul" sx={{ 
                 paddingLeft: 2, 
@@ -61,6 +64,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
               </Box>
             )}
 
+            {/* Tech stack */}
             {(role.stack || []).length > 0 && (
               <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", mt: 1, gap: 0.5 }}>
                 {(role.stack || []).map((tech, k) => (

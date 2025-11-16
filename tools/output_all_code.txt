@@ -274,6 +274,10 @@ Secondary:
 #FF5E54
 #16D392
 
+
+SVG
+https://www.vectorlogo.zone
+
 --- research/technical.md ---
 ## Color palette
 
@@ -698,59 +702,52 @@ export default Bio;
 --- src/sections/Skills.tsx ---
 import React from "react";
 import skillsData from "../data/skills.json";
-import { Box, Typography, Chip, Stack, useTheme, useMediaQuery } from "@mui/material";
+import { Box, Typography, Chip, Stack, Card, CardContent } from "@mui/material";
 
-/**
- * Skills component displays technical and professional skills
- * Color-coded chips with cyan for technical skills and yellow for soft skills
- */
 const Skills: React.FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
   return (
-    <Box sx={{ margin: { xs: 2, sm: 3 } }}>
-
-      {skillsData.skills.map((category: any, idx: number) => (
-        <Box key={idx} sx={{ marginBottom: 2 }}>
-          <Typography 
-            variant="subtitle1" 
-            sx={{ 
-              fontWeight: "bold", 
-              marginBottom: 1,
-              fontSize: { xs: '0.9rem', sm: '1rem' }
-            }}
-          >
-            {category.category}:
-          </Typography>
-          <Stack 
-            direction="row" 
-            spacing={1} 
-            sx={{ 
-              flexWrap: "wrap",
-              gap: 1,
-              '& .MuiChip-root': {
-                fontSize: { xs: '0.7rem', sm: '0.8125rem' },
-                height: { xs: 24, sm: 32 }
-              }
-            }}
-          >
-            {category.items.map((item: string, i: number) => (
-              <Chip 
-                key={i} 
-                label={item} 
-                size="small" 
-                color={
-                  category.category === "Technical Skills" 
-                    ? "primary"
-                    : "secondary"
-                }
-              />
-            ))}
-          </Stack>
-        </Box>
-      ))}
-    </Box>
+    <Card sx={{ marginBottom: 3 }}>
+      <CardContent>
+        {skillsData.skills.map((category: any, idx: number) => (
+          <Box key={idx} sx={{ marginBottom: 3 }}>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 600, 
+                marginBottom: 2,
+                color: "text.primary"
+              }}
+            >
+              {category.category}
+            </Typography>
+            <Stack 
+              direction="row" 
+              spacing={1} 
+              sx={{ 
+                flexWrap: "wrap",
+                gap: 1,
+              }}
+            >
+              {category.items.map((item: string, i: number) => (
+                <Chip 
+                  key={i} 
+                  label={item} 
+                  size="small" 
+                  variant="outlined"
+                  color={category.category === "Technical Skills" ? "primary" : "secondary"}
+                  sx={{
+                    fontWeight: 500,
+                    borderRadius: 1.5,
+                    borderWidth: 1.5,
+                    color: 'text.primary', // This should make the text black
+                  }}
+                />
+              ))}
+            </Stack>
+          </Box>
+        ))}
+      </CardContent>
+    </Card>
   );
 };
 
@@ -838,6 +835,57 @@ export const formatDateRange = (startDate: string, endDate: string | null): stri
   return `${formatDateForDisplay(startDate)} – ${formatDateForDisplay(endDate)}`;
 };
 
+--- src/components/CompanyIcon.tsx ---
+import React from 'react';
+import { Box } from '@mui/material';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import SchoolIcon from '@mui/icons-material/School';
+
+interface CompanyIconProps {
+  companyName: string;
+  size?: number;
+}
+
+const CompanyIcon: React.FC<CompanyIconProps> = ({ companyName, size = 36 }) => {
+  const iconMap: Record<string, string> = {
+    'Amazon': '/src/assets/icons/companies/amazon.svg',
+    'Datasite': '/src/assets/icons/companies/datasite.svg',
+    'UBS Investment Bank': '/src/assets/icons/companies/ubs.svg',
+    'Bildutruck': '/src/assets/icons/companies/bildutruck.svg',
+    'London South Bank University': '/src/assets/icons/companies/london-south-bank-university.svg',
+    'University of the Basque Country': '/src/assets/icons/companies/university-of-the-basque-country.svg',
+  };
+
+  const iconSrc = iconMap[companyName];
+  
+  if (!iconSrc) {
+    const isEducation = companyName.includes('University') || companyName.includes('School');
+    return isEducation ? (
+      <SchoolIcon sx={{ fontSize: size, color: 'success.main', mr: 1.5 }} />
+    ) : (
+      <BusinessCenterIcon sx={{ fontSize: size, color: 'primary.main', mr: 1.5 }} />
+    );
+  }
+
+  return (
+    <Box
+      component="img"
+      src={iconSrc}
+      alt={`${companyName} logo`}
+      sx={{
+        height: size,
+        width: size, // Now fixed width for square look
+        objectFit: 'contain', // Ensures logo scales to fit within square
+        mr: 1.5,
+        borderRadius: 1, // Optional: subtle rounding for modern look
+        flexShrink: 0,
+      }}
+    />
+  );
+};
+
+export default CompanyIcon;
+
 --- src/components/ExperienceCard.tsx ---
 import React, { memo } from "react";
 import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
@@ -845,36 +893,38 @@ import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import SkillChip from "./SkillChip";
 import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
+import CompanyIcon from "./CompanyIcon"; // ← Add this import
 
 interface ExperienceCardProps {
   experience: ExperienceItem;
 }
 
-/**
- * ExperienceCard component displays work experience with consistent styling
- * Uses primary color for company names and skill chips
- */
 const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
       <CardContent>
-        <Typography variant="h5" sx={{ 
-        fontWeight: 700,
-        color: "text.primary",
-        marginBottom: 1
-        }}>
-              {experience.company}
-        </Typography>
+        {/* Updated Company Header with Icon */}
+        <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
+          <CompanyIcon companyName={experience.company}/>
+          <Typography variant="h5" sx={{ 
+            fontWeight: 700,
+            color: "text.primary",
+          }}>
+            {experience.company}
+          </Typography>
+        </Box>
+        
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
           {experience.location.display} • {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
+        {/* Rest of your existing code remains the same */}
         {experience.roles.map((role: ExperienceRole, i) => (
           <Box key={i} sx={{ marginTop: 2, marginBottom: 1 }}>
             <Typography variant="h6" sx={{ 
-            fontWeight: 600,
-            color: "text.primary",
-            marginBottom: 0.5
+              fontWeight: 600,
+              color: "text.primary",
+              marginBottom: 0.5
             }}>
               {role.title} {" | "} {role.department}
             </Typography>
@@ -889,7 +939,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
                 paddingLeft: 2, 
                 marginTop: 1,
                 marginLeft: 1,
-                }}>
+              }}>
                 {(role.description || []).map((desc, j) => (
                   <li key={j}>
                     <ReactMarkdown components={{ p: ({ children }) => <span>{children}</span> }}>
@@ -993,35 +1043,32 @@ import { Card, CardContent, Typography, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { EducationItem } from "../types";
 import { formatDateForDisplay } from "../utils/dateUtils";
+import CompanyIcon from "./CompanyIcon"; // ← Add this import
 
 interface EducationCardProps {
   education: EducationItem;
 }
 
-/**
- * EducationCard component displays education information with consistent styling
- * Matches ExperienceCard design for visual consistency across the CV
- * Handles optional thesis and grades content flexibly
- */
 const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
       <CardContent>
-        {/* Institution name - styled to match company names in ExperienceCard */}
-        <Typography variant="h5" sx={{ 
-          fontWeight: 700,
-          color: "text.primary",
-          marginBottom: 1
-        }}>
-          {education.institution}
-        </Typography>
+        {/* Updated Institution Header with Icon */}
+        <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
+          <CompanyIcon companyName={education.institution}/>
+          <Typography variant="h5" sx={{ 
+            fontWeight: 700,
+            color: "text.primary",
+          }}>
+            {education.institution}
+          </Typography>
+        </Box>
         
-        {/* Location and graduation date - matches experience card subtitle styling */}
+        {/* Rest of your existing code remains the same */}
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
           {education.location.display} • {formatDateForDisplay(education.graduation_date)}
         </Typography>
 
-        {/* Degree title - styled to match role titles in ExperienceCard */}
         <Typography variant="h6" sx={{ 
           fontWeight: 600,
           color: "text.primary",
@@ -1030,14 +1077,11 @@ const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
           {education.degree}
         </Typography>
 
-        {/* Optional content section for thesis and grades */}
-        {/* Uses same list styling as ExperienceCard for consistency */}
-            <Box component="ul" sx={{ 
-            paddingLeft: 2, 
-            marginTop: 1,
-            marginLeft: 1,
+        <Box component="ul" sx={{ 
+          paddingLeft: 2, 
+          marginTop: 1,
+          marginLeft: 1,
         }}>
-          {/* Display thesis as first bullet point if provided */}
           {education.thesis && (
             <li>
               <ReactMarkdown>
@@ -1046,11 +1090,9 @@ const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
             </li>
           )}
           
-          {/* Display grades as additional bullet points if provided */}
-          {/* Maps through grades array to show subject-score pairs */}
           {education.description && education.description.map((item, index) => (
             <li key={index}>
-                <ReactMarkdown>{item}</ReactMarkdown>
+              <ReactMarkdown>{item}</ReactMarkdown>
             </li>
           ))}
         </Box>
@@ -1711,7 +1753,7 @@ export default AboutMePage;
 
 --- src/pages/CVPage.tsx ---
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Card, CardContent } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 
 import bioData from "../data/bio.json";
@@ -1754,9 +1796,9 @@ const CVPage: React.FC = () => {
 
   return (
     <Box sx={{ padding: 3 }}>
-      {/* Bio Section - Manual implementation with cyan color */}
+      {/* Bio Section */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="text.main">
+        <Typography variant="h4" gutterBottom color="text.primary">
           {bio.name}
         </Typography>
         {bio.summary && (
@@ -1774,59 +1816,70 @@ const CVPage: React.FC = () => {
             </ReactMarkdown>
           </Box>
         )}
-        <Typography variant="body2">
+        <Typography variant="body2" color="text.secondary">
           {bio.email} ❖ {bio.phone} ❖ {bio.location.display}
         </Typography>
       </Box>
 
-      {/* Work Experience */}
-      <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" sx={{ 
-          marginBottom: 4,
-          fontWeight: 700,
-          color: "text.main",
-          borderBottom: "2px solid",
-          borderColor: "primary.main",
-          paddingBottom: 1
-        }}>
-          Work Experience
-        </Typography>
-        {experience.map((exp, idx) => (
-          <ExperienceCard key={idx} experience={exp} />
-        ))}
-      </Box>
+      {/* Main Content Grid */}
+      <Grid container spacing={4}>
+        {/* Left Column - Experience & Education */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          {/* Work Experience */}
+          <Box sx={{ marginBottom: 6 }}>
+            <Typography variant="h4" sx={{ 
+              marginBottom: 4,
+              fontWeight: 700,
+              color: "text.primary",
+              borderBottom: "2px solid",
+              borderColor: "primary.main",
+              paddingBottom: 1
+            }}>
+              Work Experience
+            </Typography>
+            {experience.map((exp, idx) => (
+              <ExperienceCard key={idx} experience={exp} />
+            ))}
+          </Box>
 
-      {/* Education */}
-      <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" sx={{ 
-          marginBottom: 4,
-          fontWeight: 700,
-          color: "text.primary",
-          borderBottom: "2px solid",
-          borderColor: "primary.main",
-          paddingBottom: 1
-        }}>
-          Education
-        </Typography>
-        {education.map((edu: EducationItem, idx) => (
-          <EducationCard key={idx} education={edu} />
-        ))}
-      </Box>
+          {/* Education */}
+          <Box sx={{ marginBottom: 6 }}>
+            <Typography variant="h4" sx={{ 
+              marginBottom: 4,
+              fontWeight: 700,
+              color: "text.primary",
+              borderBottom: "2px solid",
+              borderColor: "primary.main",
+              paddingBottom: 1
+            }}>
+              Education
+            </Typography>
+            {education.map((edu: EducationItem, idx) => (
+              <EducationCard key={idx} education={edu} />
+            ))}
+          </Box>
+        </Grid>
 
-      {/* Skills & Technical Skills */}
-      <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" sx={{ 
-          marginBottom: 4,
-          fontWeight: 700,
-          color: "text.primary",
-          borderBottom: "2px solid",
-          borderColor: "primary.main",
-          paddingBottom: 1
-        }}>
-          Skills & Technical Skills
-        </Typography>
-        <Skills />
-      </Box>
+        {/* Right Column - Skills Sidebar */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Box sx={{ 
+            top: { md: 20 },
+            marginBottom: 4
+          }}>
+            <Typography variant="h4" sx={{ 
+              marginBottom: 3,
+              fontWeight: 700,
+              color: "text.primary",
+              borderBottom: "2px solid",
+              borderColor: "primary.main",
+              paddingBottom: 1
+            }}>
+              Skills
+            </Typography>
+            <Skills />
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
@@ -1837,8 +1890,8 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 35
-Total Characters: 51903
+Files Parsed: 36
+Total Characters: 53545
 
 File List:
 ----------------------------------------
@@ -1846,12 +1899,13 @@ README.md: 1580 characters
 eslint.config.js: 621 characters
 index.html: 361 characters
 package.json: 883 characters
-research/design.md: 402 characters
+research/design.md: 436 characters
 research/technical.md: 115 characters
 src/App.css: 606 characters
 src/App.tsx: 1649 characters
-src/components/EducationCard.tsx: 2483 characters
-src/components/ExperienceCard.tsx: 2611 characters
+src/components/CompanyIcon.tsx: 1633 characters
+src/components/EducationCard.tsx: 1975 characters
+src/components/ExperienceCard.tsx: 2793 characters
 src/components/LoadingSpinner.tsx: 872 characters
 src/components/SkillChip.tsx: 624 characters
 src/data/bio.json: 566 characters
@@ -1862,13 +1916,13 @@ src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 435 characters
 src/pages/AboutMePage.tsx: 1514 characters
-src/pages/CVPage.tsx: 3571 characters
+src/pages/CVPage.tsx: 4012 characters
 src/pages/ProjectsPage.tsx: 3217 characters
 src/sections/Bio.tsx: 1708 characters
 src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
 src/sections/ProjectsPreview.tsx: 385 characters
-src/sections/Skills.tsx: 1666 characters
+src/sections/Skills.tsx: 1526 characters
 src/theme/theme.ts: 3289 characters
 src/types.ts: 1932 characters
 src/utils/dateUtils.ts: 583 characters
@@ -1879,6 +1933,6 @@ tsconfig.node.json: 653 characters
 vite.config.ts: 161 characters
 
 Generated at:
-Local: 2025-11-16 21:35:17 
-UTC:   2025-11-16 20:35:17 UTC
-Timestamp: 1763325317
+Local: 2025-11-16 23:28:38 
+UTC:   2025-11-16 22:28:38 UTC
+Timestamp: 1763332118

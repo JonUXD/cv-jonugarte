@@ -1,11 +1,6 @@
 [
   {
     "company": "Amazon",
-    "location": {
-      "display": "Barcelona, Spain",
-      "coordinates": {"lat": 41.40177, "lng": 2.19181},
-      "osm_id": "way/445643700"
-  },
     "start_date": "2021-06-01",
     "end_date": null,
     "roles": [
@@ -14,6 +9,11 @@
         "department": "Operations - EU ACES",
         "start_date": "2024-01-01",
         "end_date": null,
+        "location": {
+          "display": "Barcelona, Spain",
+          "coordinates": {"lat": 41.40177, "lng": 2.19181},
+          "osm_id": "way/445643700"
+        },
         "description": [
           "Provided the cloud infrastructure to a team of 50+ business analysts and project managers.",
           "Developed the backend of a real time monitoring tool of the warehouse fullness, deployed in all the EU network (30+ warehouses) and used daily by more than 100 users.",
@@ -46,11 +46,6 @@
   },
   {
     "company": "Datasite",
-    "location": {
-      "display": "London, United Kingdom",
-      "coordinates": {"lat": 51.52269, "lng": -0.08511},
-      "osm_id": "way/158054319"
-    },
     "start_date": "2018-01-01",
     "end_date": "2021-05-31",
     "roles": [
@@ -59,6 +54,11 @@
         "department": "Digital Marketing",
         "start_date": "2019-09-01",
         "end_date": "2021-05-31",
+        "location": {
+          "display": "London, United Kingdom",
+          "coordinates": {"lat": 51.52269, "lng": -0.08511},
+          "osm_id": "way/158054319"
+          },
         "description": [
           "Created a mostly-automated process to identify the transactions hosted in the platform to highlight in the main webpage. The webpage generated over 20 new leads and landed five new deals in the first 6 months (estimated revenue **$300K**).",
           "Created Salesforce reports to identify new leads and opportunities, leading to over 20 business opportunities.",
@@ -74,6 +74,11 @@
         "department": "Sales",
         "start_date": "2018-01-01",
         "end_date": "2019-08-31",
+        "location": {
+          "display": "London, United Kingdom",
+          "coordinates": {"lat": 51.52269, "lng": -0.08511},
+          "osm_id": "way/158054319"
+        },
         "description": [
           "Managed over 100 transactions with high profile customers (investment bankers, lawyers) with a combined revenue of $50MM.",
           "Lead training sessions on the use of the platform."
@@ -85,11 +90,6 @@
   },
   {
     "company": "UBS Investment Bank",
-    "location": {
-      "display": "London, United Kingdom",
-      "coordinates": {"lat": 51.5190, "lng": -0.08331},
-      "osm_id": "way/420528328"
-    },
     "start_date": "2017-01-01",
     "end_date": "2017-12-31",
     "roles": [
@@ -98,6 +98,11 @@
         "department": "Community Affairs",
         "start_date": "2017-01-01",
         "end_date": "2017-12-31",
+        "location": {
+          "display": "London, United Kingdom",
+          "coordinates": {"lat": 51.5190, "lng": -0.08331},
+          "osm_id": "way/420528328"
+        },
         "description": [
           "Managed UBS’s volunteering program for over 10K employees.",
           "Owned the volunteering reporting, tracking each employee’s volunteering hours for UK government organisms.",
@@ -110,17 +115,17 @@
   },
   {
     "company": "Bildutruck",
-    "location": {
-      "display": "Irun, Spain",
-      "coordinates": {"lat": 43.33735, "lng": -1.75308},
-      "osm_id": "way/1450968526"
-    },
     "start_date": "2012-01-01",
     "end_date": "2016-12-31",
     "roles": [
       {
         "start_date": "2012-01-01",
         "end_date": "2016-12-31",
+        "location": {
+          "display": "Irun, Spain",
+          "coordinates": {"lat": 43.33735, "lng": -1.75308},
+          "osm_id": "way/1450968526"
+        },
         "title": "International Transport Manager",
         "department": "Operations",
         "description": [

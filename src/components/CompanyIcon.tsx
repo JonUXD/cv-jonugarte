@@ -8,7 +8,7 @@ interface CompanyIconProps {
   size?: number;
 }
 
-const CompanyIcon: React.FC<CompanyIconProps> = ({ companyName, size = 24 }) => {
+const CompanyIcon: React.FC<CompanyIconProps> = ({ companyName, size = 36 }) => {
   const iconMap: Record<string, string> = {
     'Amazon': '/src/assets/icons/companies/amazon.svg',
     'Datasite': '/src/assets/icons/companies/datasite.svg',
@@ -36,8 +36,11 @@ const CompanyIcon: React.FC<CompanyIconProps> = ({ companyName, size = 24 }) => 
       alt={`${companyName} logo`}
       sx={{
         height: size,
-        width: 'auto',
+        width: size, // Now fixed width for square look
+        objectFit: 'contain', // Ensures logo scales to fit within square
         mr: 1.5,
+        borderRadius: 1, // Optional: subtle rounding for modern look
+        flexShrink: 0,
       }}
     />
   );
