@@ -34,7 +34,7 @@ const Bio: React.FC = () => {
         )}
 
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h5" component="h2" gutterBottom color="primary.main">
+          <Typography variant="h5" component="h2" gutterBottom color="text.primary">
             {bio.name}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Card, CardContent } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 
 import bioData from "../data/bio.json";
@@ -42,9 +42,9 @@ const CVPage: React.FC = () => {
 
   return (
     <Box sx={{ padding: 3 }}>
-      {/* Bio Section - Manual implementation with cyan color */}
+      {/* Bio Section */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="text.main">
+        <Typography variant="h4" gutterBottom color="text.primary">
           {bio.name}
         </Typography>
         {bio.summary && (
@@ -62,59 +62,70 @@ const CVPage: React.FC = () => {
             </ReactMarkdown>
           </Box>
         )}
-        <Typography variant="body2">
+        <Typography variant="body2" color="text.secondary">
           {bio.email} ❖ {bio.phone} ❖ {bio.location.display}
         </Typography>
       </Box>
 
-      {/* Work Experience */}
-      <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" sx={{ 
-          marginBottom: 4,
-          fontWeight: 700,
-          color: "text.main",
-          borderBottom: "2px solid",
-          borderColor: "primary.main",
-          paddingBottom: 1
-        }}>
-          Work Experience
-        </Typography>
-        {experience.map((exp, idx) => (
-          <ExperienceCard key={idx} experience={exp} />
-        ))}
-      </Box>
+      {/* Main Content Grid */}
+      <Grid container spacing={4}>
+        {/* Left Column - Experience & Education */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          {/* Work Experience */}
+          <Box sx={{ marginBottom: 6 }}>
+            <Typography variant="h4" sx={{ 
+              marginBottom: 4,
+              fontWeight: 700,
+              color: "text.primary",
+              borderBottom: "2px solid",
+              borderColor: "primary.main",
+              paddingBottom: 1
+            }}>
+              Work Experience
+            </Typography>
+            {experience.map((exp, idx) => (
+              <ExperienceCard key={idx} experience={exp} />
+            ))}
+          </Box>
 
-      {/* Education */}
-      <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" sx={{ 
-          marginBottom: 4,
-          fontWeight: 700,
-          color: "text.main",
-          borderBottom: "2px solid",
-          borderColor: "primary.main",
-          paddingBottom: 1
-        }}>
-          Education
-        </Typography>
-        {education.map((edu: EducationItem, idx) => (
-          <EducationCard key={idx} education={edu} />
-        ))}
-      </Box>
+          {/* Education */}
+          <Box sx={{ marginBottom: 6 }}>
+            <Typography variant="h4" sx={{ 
+              marginBottom: 4,
+              fontWeight: 700,
+              color: "text.primary",
+              borderBottom: "2px solid",
+              borderColor: "primary.main",
+              paddingBottom: 1
+            }}>
+              Education
+            </Typography>
+            {education.map((edu: EducationItem, idx) => (
+              <EducationCard key={idx} education={edu} />
+            ))}
+          </Box>
+        </Grid>
 
-      {/* Skills & Technical Skills */}
-      <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" sx={{ 
-          marginBottom: 4,
-          fontWeight: 700,
-          color: "text.main",
-          borderBottom: "2px solid",
-          borderColor: "primary.main",
-          paddingBottom: 1
-        }}>
-          Skills & Technical Skills
-        </Typography>
-        <Skills />
-      </Box>
+        {/* Right Column - Skills Sidebar */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Box sx={{ 
+            top: { md: 20 },
+            marginBottom: 4
+          }}>
+            <Typography variant="h4" sx={{ 
+              marginBottom: 3,
+              fontWeight: 700,
+              color: "text.primary",
+              borderBottom: "2px solid",
+              borderColor: "primary.main",
+              paddingBottom: 1
+            }}>
+              Skills
+            </Typography>
+            <Skills />
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

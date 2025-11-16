@@ -676,7 +676,7 @@ const Bio: React.FC = () => {
         )}
 
         <Box sx={{ flex: 1 }}>
-          <Typography variant="h5" component="h2" gutterBottom color="primary.main">
+          <Typography variant="h5" component="h2" gutterBottom color="text.primary">
             {bio.name}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
@@ -742,8 +742,8 @@ const Skills: React.FC = () => {
                 size="small" 
                 color={
                   category.category === "Technical Skills" 
-                    ? "primary"  // Cyan for technical skills
-                    : "accent"   // Yellow for soft skills
+                    ? "primary"
+                    : "secondary"
                 }
               />
             ))}
@@ -860,7 +860,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
       <CardContent>
         <Typography variant="h5" sx={{ 
         fontWeight: 700,
-        color: "primary.main",
+        color: "text.primary",
         marginBottom: 1
         }}>
               {experience.company}
@@ -1010,7 +1010,7 @@ const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
         {/* Institution name - styled to match company names in ExperienceCard */}
         <Typography variant="h5" sx={{ 
           fontWeight: 700,
-          color: "primary.main",
+          color: "text.primary",
           marginBottom: 1
         }}>
           {education.institution}
@@ -1067,103 +1067,70 @@ import { createTheme } from "@mui/material/styles";
 declare module '@mui/material/styles' {
   interface Palette {
     accent: Palette['primary'];
-    highlight: Palette['primary'];
-    attention: Palette['primary'];
-    alert: Palette['primary'];
-    vibrantPurple: Palette['primary'];
-    darkTeal: Palette['primary'];
-    deepPurple: Palette['primary'];
-    mutedGray: Palette['primary'];
-    lightGray: Palette['primary'];
   }
   interface PaletteOptions {
     accent?: PaletteOptions['primary'];
-    highlight?: PaletteOptions['primary'];
-    attention?: PaletteOptions['primary'];
-    alert?: PaletteOptions['primary'];
-    vibrantPurple?: PaletteOptions['primary'];
-    darkTeal?: PaletteOptions['primary'];
-    deepPurple?: PaletteOptions['primary'];
-    mutedGray?: PaletteOptions['primary'];
-    lightGray?: PaletteOptions['primary'];
   }
 }
 
-// Extend Button color props
+// Extend color props for components
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
     accent: true;
-    highlight: true;
-    attention: true;
-    alert: true;
-    vibrantPurple: true;
-    darkTeal: true;
-    deepPurple: true;
-    mutedGray: true;
-    lightGray: true;
   }
 }
 
-// Extend Chip color props
 declare module '@mui/material/Chip' {
   interface ChipPropsColorOverrides {
     accent: true;
-    highlight: true;
-    attention: true;
-    alert: true;
-    vibrantPurple: true;
-    darkTeal: true;
-    deepPurple: true;
-    mutedGray: true;
-    lightGray: true;
   }
 }
 
 /**
- * Custom theme for CV portfolio with complete color palette
- * All 12 colors stored with meaningful naming for portfolio context
+ * Professional theme using Palette 1 with auto-calculated variants
  */
 const theme = createTheme({
   palette: {
-      // Core brand colors
-      primary: {
-        main: "#05DBDB", // Cyan - Main brand, company names, primary actions
-        contrastText: "#1D1D1B",
-      },
-      secondary: {
-        main: "#FFCE61", // Yellow - Secondary actions, highlights, featured items
-        contrastText: "#1D1D1B",
-      },
-      
-      // Semantic colors repurposed for portfolio usage
-      success: {
-        main: "#177D89", // Teal - Professional elements, skills, education
-        contrastText: "#FFFFFF",
-      },
-      info: {
-        main: "#05DBDB", // Cyan - Brand accents, notifications (reuse primary)
-        contrastText: "#1D1D1B",
-      },
-      warning: {
-        main: "#FFCE61", // Yellow - Important notices, dates, highlights (reuse secondary)
-        contrastText: "#1D1D1B",
-      },
-      error: {
-        main: "#8C979B", // Gray - Secondary/muted elements, less important items
-        contrastText: "#FFFFFF",
-      },
-      
-      // Neutral colors
-      background: {
-        default: "#F8F9FA", // Light background
-        paper: "#FFFFFF", // Cards/surfaces
-      },
-      text: {
-        primary: "#1D1D1B", // Black - All readable text
-        secondary: "#5A5A58", // Dark gray - Secondary text
-      },
-      divider: "#DFDFDF", // Light gray - Borders, dividers
+    // Core brand colors
+    primary: {
+      main: "#05DBDB", // Cyan - Main brand, company names, primary actions
+      contrastText: "#1D1D1B",
     },
+    secondary: {
+      main: "#FFCE61", // Yellow - Secondary actions, highlights, featured items
+      contrastText: "#1D1D1B",
+    },
+    
+    // Semantic colors repurposed for portfolio usage
+    success: {
+      main: "#177D89", // Teal - Professional elements, skills, education
+      contrastText: "#FFFFFF",
+    },
+    info: {
+      main: "#05DBDB", // Cyan - Brand accents, notifications (reuse primary)
+      contrastText: "#1D1D1B",
+    },
+    warning: {
+      main: "#FFCE61", // Yellow - Important notices, dates, highlights (reuse secondary)
+      contrastText: "#1D1D1B",
+    },
+    error: {
+      main: "#8C979B", // Gray - Secondary/muted elements, less important items
+      contrastText: "#FFFFFF",
+    },
+    
+    // Neutral colors
+    background: {
+      default: "#F8F9FA", // Light background
+      paper: "#FFFFFF", // Cards/surfaces
+    },
+    text: {
+      primary: "#1D1D1B", // Black - All readable text
+      secondary: "#5A5A58", // Dark gray - Secondary text
+    },
+    divider: "#DFDFDF", // Light gray - Borders, dividers
+  },
+  
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
@@ -1186,7 +1153,8 @@ const theme = createTheme({
       fontSize: "0.8rem",
       lineHeight: 1.4,
     },
-  },  
+  },
+  
   components: {
     MuiCard: {
       styleOverrides: {
@@ -1210,9 +1178,9 @@ const theme = createTheme({
     MuiListItem: {
       styleOverrides: {
         root: {
-          marginBottom: 1,      // normal spacing between items
-          lineHeight: 1.5,      // standard readable line height
-          paddingLeft: 0.5,     // tight bullet alignment
+          marginBottom: 1,
+          lineHeight: 1.5,
+          paddingLeft: 0.5,
         },
       },
     },
@@ -1220,6 +1188,24 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           fontWeight: 500,
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          backgroundColor: "#05DBDB",
+          height: 3,
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontWeight: 500,
+          '&.Mui-selected': {
+            color: "#1D1D1B",
+          },
         },
       },
     },
@@ -1598,7 +1584,7 @@ const ProjectsPage: React.FC = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography variant="h4" gutterBottom sx={{ color: "primary.main" }}>
+      <Typography variant="h4" gutterBottom sx={{ color: "text.primary" }}>
         Projects
       </Typography>
 
@@ -1696,7 +1682,7 @@ const AboutMePage: React.FC = () => {
   return (
     <Card sx={{ margin: 3 }}>
       <CardContent>
-        <Typography variant="h4" gutterBottom color="primary.main">
+        <Typography variant="h4" gutterBottom color="text.primary">
           About Me
         </Typography>
 
@@ -1708,7 +1694,7 @@ const AboutMePage: React.FC = () => {
 
         {(bio.interests || []).length > 0 && (
           <Box>
-            <Typography variant="h6" color="primary.main" gutterBottom>
+            <Typography variant="h6" color="text.primary" gutterBottom>
               Interests
             </Typography>
             <Typography variant="body1">
@@ -1770,7 +1756,7 @@ const CVPage: React.FC = () => {
     <Box sx={{ padding: 3 }}>
       {/* Bio Section - Manual implementation with cyan color */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
+        <Typography variant="h4" gutterBottom color="text.main">
           {bio.name}
         </Typography>
         {bio.summary && (
@@ -1798,7 +1784,7 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" sx={{ 
           marginBottom: 4,
           fontWeight: 700,
-          color: "primary.main",
+          color: "text.main",
           borderBottom: "2px solid",
           borderColor: "primary.main",
           paddingBottom: 1
@@ -1812,7 +1798,14 @@ const CVPage: React.FC = () => {
 
       {/* Education */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
+        <Typography variant="h4" sx={{ 
+          marginBottom: 4,
+          fontWeight: 700,
+          color: "text.primary",
+          borderBottom: "2px solid",
+          borderColor: "primary.main",
+          paddingBottom: 1
+        }}>
           Education
         </Typography>
         {education.map((edu: EducationItem, idx) => (
@@ -1825,7 +1818,7 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" sx={{ 
           marginBottom: 4,
           fontWeight: 700,
-          color: "primary.main",
+          color: "text.primary",
           borderBottom: "2px solid",
           borderColor: "primary.main",
           paddingBottom: 1
@@ -1845,7 +1838,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 35
-Total Characters: 52683
+Total Characters: 51903
 
 File List:
 ----------------------------------------
@@ -1869,14 +1862,14 @@ src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 435 characters
 src/pages/AboutMePage.tsx: 1514 characters
-src/pages/CVPage.tsx: 3403 characters
+src/pages/CVPage.tsx: 3571 characters
 src/pages/ProjectsPage.tsx: 3217 characters
 src/sections/Bio.tsx: 1708 characters
 src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
 src/sections/ProjectsPreview.tsx: 385 characters
-src/sections/Skills.tsx: 1721 characters
-src/theme/theme.ts: 4182 characters
+src/sections/Skills.tsx: 1666 characters
+src/theme/theme.ts: 3289 characters
 src/types.ts: 1932 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 202 characters
@@ -1886,6 +1879,6 @@ tsconfig.node.json: 653 characters
 vite.config.ts: 161 characters
 
 Generated at:
-Local: 2025-11-16 20:29:35 
-UTC:   2025-11-16 19:29:35 UTC
-Timestamp: 1763321375
+Local: 2025-11-16 21:35:17 
+UTC:   2025-11-16 20:35:17 UTC
+Timestamp: 1763325317

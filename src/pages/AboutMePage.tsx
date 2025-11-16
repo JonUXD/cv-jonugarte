@@ -29,7 +29,7 @@ const AboutMePage: React.FC = () => {
   return (
     <Card sx={{ margin: 3 }}>
       <CardContent>
-        <Typography variant="h4" gutterBottom color="primary.main">
+        <Typography variant="h4" gutterBottom color="text.primary">
           About Me
         </Typography>
 
@@ -41,7 +41,7 @@ const AboutMePage: React.FC = () => {
 
         {(bio.interests || []).length > 0 && (
           <Box>
-            <Typography variant="h6" color="primary.main" gutterBottom>
+            <Typography variant="h6" color="text.primary" gutterBottom>
               Interests
             </Typography>
             <Typography variant="body1">

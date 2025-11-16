@@ -35,7 +35,7 @@ const ProjectsPage: React.FC = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography variant="h4" gutterBottom sx={{ color: "primary.main" }}>
+      <Typography variant="h4" gutterBottom sx={{ color: "text.primary" }}>
         Projects
       </Typography>
 
