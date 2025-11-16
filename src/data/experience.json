@@ -1,7 +1,6 @@
 [
   {
     "company": "Amazon",
-    "department": "Operations - EU ACES",
     "location": {
       "display": "Barcelona, Spain",
       "coordinates": {"lat": 41.40177, "lng": 2.19181},
@@ -12,6 +11,7 @@
     "roles": [
       {
         "title": "Business Intelligence Engineer II (L5)",
+        "department": "Operations - EU ACES",
         "start_date": "2024-01-01",
         "end_date": null,
         "description": [
@@ -26,6 +26,7 @@
       },
       {
         "title": "Business Intelligence Engineer I (L4)",
+        "department": "Operations - EU ACES",
         "start_date": "2021-06-01",
         "end_date": "2023-12-31",
         "location": {
@@ -55,6 +56,7 @@
     "roles": [
       {
         "title": "Data Analyst",
+        "department": "Digital Marketing",
         "start_date": "2019-09-01",
         "end_date": "2021-05-31",
         "description": [
@@ -69,6 +71,7 @@
       },
       {
         "title": "Project Manager",
+        "department": "Sales",
         "start_date": "2018-01-01",
         "end_date": "2019-08-31",
         "description": [
@@ -92,6 +95,7 @@
     "roles": [
       {
         "title": "Analyst Intern, Corporate Social Responsibility",
+        "department": "Community Affairs",
         "start_date": "2017-01-01",
         "end_date": "2017-12-31",
         "description": [
@@ -118,6 +122,7 @@
         "start_date": "2012-01-01",
         "end_date": "2016-12-31",
         "title": "International Transport Manager",
+        "department": "Operations",
         "description": [
           "Managed portfolio of 50 clients with an annual revenue of 3 MM, while managing a fleet of 50 trucks across Europe."
         ],

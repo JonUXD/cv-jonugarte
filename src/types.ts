@@ -38,6 +38,7 @@ export interface ExperienceProject {
 
 export interface ExperienceRole {
   title: string;
+  department?: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
   end_date: string | null; //ISO 8601 date format: YYYY-MM-DD
   description: string[];
@@ -48,7 +49,6 @@ export interface ExperienceRole {
 
 export interface ExperienceItem {
   company: string;
-  department?: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
   end_date: string; //ISO 8601 date format: YYYY-MM-DD
   location: GeographicLocation;
@@ -60,10 +60,6 @@ export type ExperienceData = ExperienceItem[];
 // ------------------------
 // Education
 // ------------------------
-export interface Grade {
-  subject: string;
-  score: string;
-}
 
 export interface EducationItem {
   degree: string;
@@ -72,7 +68,7 @@ export interface EducationItem {
   graduation_date: string;
   thesis?: string;
   erasmus?: string;
-  grades?: Grade[];
+  description?: string[];
 }
 
 export type EducationData = EducationItem[];

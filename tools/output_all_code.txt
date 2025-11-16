@@ -233,6 +233,24 @@ export default defineConfig({
 })
 
 
+--- research/design.md ---
+## Color palette
+
+![Main color palette](./images/DK_Colours-01.jpg)
+
+Created by: https://www.paulaballesteros.com
+
+
+
+--- research/technical.md ---
+## Color palette
+
+![Main color palette](./images/DK_Colours-01.jpg)
+
+Created by: https://www.paulaballesteros.com
+
+
+
 --- tools/config.json ---
 {
   "include_extensions": [".tsx", ".ts", ".json", ".js", ".css", ".md", ".html"],
@@ -476,6 +494,7 @@ export interface ExperienceProject {
 
 export interface ExperienceRole {
   title: string;
+  department?: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
   end_date: string | null; //ISO 8601 date format: YYYY-MM-DD
   description: string[];
@@ -486,7 +505,6 @@ export interface ExperienceRole {
 
 export interface ExperienceItem {
   company: string;
-  department?: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
   end_date: string; //ISO 8601 date format: YYYY-MM-DD
   location: GeographicLocation;
@@ -498,10 +516,6 @@ export type ExperienceData = ExperienceItem[];
 // ------------------------
 // Education
 // ------------------------
-export interface Grade {
-  subject: string;
-  score: string;
-}
 
 export interface EducationItem {
   degree: string;
@@ -510,7 +524,7 @@ export interface EducationItem {
   graduation_date: string;
   thesis?: string;
   erasmus?: string;
-  grades?: Grade[];
+  description?: string[];
 }
 
 export type EducationData = EducationItem[];
@@ -664,9 +678,6 @@ const Skills: React.FC = () => {
 
   return (
     <Box sx={{ margin: { xs: 2, sm: 3 } }}>
-      <Typography variant="h5" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem' } }}>
-        Skills & Technical Skills
-      </Typography>
 
       {skillsData.skills.map((category: any, idx: number) => (
         <Box key={idx} sx={{ marginBottom: 2 }}>
@@ -815,17 +826,25 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
       <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
-        <Typography variant="h5" gutterBottom color="primary.main">
-          {experience.company} {experience.department ? `— ${experience.department}` : ""}
+        <Typography variant="h5" sx={{ 
+        fontWeight: 700,
+        color: "primary.main",
+        marginBottom: 1
+        }}>
+              {experience.company}
         </Typography>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
           {experience.location.display} • {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
         {experience.roles.map((role: ExperienceRole, i) => (
-          <Box key={i} sx={{ mt: 2, mb: 1 }}>
-            <Typography variant="h6" color="text.primary">
-              {role.title}
+          <Box key={i} sx={{ marginTop: 2, marginBottom: 1 }}>
+            <Typography variant="h6" sx={{ 
+            fontWeight: 600,
+            color: "text.primary",
+            marginBottom: 0.5
+            }}>
+              {role.title} {" | "} {role.department}
             </Typography>
             {role.start_date && (
               <Typography variant="subtitle2" color="text.secondary">
@@ -834,7 +853,16 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
             )}
 
             {(role.description || []).length > 0 && (
-              <Box component="ul" sx={{ pl: 2, mt: 1 }}>
+              <Box component="ul" sx={{ 
+                paddingLeft: 2, 
+                marginTop: 1,
+                marginLeft: 1,
+                '& li': {
+                    marginBottom: 1.5,
+                    lineHeight: 1.4,
+                    paddingLeft: 1,
+                }
+                }}>
                 {(role.description || []).map((desc, j) => (
                   <li key={j}>
                     <ReactMarkdown components={{ p: ({ children }) => <span>{children}</span> }}>
@@ -931,6 +959,85 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 };
 
 export default LoadingSpinner;
+
+--- src/components/EducationCard.tsx ---
+import React, { memo } from "react";
+import { Card, CardContent, Typography, Box } from "@mui/material";
+import ReactMarkdown from "react-markdown";
+import type { EducationItem } from "../types";
+import { formatDateForDisplay } from '../utils/dateUtils';
+
+interface EducationCardProps {
+  education: EducationItem;
+}
+
+/**
+ * EducationCard component displays education information with consistent styling
+ * Matches ExperienceCard design for visual consistency across the CV
+ * Handles optional thesis and grades content flexibly
+ */
+const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
+  return (
+    <Card sx={{ mb: 3 }} elevation={2}>
+      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+        {/* Institution name - styled to match company names in ExperienceCard */}
+        <Typography variant="h5" sx={{ 
+          fontWeight: 700,
+          color: "primary.main",
+          marginBottom: 1
+        }}>
+          {education.institution}
+        </Typography>
+        
+        {/* Location and graduation date - matches experience card subtitle styling */}
+        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+          {education.location.display} • {formatDateForDisplay(education.graduation_date)}
+        </Typography>
+
+        {/* Degree title - styled to match role titles in ExperienceCard */}
+        <Typography variant="h6" sx={{ 
+          fontWeight: 600,
+          color: "text.primary",
+          marginBottom: 1
+        }}>
+          {education.degree}
+        </Typography>
+
+        {/* Optional content section for thesis and grades */}
+        {/* Uses same list styling as ExperienceCard for consistency */}
+            <Box component="ul" sx={{ 
+            paddingLeft: 2, 
+            marginTop: 1,
+            marginLeft: 1,
+            '& li': {
+                marginBottom: 1.5,
+                lineHeight: 1.4,
+                paddingLeft: 1,
+            }
+        }}>
+          {/* Display thesis as first bullet point if provided */}
+          {education.thesis && (
+            <li>
+              <ReactMarkdown>
+                {`**Thesis:** ${education.thesis}`}
+              </ReactMarkdown>
+            </li>
+          )}
+          
+          {/* Display grades as additional bullet points if provided */}
+          {/* Maps through grades array to show subject-score pairs */}
+          {education.description && education.description.map((item, index) => (
+            <li key={index}>
+                <ReactMarkdown>{item}</ReactMarkdown>
+            </li>
+          ))}
+        </Box>
+      </CardContent>
+    </Card>
+  );
+});
+
+export default EducationCard;
 
 --- src/theme/theme.ts ---
 import { createTheme } from "@mui/material/styles";
@@ -1129,13 +1236,8 @@ export default theme;
       "osm_id": "relation/14863884"
     },
     "graduation_date": "2020-06-01",
-    "grades": [
-      { "subject": "overall", "score": "Distinction (80%)" },
-      { "subject": "Machine Learning", "score": "95%" },
-      { "subject": "Data Mining", "score": "88%" },
-      { "subject": "Statistical Analysis and Modelling", "score": "89%" }
-    ],
-    "thesis": "A clustering based approach to segmenting user activity within an SaaS application"
+    "thesis": "A clustering based approach to segmenting user activity within an SaaS application",
+    "description": ["Overall: Distinction (80%) | Machine Learining: 95% | Data Mining: 88% | Statistical Analysis and Modelling: 89%"]
   },
   {
     "institution": "University of the Basque Country",
@@ -1145,9 +1247,7 @@ export default theme;
       "coordinates": {"lat": 43.31114, "lng": -2.01015},
       "osm_id": "way/140595757"
     },    "graduation_date": "2010-06-01",
-    "grades": [
-      { "subject": "overall", "score": "75%" }
-    ],
+    "description": ["Overall: 75%"],
     "erasmus": "University of Economics, Prague, CZ"
   }
 ]
@@ -1157,7 +1257,6 @@ export default theme;
 [
   {
     "company": "Amazon",
-    "department": "Operations - EU ACES",
     "location": {
       "display": "Barcelona, Spain",
       "coordinates": {"lat": 41.40177, "lng": 2.19181},
@@ -1168,6 +1267,7 @@ export default theme;
     "roles": [
       {
         "title": "Business Intelligence Engineer II (L5)",
+        "department": "Operations - EU ACES",
         "start_date": "2024-01-01",
         "end_date": null,
         "description": [
@@ -1182,6 +1282,7 @@ export default theme;
       },
       {
         "title": "Business Intelligence Engineer I (L4)",
+        "department": "Operations - EU ACES",
         "start_date": "2021-06-01",
         "end_date": "2023-12-31",
         "location": {
@@ -1211,6 +1312,7 @@ export default theme;
     "roles": [
       {
         "title": "Data Analyst",
+        "department": "Digital Marketing",
         "start_date": "2019-09-01",
         "end_date": "2021-05-31",
         "description": [
@@ -1225,6 +1327,7 @@ export default theme;
       },
       {
         "title": "Project Manager",
+        "department": "Sales",
         "start_date": "2018-01-01",
         "end_date": "2019-08-31",
         "description": [
@@ -1248,6 +1351,7 @@ export default theme;
     "roles": [
       {
         "title": "Analyst Intern, Corporate Social Responsibility",
+        "department": "Community Affairs",
         "start_date": "2017-01-01",
         "end_date": "2017-12-31",
         "description": [
@@ -1274,6 +1378,7 @@ export default theme;
         "start_date": "2012-01-01",
         "end_date": "2016-12-31",
         "title": "International Transport Manager",
+        "department": "Operations",
         "description": [
           "Managed portfolio of 50 clients with an annual revenue of 3 MM, while managing a fleet of 50 trucks across Europe."
         ],
@@ -1629,11 +1734,12 @@ import SkillChip from "../components/SkillChip";
 import ExperienceCard from "../components/ExperienceCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Skills from "../sections/Skills";
+import EducationCard from "../components/EducationCard";
 
 import { formatDateForDisplay } from "../utils/dateUtils"
 
 // Types
-import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem, Grade } from "../types";
+import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem } from "../types";
 
 const CVPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -1660,7 +1766,7 @@ const CVPage: React.FC = () => {
   return (
     <Box sx={{ padding: 3 }}>
       {/* Bio Section - Manual implementation with cyan color */}
-      <Box sx={{ marginBottom: 3 }}>
+      <Box sx={{ marginBottom: 6 }}>
         <Typography variant="h4" gutterBottom color="primary.main">
           {bio.name}
         </Typography>
@@ -1685,8 +1791,15 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Work Experience */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
+      <Box sx={{ marginBottom: 6 }}>
+        <Typography variant="h4" sx={{ 
+          marginBottom: 4,
+          fontWeight: 700,
+          color: "primary.main",
+          borderBottom: "2px solid",
+          borderColor: "primary.main",
+          paddingBottom: 1
+        }}>
           Work Experience
         </Typography>
         {experience.map((exp, idx) => (
@@ -1695,54 +1808,25 @@ const CVPage: React.FC = () => {
       </Box>
 
       {/* Education */}
-      <Box sx={{ marginBottom: 3 }}>
+      <Box sx={{ marginBottom: 6 }}>
         <Typography variant="h4" gutterBottom color="primary.main">
           Education
         </Typography>
         {education.map((edu: EducationItem, idx) => (
-          <Card key={idx} sx={{ marginBottom: 2 }}>
-            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
-              <Typography variant="h6" sx={{ lineHeight: 1.3 }}>
-                {edu.degree} — {edu.institution}
-              </Typography>
-              <Typography variant="subtitle2" color="text.secondary">
-                {edu.location.display}, {formatDateForDisplay(edu.graduation_date)}
-              </Typography>
-              
-              <Box sx={{ marginTop: 1 }}>
-                {edu.thesis && (
-                  <Box sx={{ marginBottom: 0.5 }}>
-                    <ReactMarkdown
-                      components={{
-                        p: ({ children }) => (
-                          <Typography variant="body2" sx={{ marginBottom: 0.5 }}>
-                            {children}
-                          </Typography>
-                        ),
-                      }}
-                    >
-                      {`**Thesis:** ${edu.thesis}`}
-                    </ReactMarkdown>
-                  </Box>
-                )}
-                {(edu.grades || []).length > 0 && (
-                  <Box>
-                    {(edu.grades || []).map((grade: Grade, g) => (
-                      <Typography key={g} variant="body2">
-                        <strong>{grade.subject}:</strong> {grade.score}
-                      </Typography>
-                    ))}
-                  </Box>
-                )}
-              </Box>
-            </CardContent>
-          </Card>
+          <EducationCard key={idx} education={edu} />
         ))}
       </Box>
 
       {/* Skills & Technical Skills */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
+      <Box sx={{ marginBottom: 6 }}>
+        <Typography variant="h4" sx={{ 
+          marginBottom: 4,
+          fontWeight: 700,
+          color: "primary.main",
+          borderBottom: "2px solid",
+          borderColor: "primary.main",
+          paddingBottom: 1
+        }}>
           Skills & Technical Skills
         </Typography>
         <Skills />
@@ -1757,8 +1841,8 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 32
-Total Characters: 50776
+Files Parsed: 35
+Total Characters: 52856
 
 File List:
 ----------------------------------------
@@ -1766,28 +1850,31 @@ README.md: 1580 characters
 eslint.config.js: 621 characters
 index.html: 361 characters
 package.json: 883 characters
+research/design.md: 115 characters
+research/technical.md: 115 characters
 src/App.css: 606 characters
 src/App.tsx: 1649 characters
-src/components/ExperienceCard.tsx: 2396 characters
+src/components/EducationCard.tsx: 2648 characters
+src/components/ExperienceCard.tsx: 2796 characters
 src/components/LoadingSpinner.tsx: 872 characters
 src/components/SkillChip.tsx: 624 characters
 src/data/bio.json: 566 characters
-src/data/education.json: 1108 characters
-src/data/experience.json: 5472 characters
+src/data/education.json: 944 characters
+src/data/experience.json: 5675 characters
 src/data/projects.json: 6935 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 435 characters
 src/pages/AboutMePage.tsx: 1514 characters
-src/pages/CVPage.tsx: 4433 characters
+src/pages/CVPage.tsx: 3403 characters
 src/pages/ProjectsPage.tsx: 3217 characters
 src/sections/Bio.tsx: 1708 characters
 src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
 src/sections/ProjectsPreview.tsx: 385 characters
-src/sections/Skills.tsx: 1871 characters
+src/sections/Skills.tsx: 1721 characters
 src/theme/theme.ts: 4292 characters
-src/types.ts: 1989 characters
+src/types.ts: 1932 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 202 characters
 tsconfig.app.json: 763 characters
@@ -1796,6 +1883,6 @@ tsconfig.node.json: 653 characters
 vite.config.ts: 161 characters
 
 Generated at:
-Local: 2025-11-16 09:42:47 
-UTC:   2025-11-16 08:42:47 UTC
-Timestamp: 1763282567
+Local: 2025-11-16 12:10:32 
+UTC:   2025-11-16 11:10:32 UTC
+Timestamp: 1763291432

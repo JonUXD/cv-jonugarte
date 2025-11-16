@@ -142,25 +142,25 @@ const theme = createTheme({
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
       fontWeight: 600,
-      fontSize: "2rem",
+      fontSize: "1.5rem",
     },
     h5: {
       fontWeight: 600,
-      fontSize: "1.5rem",
+      fontSize: "1.25rem",
     },
     h6: {
       fontWeight: 500,
-      fontSize: "1.25rem",
+      fontSize: "1.1rem",
     },
     body1: {
-      fontSize: "1rem",
-      lineHeight: 1.6,
-    },
-    body2: {
-      fontSize: "0.875rem",
+      fontSize: "0.9rem",
       lineHeight: 1.5,
     },
-  },
+    body2: {
+      fontSize: "0.8rem",
+      lineHeight: 1.4,
+    },
+  },  
   components: {
     MuiCard: {
       styleOverrides: {
@@ -168,6 +168,15 @@ const theme = createTheme({
           boxShadow: "0 2px 8px rgba(5, 219, 219, 0.1)",
           border: "1px solid #DFDFDF",
           borderRadius: 8,
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          marginBottom: 1,      // normal spacing between items
+          lineHeight: 1.5,      // standard readable line height
+          paddingLeft: 0.5,     // tight bullet alignment
         },
       },
     },

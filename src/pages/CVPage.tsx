@@ -11,11 +11,12 @@ import SkillChip from "../components/SkillChip";
 import ExperienceCard from "../components/ExperienceCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Skills from "../sections/Skills";
+import EducationCard from "../components/EducationCard";
 
 import { formatDateForDisplay } from "../utils/dateUtils"
 
 // Types
-import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem, Grade } from "../types";
+import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem } from "../types";
 
 const CVPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -68,7 +69,14 @@ const CVPage: React.FC = () => {
 
       {/* Work Experience */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
+        <Typography variant="h4" sx={{ 
+          marginBottom: 4,
+          fontWeight: 700,
+          color: "primary.main",
+          borderBottom: "2px solid",
+          borderColor: "primary.main",
+          paddingBottom: 1
+        }}>
           Work Experience
         </Typography>
         {experience.map((exp, idx) => (
@@ -82,49 +90,20 @@ const CVPage: React.FC = () => {
           Education
         </Typography>
         {education.map((edu: EducationItem, idx) => (
-          <Card key={idx} sx={{ marginBottom: 2 }}>
-            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
-              <Typography variant="h6" sx={{ lineHeight: 1.3 }}>
-                {edu.degree} — {edu.institution}
-              </Typography>
-              <Typography variant="subtitle2" color="text.secondary">
-                {edu.location.display}, {formatDateForDisplay(edu.graduation_date)}
-              </Typography>
-              
-              <Box sx={{ marginTop: 1 }}>
-                {edu.thesis && (
-                  <Box sx={{ marginBottom: 0.5 }}>
-                    <ReactMarkdown
-                      components={{
-                        p: ({ children }) => (
-                          <Typography variant="body2" sx={{ marginBottom: 0.5 }}>
-                            {children}
-                          </Typography>
-                        ),
-                      }}
-                    >
-                      {`**Thesis:** ${edu.thesis}`}
-                    </ReactMarkdown>
-                  </Box>
-                )}
-                {(edu.grades || []).length > 0 && (
-                  <Box>
-                    {(edu.grades || []).map((grade: Grade, g) => (
-                      <Typography key={g} variant="body2">
-                        <strong>{grade.subject}:</strong> {grade.score}
-                      </Typography>
-                    ))}
-                  </Box>
-                )}
-              </Box>
-            </CardContent>
-          </Card>
+          <EducationCard key={idx} education={edu} />
         ))}
       </Box>
 
       {/* Skills & Technical Skills */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
+        <Typography variant="h4" sx={{ 
+          marginBottom: 4,
+          fontWeight: 700,
+          color: "primary.main",
+          borderBottom: "2px solid",
+          borderColor: "primary.main",
+          paddingBottom: 1
+        }}>
           Skills & Technical Skills
         </Typography>
         <Skills />

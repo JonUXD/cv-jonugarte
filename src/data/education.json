@@ -8,13 +8,8 @@
       "osm_id": "relation/14863884"
     },
     "graduation_date": "2020-06-01",
-    "grades": [
-      { "subject": "overall", "score": "Distinction (80%)" },
-      { "subject": "Machine Learning", "score": "95%" },
-      { "subject": "Data Mining", "score": "88%" },
-      { "subject": "Statistical Analysis and Modelling", "score": "89%" }
-    ],
-    "thesis": "A clustering based approach to segmenting user activity within an SaaS application"
+    "thesis": "A clustering based approach to segmenting user activity within an SaaS application",
+    "description": ["Overall: Distinction (80%) | Machine Learining: 95% | Data Mining: 88% | Statistical Analysis and Modelling: 89%"]
   },
   {
     "institution": "University of the Basque Country",
@@ -24,9 +19,7 @@
       "coordinates": {"lat": 43.31114, "lng": -2.01015},
       "osm_id": "way/140595757"
     },    "graduation_date": "2010-06-01",
-    "grades": [
-      { "subject": "overall", "score": "75%" }
-    ],
+    "description": ["Overall: 75%"],
     "erasmus": "University of Economics, Prague, CZ"
   }
 ]

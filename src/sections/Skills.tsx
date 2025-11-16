@@ -12,9 +12,6 @@ const Skills: React.FC = () => {
 
   return (
     <Box sx={{ margin: { xs: 2, sm: 3 } }}>
-      <Typography variant="h5" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem' } }}>
-        Skills & Technical Skills
-      </Typography>
 
       {skillsData.skills.map((category: any, idx: number) => (
         <Box key={idx} sx={{ marginBottom: 2 }}>
