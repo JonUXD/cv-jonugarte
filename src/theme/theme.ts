@@ -171,6 +171,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: "16px",
+          '@media (max-width:600px)': {
+            padding: "12px",
+          },
+        },
+      },
+    },
     MuiListItem: {
       styleOverrides: {
         root: {

@@ -16,7 +16,7 @@ interface ExperienceCardProps {
 const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
-      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+      <CardContent>
         <Typography variant="h5" sx={{ 
         fontWeight: 700,
         color: "primary.main",

@@ -16,7 +16,7 @@ interface EducationCardProps {
 const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
-      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+      <CardContent>
         {/* Institution name - styled to match company names in ExperienceCard */}
         <Typography variant="h5" sx={{ 
           fontWeight: 700,

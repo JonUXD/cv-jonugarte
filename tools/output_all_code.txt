@@ -825,7 +825,7 @@ interface ExperienceCardProps {
 const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
-      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+      <CardContent>
         <Typography variant="h5" sx={{ 
         fontWeight: 700,
         color: "primary.main",
@@ -857,11 +857,6 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
                 paddingLeft: 2, 
                 marginTop: 1,
                 marginLeft: 1,
-                '& li': {
-                    marginBottom: 1.5,
-                    lineHeight: 1.4,
-                    paddingLeft: 1,
-                }
                 }}>
                 {(role.description || []).map((desc, j) => (
                   <li key={j}>
@@ -965,7 +960,7 @@ import React, { memo } from "react";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { EducationItem } from "../types";
-import { formatDateForDisplay } from '../utils/dateUtils';
+import { formatDateForDisplay } from "../utils/dateUtils";
 
 interface EducationCardProps {
   education: EducationItem;
@@ -979,7 +974,7 @@ interface EducationCardProps {
 const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
-      <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+      <CardContent>
         {/* Institution name - styled to match company names in ExperienceCard */}
         <Typography variant="h5" sx={{ 
           fontWeight: 700,
@@ -1009,11 +1004,6 @@ const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
             paddingLeft: 2, 
             marginTop: 1,
             marginLeft: 1,
-            '& li': {
-                marginBottom: 1.5,
-                lineHeight: 1.4,
-                paddingLeft: 1,
-            }
         }}>
           {/* Display thesis as first bullet point if provided */}
           {education.thesis && (
@@ -1184,25 +1174,25 @@ const theme = createTheme({
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
       fontWeight: 600,
-      fontSize: "2rem",
+      fontSize: "1.5rem",
     },
     h5: {
       fontWeight: 600,
-      fontSize: "1.5rem",
+      fontSize: "1.25rem",
     },
     h6: {
       fontWeight: 500,
-      fontSize: "1.25rem",
+      fontSize: "1.1rem",
     },
     body1: {
-      fontSize: "1rem",
-      lineHeight: 1.6,
-    },
-    body2: {
-      fontSize: "0.875rem",
+      fontSize: "0.9rem",
       lineHeight: 1.5,
     },
-  },
+    body2: {
+      fontSize: "0.8rem",
+      lineHeight: 1.4,
+    },
+  },  
   components: {
     MuiCard: {
       styleOverrides: {
@@ -1210,6 +1200,25 @@ const theme = createTheme({
           boxShadow: "0 2px 8px rgba(5, 219, 219, 0.1)",
           border: "1px solid #DFDFDF",
           borderRadius: 8,
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: "16px",
+          '@media (max-width:600px)': {
+            padding: "12px",
+          },
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          marginBottom: 1,      // normal spacing between items
+          lineHeight: 1.5,      // standard readable line height
+          paddingLeft: 0.5,     // tight bullet alignment
         },
       },
     },
@@ -1842,7 +1851,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 35
-Total Characters: 52856
+Total Characters: 52981
 
 File List:
 ----------------------------------------
@@ -1854,8 +1863,8 @@ research/design.md: 115 characters
 research/technical.md: 115 characters
 src/App.css: 606 characters
 src/App.tsx: 1649 characters
-src/components/EducationCard.tsx: 2648 characters
-src/components/ExperienceCard.tsx: 2796 characters
+src/components/EducationCard.tsx: 2483 characters
+src/components/ExperienceCard.tsx: 2611 characters
 src/components/LoadingSpinner.tsx: 872 characters
 src/components/SkillChip.tsx: 624 characters
 src/data/bio.json: 566 characters
@@ -1873,7 +1882,7 @@ src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
 src/sections/ProjectsPreview.tsx: 385 characters
 src/sections/Skills.tsx: 1721 characters
-src/theme/theme.ts: 4292 characters
+src/theme/theme.ts: 4767 characters
 src/types.ts: 1932 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 202 characters
@@ -1883,6 +1892,6 @@ tsconfig.node.json: 653 characters
 vite.config.ts: 161 characters
 
 Generated at:
-Local: 2025-11-16 12:10:32 
-UTC:   2025-11-16 11:10:32 UTC
-Timestamp: 1763291432
+Local: 2025-11-16 12:49:45 
+UTC:   2025-11-16 11:49:45 UTC
+Timestamp: 1763293785
