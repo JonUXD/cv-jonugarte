@@ -44,7 +44,7 @@ const CVPage: React.FC = () => {
     <Box sx={{ padding: 3 }}>
       {/* Bio Section - Manual implementation with cyan color */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
+        <Typography variant="h4" gutterBottom color="text.main">
           {bio.name}
         </Typography>
         {bio.summary && (
@@ -72,7 +72,7 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" sx={{ 
           marginBottom: 4,
           fontWeight: 700,
-          color: "primary.main",
+          color: "text.main",
           borderBottom: "2px solid",
           borderColor: "primary.main",
           paddingBottom: 1
@@ -86,7 +86,14 @@ const CVPage: React.FC = () => {
 
       {/* Education */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
+        <Typography variant="h4" sx={{ 
+          marginBottom: 4,
+          fontWeight: 700,
+          color: "text.main",
+          borderBottom: "2px solid",
+          borderColor: "primary.main",
+          paddingBottom: 1
+        }}>
           Education
         </Typography>
         {education.map((edu: EducationItem, idx) => (
@@ -99,7 +106,7 @@ const CVPage: React.FC = () => {
         <Typography variant="h4" sx={{ 
           marginBottom: 4,
           fontWeight: 700,
-          color: "primary.main",
+          color: "text.main",
           borderBottom: "2px solid",
           borderColor: "primary.main",
           paddingBottom: 1

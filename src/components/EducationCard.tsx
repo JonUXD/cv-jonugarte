@@ -20,7 +20,7 @@ const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
         {/* Institution name - styled to match company names in ExperienceCard */}
         <Typography variant="h5" sx={{ 
           fontWeight: 700,
-          color: "primary.main",
+          color: "text.main",
           marginBottom: 1
         }}>
           {education.institution}

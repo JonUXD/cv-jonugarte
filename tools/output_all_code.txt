@@ -241,6 +241,38 @@ export default defineConfig({
 Created by: https://www.paulaballesteros.com
 
 
+The full list of colors of color palette:
+
+#05DBDB
+#1D1D1B
+#FFCE61
+#177D89
+#590959
+#16D392
+#DFDFDF
+#FC9B00
+#FF5E54
+#8C979B
+
+Color Palette 1
+Main:
+#05DBDB
+#1D1D1B
+#FFCE61
+Secondary:
+#177D89
+#8C979B
+#DFDFDF
+
+Color Palette 2
+Main:
+#05DBDB
+#1D1D1B
+#FFCE61
+Secondary:
+#FC9B00
+#FF5E54
+#16D392
 
 --- research/technical.md ---
 ## Color palette
@@ -1093,83 +1125,45 @@ declare module '@mui/material/Chip' {
  */
 const theme = createTheme({
   palette: {
-    // Core brand colors
-    primary: {
-      main: "#05DBDB", // Bright cyan - main brand
-      light: "#40E1E1",
-      dark: "#04B6B6",
-      contrastText: "#1D1D1B",
+      // Core brand colors
+      primary: {
+        main: "#05DBDB", // Cyan - Main brand, company names, primary actions
+        contrastText: "#1D1D1B",
+      },
+      secondary: {
+        main: "#FFCE61", // Yellow - Secondary actions, highlights, featured items
+        contrastText: "#1D1D1B",
+      },
+      
+      // Semantic colors repurposed for portfolio usage
+      success: {
+        main: "#177D89", // Teal - Professional elements, skills, education
+        contrastText: "#FFFFFF",
+      },
+      info: {
+        main: "#05DBDB", // Cyan - Brand accents, notifications (reuse primary)
+        contrastText: "#1D1D1B",
+      },
+      warning: {
+        main: "#FFCE61", // Yellow - Important notices, dates, highlights (reuse secondary)
+        contrastText: "#1D1D1B",
+      },
+      error: {
+        main: "#8C979B", // Gray - Secondary/muted elements, less important items
+        contrastText: "#FFFFFF",
+      },
+      
+      // Neutral colors
+      background: {
+        default: "#F8F9FA", // Light background
+        paper: "#FFFFFF", // Cards/surfaces
+      },
+      text: {
+        primary: "#1D1D1B", // Black - All readable text
+        secondary: "#5A5A58", // Dark gray - Secondary text
+      },
+      divider: "#DFDFDF", // Light gray - Borders, dividers
     },
-    accent: {
-      main: "#FFCE61", // Warm yellow - secondary accents
-      light: "#FFD880",
-      dark: "#E6BA57",
-      contrastText: "#1D1D1B",
-    },
-    
-    // Semantic colors for portfolio context
-    highlight: {
-      main: "#14D392", // Mint green - achievements/skills
-      light: "#43DCA7",
-      dark: "#11BA7D",
-      contrastText: "#1D1D1B",
-    },
-    attention: {
-      main: "#FC9B00", // Orange - important notices/dates
-      light: "#FDB033",
-      dark: "#E08A00",
-      contrastText: "#1D1D1B",
-    },
-    alert: {
-      main: "#FF5E54", // Coral red - alerts/errors
-      light: "#FF7E76",
-      dark: "#E0544B",
-      contrastText: "#FFFFFF",
-    },
-    
-    // Additional colors stored for future use
-    vibrantPurple: {
-      main: "#C56AB6", // Creative projects/design
-      light: "#D188C5",
-      dark: "#B15CA3",
-      contrastText: "#FFFFFF",
-    },
-    darkTeal: {
-      main: "#177D89", // Professional/tech skills
-      light: "#4597A1",
-      dark: "#136A74",
-      contrastText: "#FFFFFF",
-    },
-    deepPurple: {
-      main: "#590959", // Deep accents/headings
-      light: "#7A3C7A",
-      dark: "#470747",
-      contrastText: "#FFFFFF",
-    },
-    mutedGray: {
-      main: "#8C979B", // Disabled/secondary text
-      light: "#A3ACAF",
-      dark: "#7A8589",
-      contrastText: "#FFFFFF",
-    },
-    lightGray: {
-      main: "#D1D1D8", // Borders/backgrounds
-      light: "#DEDEE3",
-      dark: "#B9B9C2",
-      contrastText: "#1D1D1B",
-    },
-    
-    // Background and text
-    background: {
-      default: "#FFFFFF",
-      paper: "#F8F9FA",
-    },
-    text: {
-      primary: "#1D1D1B",
-      secondary: "#5A5A58",
-    },
-    divider: "#DFDFDF",
-  },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
     h4: {
@@ -1851,7 +1845,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 35
-Total Characters: 52981
+Total Characters: 52683
 
 File List:
 ----------------------------------------
@@ -1859,7 +1853,7 @@ README.md: 1580 characters
 eslint.config.js: 621 characters
 index.html: 361 characters
 package.json: 883 characters
-research/design.md: 115 characters
+research/design.md: 402 characters
 research/technical.md: 115 characters
 src/App.css: 606 characters
 src/App.tsx: 1649 characters
@@ -1882,7 +1876,7 @@ src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
 src/sections/ProjectsPreview.tsx: 385 characters
 src/sections/Skills.tsx: 1721 characters
-src/theme/theme.ts: 4767 characters
+src/theme/theme.ts: 4182 characters
 src/types.ts: 1932 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 202 characters
@@ -1892,6 +1886,6 @@ tsconfig.node.json: 653 characters
 vite.config.ts: 161 characters
 
 Generated at:
-Local: 2025-11-16 12:49:45 
-UTC:   2025-11-16 11:49:45 UTC
-Timestamp: 1763293785
+Local: 2025-11-16 20:29:35 
+UTC:   2025-11-16 19:29:35 UTC
+Timestamp: 1763321375

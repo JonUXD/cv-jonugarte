@@ -19,7 +19,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
       <CardContent>
         <Typography variant="h5" sx={{ 
         fontWeight: 700,
-        color: "primary.main",
+        color: "text.primary",
         marginBottom: 1
         }}>
               {experience.company}

@@ -44,8 +44,8 @@ const Skills: React.FC = () => {
                 size="small" 
                 color={
                   category.category === "Technical Skills" 
-                    ? "primary"  // Cyan for technical skills
-                    : "accent"   // Yellow for soft skills
+                    ? "primary"
+                    : "secondary"
                 }
               />
             ))}
