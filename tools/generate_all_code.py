@@ -55,11 +55,70 @@ def collect_files_text(root_path):
                     print(f"Warning: Could not read {file_path}: {e}")
     return all_texts, file_stats
 
+def generate_directory_tree(root_path, max_depth=3):
+    """Generate a directory tree structure up to max_depth levels."""
+    tree_lines = []
+    
+    def build_tree(current_path, prefix="", depth=0):
+        if depth > max_depth:
+            return
+            
+        # Get all items in current directory
+        try:
+            items = os.listdir(current_path)
+        except PermissionError:
+            return
+            
+        # Filter out excluded folders and files
+        items = [item for item in items if item not in EXCLUDE_FOLDERS and item not in EXCLUDE_FILES]
+        
+        # Separate directories and files
+        dirs = []
+        files = []
+        for item in items:
+            item_path = os.path.join(current_path, item)
+            if os.path.isdir(item_path):
+                dirs.append(item)
+            else:
+                # Only include files with allowed extensions
+                if is_text_file(item_path) and not should_skip(item_path):
+                    files.append(item)
+        
+        # Sort alphabetically
+        dirs.sort()
+        files.sort()
+        
+        # Add directories to tree
+        for i, dir_name in enumerate(dirs):
+            dir_path = os.path.join(current_path, dir_name)
+            is_last_dir = (i == len(dirs) - 1 and len(files) == 0)
+            connector = "└── " if is_last_dir else "├── "
+            tree_lines.append(f"{prefix}{connector}{dir_name}/")
+            
+            new_prefix = prefix + ("    " if is_last_dir else "│   ")
+            build_tree(dir_path, new_prefix, depth + 1)
+        
+        # Add files to tree
+        for i, file_name in enumerate(files):
+            is_last = (i == len(files) - 1)
+            connector = "└── " if is_last else "├── "
+            tree_lines.append(f"{prefix}{connector}{file_name}")
+    
+    # Start building from project root
+    tree_lines.append(os.path.basename(root_path) + "/")
+    build_tree(root_path)
+    
+    return tree_lines
+
 def main():
     print("Collecting text files...")
     texts, file_stats = collect_files_text(PROJECT_ROOT)
     print(f"Collected {len(texts)} files.")
 
+    # Generate directory tree
+    print("Generating directory structure...")
+    tree_lines = generate_directory_tree(PROJECT_ROOT)
+    
     # Write all code to output file
     print(f"Writing output to {OUTPUT_FILE} ...")
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
@@ -80,6 +139,12 @@ def main():
         for file_path, char_count in sorted(file_stats):
             f.write(f"{file_path}: {char_count} characters\n")
         
+        # Directory structure
+        f.write("\nDirectory Structure:\n")
+        f.write("-" * 40 + "\n")
+        for line in tree_lines:
+            f.write(line + "\n")
+        
         # Timestamps
         local_time = datetime.now()
         utc_time = datetime.utcnow()
@@ -94,6 +159,12 @@ def main():
     print("\nFile Character Counts:")
     for file, char_count in file_stats:
         print(f"{file}: {char_count} characters")
+    
+    # Print directory structure to console
+    print("\nDirectory Structure:")
+    print("-" * 40)
+    for line in tree_lines:
+        print(line)
 
 if __name__ == "__main__":
     main()

@@ -16,12 +16,14 @@ export interface Bio {
 // ------------------------
 export interface Project {
   title: string;
-  company: string;
+  projectType: "company" | "personal" | "academic";
+  company?: string;
   date: string;
   summary: string;
   description: string;
   highlights?: string[];
   stack?: string[];
+  screenshot?: string;
   experience_ref?: string;
   link?: string;
 }

@@ -1,6 +1,7 @@
 [
   {
     "title": "Real-time Warehouse Monitoring Tool",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2024-08-01",
     "summary": "Monitors warehouse fullness across EU fulfillment centers in real time.",
@@ -10,6 +11,7 @@
   },
   {
     "title": "Daily Onboarding Reporting Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2024-05-01",
     "summary": "Dashboard tracking new hire onboarding programs across EU fulfillment centers.",
@@ -19,6 +21,7 @@
   },
   {
     "title": "Automated Market Monitoring Tool",
+    "projectType": "company",
     "company": "Datasite",
     "date": "2019-11-01",
     "summary": "Centralized tool to track M&A market activity using multiple financial data sources.",
@@ -28,6 +31,7 @@
   },
   {
     "title": "Amazon Central Operations Cost Optimization",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2024-11-01",
     "summary": "Reduced AWS infrastructure costs for live data pipelines in operations.",
@@ -43,6 +47,7 @@
   },
   {
     "title": "Employee Engagement Analytics Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-10-01",
     "summary": "Improved onboarding experience for warehouse employees across EU fulfillment centers.",
@@ -58,6 +63,7 @@
   },
   {
     "title": "Performance and Learning Metrics Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-02-01",
     "summary": "Centralized dashboard for warehouse permissions and training compliance.",
@@ -73,6 +79,7 @@
   },
   {
     "title": "Warehouse Throughput Optimization",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-07-01",
     "summary": "Live tool to reduce dock congestion and optimize container flow.",
@@ -88,6 +95,7 @@
   },
   {
     "title": "Training Effectiveness Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-10-01",
     "summary": "Centralized platform to measure and improve training impact.",
@@ -103,6 +111,7 @@
   },
   {
     "title": "Language Training Effectiveness Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-04-01",
     "summary": "Enhanced onboarding for non-native language speakers.",
@@ -118,6 +127,7 @@
   },
   {
     "title": "Cross-Skill Training Utilization Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2025-06-01",
     "summary": "Tool to track and optimize cross-training of warehouse associates.",

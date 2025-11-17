@@ -508,12 +508,14 @@ export interface Bio {
 // ------------------------
 export interface Project {
   title: string;
-  company: string;
+  projectType: "company" | "personal" | "academic";
+  company?: string;
   date: string;
   summary: string;
   description: string;
   highlights?: string[];
   stack?: string[];
+  screenshot?: string;
   experience_ref?: string;
   link?: string;
 }
@@ -533,6 +535,7 @@ export interface ExperienceRole {
   department?: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
   end_date: string | null; //ISO 8601 date format: YYYY-MM-DD
+  location: GeographicLocation;
   description: string[];
   stack?: string[];
   projects?: ExperienceProject[];
@@ -543,7 +546,7 @@ export interface ExperienceItem {
   company: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
   end_date: string; //ISO 8601 date format: YYYY-MM-DD
-  location: GeographicLocation;
+  location?: GeographicLocation;
   roles: ExperienceRole[];
 }
 
@@ -893,7 +896,7 @@ import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import SkillChip from "./SkillChip";
 import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
-import CompanyIcon from "./CompanyIcon"; // ← Add this import
+import CompanyIcon from "./CompanyIcon";
 
 interface ExperienceCardProps {
   experience: ExperienceItem;
@@ -903,7 +906,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
   return (
     <Card sx={{ mb: 3 }} elevation={2}>
       <CardContent>
-        {/* Updated Company Header with Icon */}
+        {/* Company Header */}
         <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
           <CompanyIcon companyName={experience.company}/>
           <Typography variant="h5" sx={{ 
@@ -914,13 +917,15 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
           </Typography>
         </Box>
         
+        {/* Company-level date range */}
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          {experience.location.display} • {formatDateRange(experience.start_date, experience.end_date)}
+          {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
-        {/* Rest of your existing code remains the same */}
+        {/* Roles */}
         {experience.roles.map((role: ExperienceRole, i) => (
           <Box key={i} sx={{ marginTop: 2, marginBottom: 1 }}>
+            {/* Role title with location */}
             <Typography variant="h6" sx={{ 
               fontWeight: 600,
               color: "text.primary",
@@ -928,12 +933,13 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
             }}>
               {role.title} {" | "} {role.department}
             </Typography>
-            {role.start_date && (
-              <Typography variant="subtitle2" color="text.secondary">
-                {formatDateRange(role.start_date, role.end_date)}
-              </Typography>
-            )}
+            
+            {/* Role-specific location and dates */}
+            <Typography variant="subtitle2" color="text.secondary">
+              {role.location.display} • {formatDateRange(role.start_date, role.end_date)}
+            </Typography>
 
+            {/* Description */}
             {(role.description || []).length > 0 && (
               <Box component="ul" sx={{ 
                 paddingLeft: 2, 
@@ -950,6 +956,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
               </Box>
             )}
 
+            {/* Tech stack */}
             {(role.stack || []).length > 0 && (
               <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", mt: 1, gap: 0.5 }}>
                 {(role.stack || []).map((tech, k) => (
@@ -996,6 +1003,168 @@ const SkillChip: React.FC<SkillChipProps> = memo(({
 });
 
 export default SkillChip;
+
+--- src/components/ProjectCard.tsx ---
+import React from "react";
+import { Card, CardContent, Typography, Box, Stack, Chip } from "@mui/material";
+import { Project } from "../types";
+import { formatDateForDisplay } from "../utils/dateUtils";
+
+interface ProjectCardProps {
+  project: Project;
+}
+
+const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+  // Get display context based on project type
+  const getProjectContext = (): string => {
+    switch (project.projectType) {
+      case "company":
+        return project.company || "Company Project";
+      case "personal":
+        return "Personal Project";
+      default:
+        return "Project";
+    }
+  };
+
+  // Get icon based on project type
+  const getProjectIcon = (): string => {
+    switch (project.projectType) {
+      case "personal":
+        return "⭐";
+      case "academic":
+        return "🎓";
+      case "company":
+      default:
+        return "🏢";
+    }
+  };
+
+  const context = getProjectContext();
+  const icon = getProjectIcon();
+  const displayDate = formatDateForDisplay(project.date);
+
+  return (
+    <Card 
+      sx={{ 
+        height: 280, // Fixed height as requested
+        display: "flex",
+        flexDirection: "column",
+        cursor: "pointer",
+        transition: "all 0.2s ease-in-out",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          boxShadow: 3,
+        }
+      }}
+    >
+      <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {/* Header with Icon, Title, and Context */}
+        <Box sx={{ display: "flex", alignItems: "flex-start", mb: 1 }}>
+          <Typography variant="h4" sx={{ mr: 1, lineHeight: 1 }}>
+            {icon}
+          </Typography>
+          <Box sx={{ flex: 1 }}>
+            <Typography 
+              variant="h6" 
+              sx={{ 
+                fontWeight: 600,
+                lineHeight: 1.2,
+                mb: 0.5
+              }}
+            >
+              {project.title}
+            </Typography>
+            <Typography 
+              variant="body2" 
+              color="text.secondary"
+              sx={{ fontSize: "0.8rem" }}
+            >
+              {context} • {displayDate}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Tech Stack Chips */}
+        {(project.stack || []).length > 0 && (
+          <Stack 
+            direction="row" 
+            spacing={0.5} 
+            sx={{ 
+              flexWrap: "wrap",
+              gap: 0.5,
+              mb: 1.5
+            }}
+          >
+            {(project.stack || []).slice(0, 4).map((tech, index) => (
+              <Chip 
+                key={index}
+                label={tech}
+                size="small"
+                color="primary"
+                variant="outlined"
+                sx={{ 
+                  fontSize: "0.7rem",
+                  height: 24
+                }}
+              />
+            ))}
+            {(project.stack || []).length > 4 && (
+              <Chip 
+                label={`+${project.stack.length - 4}`}
+                size="small"
+                color="secondary"
+                sx={{ 
+                  fontSize: "0.7rem",
+                  height: 24
+                }}
+              />
+            )}
+          </Stack>
+        )}
+
+        {/* Summary - Fixed height with overflow */}
+        <Box sx={{ flex: 1, overflow: "hidden" }}>
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              lineHeight: 1.4,
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden"
+            }}
+          >
+            {project.summary}
+          </Typography>
+        </Box>
+
+        {/* View Details Button */}
+        <Box 
+          sx={{ 
+            mt: 1.5,
+            pt: 1,
+            borderTop: 1,
+            borderColor: "divider"
+          }}
+        >
+          <Typography 
+            variant="button" 
+            color="primary"
+            sx={{ 
+              fontSize: "0.8rem",
+              fontWeight: 600
+            }}
+          >
+            View Details →
+          </Typography>
+        </Box>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default ProjectCard;
 
 --- src/components/LoadingSpinner.tsx ---
 import React from 'react';
@@ -1288,11 +1457,6 @@ export default theme;
 [
   {
     "company": "Amazon",
-    "location": {
-      "display": "Barcelona, Spain",
-      "coordinates": {"lat": 41.40177, "lng": 2.19181},
-      "osm_id": "way/445643700"
-  },
     "start_date": "2021-06-01",
     "end_date": null,
     "roles": [
@@ -1301,6 +1465,11 @@ export default theme;
         "department": "Operations - EU ACES",
         "start_date": "2024-01-01",
         "end_date": null,
+        "location": {
+          "display": "Barcelona, Spain",
+          "coordinates": {"lat": 41.40177, "lng": 2.19181},
+          "osm_id": "way/445643700"
+        },
         "description": [
           "Provided the cloud infrastructure to a team of 50+ business analysts and project managers.",
           "Developed the backend of a real time monitoring tool of the warehouse fullness, deployed in all the EU network (30+ warehouses) and used daily by more than 100 users.",
@@ -1333,11 +1502,6 @@ export default theme;
   },
   {
     "company": "Datasite",
-    "location": {
-      "display": "London, United Kingdom",
-      "coordinates": {"lat": 51.52269, "lng": -0.08511},
-      "osm_id": "way/158054319"
-    },
     "start_date": "2018-01-01",
     "end_date": "2021-05-31",
     "roles": [
@@ -1346,6 +1510,11 @@ export default theme;
         "department": "Digital Marketing",
         "start_date": "2019-09-01",
         "end_date": "2021-05-31",
+        "location": {
+          "display": "London, United Kingdom",
+          "coordinates": {"lat": 51.52269, "lng": -0.08511},
+          "osm_id": "way/158054319"
+          },
         "description": [
           "Created a mostly-automated process to identify the transactions hosted in the platform to highlight in the main webpage. The webpage generated over 20 new leads and landed five new deals in the first 6 months (estimated revenue **$300K**).",
           "Created Salesforce reports to identify new leads and opportunities, leading to over 20 business opportunities.",
@@ -1361,6 +1530,11 @@ export default theme;
         "department": "Sales",
         "start_date": "2018-01-01",
         "end_date": "2019-08-31",
+        "location": {
+          "display": "London, United Kingdom",
+          "coordinates": {"lat": 51.52269, "lng": -0.08511},
+          "osm_id": "way/158054319"
+        },
         "description": [
           "Managed over 100 transactions with high profile customers (investment bankers, lawyers) with a combined revenue of $50MM.",
           "Lead training sessions on the use of the platform."
@@ -1372,11 +1546,6 @@ export default theme;
   },
   {
     "company": "UBS Investment Bank",
-    "location": {
-      "display": "London, United Kingdom",
-      "coordinates": {"lat": 51.5190, "lng": -0.08331},
-      "osm_id": "way/420528328"
-    },
     "start_date": "2017-01-01",
     "end_date": "2017-12-31",
     "roles": [
@@ -1385,6 +1554,11 @@ export default theme;
         "department": "Community Affairs",
         "start_date": "2017-01-01",
         "end_date": "2017-12-31",
+        "location": {
+          "display": "London, United Kingdom",
+          "coordinates": {"lat": 51.5190, "lng": -0.08331},
+          "osm_id": "way/420528328"
+        },
         "description": [
           "Managed UBS’s volunteering program for over 10K employees.",
           "Owned the volunteering reporting, tracking each employee’s volunteering hours for UK government organisms.",
@@ -1397,17 +1571,17 @@ export default theme;
   },
   {
     "company": "Bildutruck",
-    "location": {
-      "display": "Irun, Spain",
-      "coordinates": {"lat": 43.33735, "lng": -1.75308},
-      "osm_id": "way/1450968526"
-    },
     "start_date": "2012-01-01",
     "end_date": "2016-12-31",
     "roles": [
       {
         "start_date": "2012-01-01",
         "end_date": "2016-12-31",
+        "location": {
+          "display": "Irun, Spain",
+          "coordinates": {"lat": 43.33735, "lng": -1.75308},
+          "osm_id": "way/1450968526"
+        },
         "title": "International Transport Manager",
         "department": "Operations",
         "description": [
@@ -1425,6 +1599,7 @@ export default theme;
 [
   {
     "title": "Real-time Warehouse Monitoring Tool",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2024-08-01",
     "summary": "Monitors warehouse fullness across EU fulfillment centers in real time.",
@@ -1434,6 +1609,7 @@ export default theme;
   },
   {
     "title": "Daily Onboarding Reporting Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2024-05-01",
     "summary": "Dashboard tracking new hire onboarding programs across EU fulfillment centers.",
@@ -1443,6 +1619,7 @@ export default theme;
   },
   {
     "title": "Automated Market Monitoring Tool",
+    "projectType": "company",
     "company": "Datasite",
     "date": "2019-11-01",
     "summary": "Centralized tool to track M&A market activity using multiple financial data sources.",
@@ -1452,6 +1629,7 @@ export default theme;
   },
   {
     "title": "Amazon Central Operations Cost Optimization",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2024-11-01",
     "summary": "Reduced AWS infrastructure costs for live data pipelines in operations.",
@@ -1467,6 +1645,7 @@ export default theme;
   },
   {
     "title": "Employee Engagement Analytics Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-10-01",
     "summary": "Improved onboarding experience for warehouse employees across EU fulfillment centers.",
@@ -1482,6 +1661,7 @@ export default theme;
   },
   {
     "title": "Performance and Learning Metrics Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-02-01",
     "summary": "Centralized dashboard for warehouse permissions and training compliance.",
@@ -1497,6 +1677,7 @@ export default theme;
   },
   {
     "title": "Warehouse Throughput Optimization",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-07-01",
     "summary": "Live tool to reduce dock congestion and optimize container flow.",
@@ -1512,6 +1693,7 @@ export default theme;
   },
   {
     "title": "Training Effectiveness Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-10-01",
     "summary": "Centralized platform to measure and improve training impact.",
@@ -1527,6 +1709,7 @@ export default theme;
   },
   {
     "title": "Language Training Effectiveness Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2023-04-01",
     "summary": "Enhanced onboarding for non-native language speakers.",
@@ -1542,6 +1725,7 @@ export default theme;
   },
   {
     "title": "Cross-Skill Training Utilization Dashboard",
+    "projectType": "company",
     "company": "Amazon",
     "date": "2025-06-01",
     "summary": "Tool to track and optimize cross-training of warehouse associates.",
@@ -1590,33 +1774,20 @@ export default theme;
 
 --- src/pages/ProjectsPage.tsx ---
 import React, { useState, useEffect } from "react";
+import { Box, Typography, Grid } from "@mui/material";
 import projectsData from "../data/projects.json";
-import ReactMarkdown from "react-markdown";
-import { Card, CardContent, Typography, Stack, Chip, Box } from "@mui/material";
-import type { Project } from "../types";
+import ProjectCard from "../components/ProjectCard";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { formatDateForDisplay } from '../utils/dateUtils';
+import { Project } from "../types";
 
-const projects = projectsData as Project[];
-
-// Group projects by company
-const projectsByCompany = projects.reduce((acc, project) => {
-  if (!acc[project.company]) acc[project.company] = [];
-  acc[project.company].push(project);
-  return acc;
-}, {} as Record<string, Project[]>);
-
-/**
- * ProjectsPage component displays portfolio projects with consistent styling
- */
 const ProjectsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const projects = projectsData as Project[];
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -1625,67 +1796,38 @@ const ProjectsPage: React.FC = () => {
   }
 
   return (
-    <Box sx={{ padding: 2 }}>
-      <Typography variant="h4" gutterBottom sx={{ color: "text.primary" }}>
+    <Box sx={{ padding: 3 }}>
+      <Typography 
+        variant="h4" 
+        gutterBottom 
+        sx={{ 
+          color: "text.primary",
+          mb: 4
+        }}
+      >
         Projects
       </Typography>
 
-      {Object.entries(projectsByCompany).map(([company, companyProjects]) => (
-        <Box key={company} sx={{ marginBottom: 4 }}>
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              marginBottom: 2,
-              color: "text.primary",
-              borderBottom: "1px solid",
-              borderColor: "divider",
-              paddingBottom: 1
-            }}
+      {/* Projects Grid */}
+      <Grid container spacing={3}>
+        {projects.map((project, index) => (
+          <Grid 
+            key={index} 
+            size={{ xs: 12, sm: 6, md: 4 }} // 1 col mobile, 2 tablet, 3 desktop
           >
-            {company}
+            <ProjectCard project={project} />
+          </Grid>
+        ))}
+      </Grid>
+
+      {/* Empty State */}
+      {projects.length === 0 && (
+        <Box sx={{ textAlign: "center", py: 8 }}>
+          <Typography variant="h6" color="text.secondary">
+            No projects found
           </Typography>
-
-          {companyProjects
-            .sort((a, b) => b.date.localeCompare(a.date))
-            .map((project) => (
-              <Card key={project.title} sx={{ marginBottom: 3 }}>
-                <CardContent>
-                  <Typography variant="h6" color="text.secondary">
-                    {project.title}
-                  </Typography>
-                  <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                    {formatDateForDisplay(project.date)}
-                  </Typography>
-
-                  <Box sx={{ marginTop: 1 }}>
-                    <ReactMarkdown>{project.description}</ReactMarkdown>
-                  </Box>
-
-                  {(project.stack || []).length > 0 && (
-                    <Stack 
-                      direction="row" 
-                      spacing={1} 
-                      sx={{ 
-                        flexWrap: "wrap", 
-                        marginTop: 2,
-                        gap: 1 
-                      }}
-                    >
-                      {(project.stack || []).map((tech: string, j: number) => (
-                        <Chip 
-                          key={j} 
-                          label={tech} 
-                          size="small" 
-                          color="primary"
-                        />
-                      ))}
-                    </Stack>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
         </Box>
-      ))}
+      )}
     </Box>
   );
 };
@@ -1890,8 +2032,8 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 36
-Total Characters: 53545
+Files Parsed: 37
+Total Characters: 56800
 
 File List:
 ----------------------------------------
@@ -1905,26 +2047,27 @@ src/App.css: 606 characters
 src/App.tsx: 1649 characters
 src/components/CompanyIcon.tsx: 1633 characters
 src/components/EducationCard.tsx: 1975 characters
-src/components/ExperienceCard.tsx: 2793 characters
+src/components/ExperienceCard.tsx: 2870 characters
 src/components/LoadingSpinner.tsx: 872 characters
+src/components/ProjectCard.tsx: 4197 characters
 src/components/SkillChip.tsx: 624 characters
 src/data/bio.json: 566 characters
 src/data/education.json: 944 characters
-src/data/experience.json: 5675 characters
-src/data/projects.json: 6935 characters
+src/data/experience.json: 5936 characters
+src/data/projects.json: 7235 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 435 characters
 src/pages/AboutMePage.tsx: 1514 characters
 src/pages/CVPage.tsx: 4012 characters
-src/pages/ProjectsPage.tsx: 3217 characters
+src/pages/ProjectsPage.tsx: 1528 characters
 src/sections/Bio.tsx: 1708 characters
 src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
 src/sections/ProjectsPreview.tsx: 385 characters
 src/sections/Skills.tsx: 1526 characters
 src/theme/theme.ts: 3289 characters
-src/types.ts: 1932 characters
+src/types.ts: 2041 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 202 characters
 tsconfig.app.json: 763 characters
@@ -1932,7 +2075,62 @@ tsconfig.json: 119 characters
 tsconfig.node.json: 653 characters
 vite.config.ts: 161 characters
 
+Directory Structure:
+----------------------------------------
+cv-jonugarte/
+├── public/
+├── research/
+│   ├── images/
+│   ├── design.md
+│   └── technical.md
+├── src/
+│   ├── assets/
+│   │   └── icons/
+│   │       └── companies/
+│   ├── components/
+│   │   ├── CompanyIcon.tsx
+│   │   ├── EducationCard.tsx
+│   │   ├── ExperienceCard.tsx
+│   │   ├── LoadingSpinner.tsx
+│   │   ├── ProjectCard.tsx
+│   │   └── SkillChip.tsx
+│   ├── data/
+│   │   ├── bio.json
+│   │   ├── education.json
+│   │   ├── experience.json
+│   │   ├── projects.json
+│   │   └── skills.json
+│   ├── pages/
+│   │   ├── AboutMePage.tsx
+│   │   ├── CVPage.tsx
+│   │   └── ProjectsPage.tsx
+│   ├── sections/
+│   │   ├── Bio.tsx
+│   │   ├── Education.tsx
+│   │   ├── Experience.tsx
+│   │   ├── ProjectsPreview.tsx
+│   │   └── Skills.tsx
+│   ├── theme/
+│   │   └── theme.ts
+│   ├── utils/
+│   │   └── dateUtils.ts
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   └── types.ts
+├── tools/
+│   └── config.json
+├── README.md
+├── eslint.config.js
+├── index.html
+├── package.json
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
+
 Generated at:
-Local: 2025-11-16 23:28:38 
-UTC:   2025-11-16 22:28:38 UTC
-Timestamp: 1763332118
+Local: 2025-11-17 11:48:34 
+UTC:   2025-11-17 10:48:34 UTC
+Timestamp: 1763376514
