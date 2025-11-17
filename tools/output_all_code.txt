@@ -1006,7 +1006,7 @@ const SkillChip: React.FC<SkillChipProps> = memo(({
 export default SkillChip;
 
 --- src/components/ProjectCard.tsx ---
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, Typography, Box, Stack, Chip } from "@mui/material";
 import type { Project } from "../types";
 import { formatDateForDisplay } from "../utils/dateUtils";
@@ -1016,7 +1016,8 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  // Get display context based on project type
+  const [isExpanded, setIsExpanded] = useState(false);
+  
   const getProjectContext = (): string => {
     switch (project.projectType) {
       case "company":
@@ -1030,14 +1031,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }
   };
 
-  // Get icon path based on project type and available icons
   const getProjectIcon = (): string => {
-    // If project has specific icon, use it
     if (project.icon) {
       return project.icon;
     }
     
-    // Fallback to default icons based on project type
     switch (project.projectType) {
       case "personal":
         return "/src/assets/icons/default-personal.svg";
@@ -1050,14 +1048,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   };
 
   const techStack = project.stack || [];
+  const highlights = project.highlights || [];
   const context = getProjectContext();
   const displayDate = formatDateForDisplay(project.date);
   const iconSrc = getProjectIcon();
 
+  // Check if content needs expansion
+  const needsExpand = highlights.length > 2;
+
   return (
     <Card 
       sx={{ 
-        height: 280,
+        height: isExpanded ? 'auto' : 230,
         display: "flex",
         flexDirection: "column",
         cursor: "pointer",
@@ -1068,9 +1070,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         }
       }}
     >
-      <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column", p: 2 }}>
+      <CardContent sx={{ 
+        flex: 1, 
+        display: "flex", 
+        flexDirection: "column", 
+        p: 2,
+        position: 'relative' // ← SIMPLE FIX: Add this
+      }}>
         {/* Header with Icon, Title, and Context */}
-        <Box sx={{ display: "flex", alignItems: "flex-start", mb: 1.5 }}>
+        <Box sx={{ display: "flex", alignItems: "flex-start", mb: 1 }}>
           <Box
             component="img"
             src={iconSrc}
@@ -1108,7 +1116,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
         {/* Tech Stack Chips */}
         {techStack.length > 0 && (
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 1 }}>
             <Stack 
               direction="row" 
               spacing={0.5} 
@@ -1130,30 +1138,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                   }}
                 />
               ))}
-              {techStack.length > 4 && (
-                <Chip 
-                  label={`+${techStack.length - 4}`}
-                  size="small"
-                  color="secondary"
-                  sx={{ 
-                    fontSize: "0.7rem",
-                    height: 22
-                  }}
-                />
-              )}
             </Stack>
           </Box>
         )}
 
-        {/* Summary - Fixed height with overflow */}
-        <Box sx={{ flex: 1, overflow: "hidden", mb: 1 }}>
+        {/* Project Summary */}
+        <Box sx={{ mb: 1 }}>
           <Typography 
             variant="body2" 
             sx={{ 
               lineHeight: 1.4,
-              fontSize: "0.875rem",
+              fontSize: "0.8rem",
               display: "-webkit-box",
-              WebkitLineClamp: 3,
+              WebkitLineClamp: isExpanded ? 'none' : 2,
               WebkitBoxOrient: "vertical",
               overflow: "hidden"
             }}
@@ -1162,25 +1159,69 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           </Typography>
         </Box>
 
-        {/* View Details Button */}
-        <Box 
-          sx={{ 
-            pt: 1,
-            borderTop: 1,
-            borderColor: "divider"
-          }}
-        >
+        {/* Key Highlights - SIMPLIFIED */}
+        {highlights.length > 0 && (
+          <Box sx={{ mb: 1 }}>
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                fontWeight: 600,
+                color: "text.primary",
+                display: 'block',
+                mb: 0.5
+              }}
+            >
+              Highlights:
+            </Typography>
+            <Box sx={{ 
+              maxHeight: isExpanded ? 'none' : 60,
+              overflow: 'hidden'
+            }}>
+              {highlights.slice(0, isExpanded ? highlights.length : 2).map((highlight, index) => (
+                <Typography 
+                  key={index}
+                  variant="caption" 
+                  sx={{ 
+                    lineHeight: 1.3,
+                    mb: 0.25,
+                    display: '-webkit-box',          // ← ADD THESE
+                    WebkitLineClamp: 1,              // ← LIMIT TO 1 LINE
+                    WebkitBoxOrient: 'vertical',     // ←
+                    overflow: 'hidden'               // ←
+                  }}
+                >
+                  • {highlight}
+                </Typography>
+              ))}
+            </Box>
+          </Box>
+        )}
+        
+        {/* Show More Button - SIMPLE POSITIONING */}
+        {needsExpand && !isExpanded && (
           <Typography 
-            variant="button" 
+            variant="caption" 
             color="primary"
             sx={{ 
-              fontSize: "0.75rem",
-              fontWeight: 600
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'block',
+              textAlign: 'center',
+              position: 'absolute',
+              bottom: 8, // ← Fixed distance from bottom
+              left: 16,
+              right: 16,
+              backgroundColor: 'background.paper',
+              py: 0.5
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(true);
             }}
           >
-            View Details →
+            + Show more
           </Typography>
-        </Box>
+        )}
       </CardContent>
     </Card>
   );
@@ -1805,16 +1846,160 @@ export default theme;
 
 
 --- src/pages/ProjectsPage.tsx ---
-import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import React, { useState, useEffect, useMemo } from "react";
+import { 
+  Box, 
+  Typography, 
+  Grid, 
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
+  Chip,
+  Stack,
+  Button
+} from "@mui/material";
 import projectsData from "../data/projects.json";
 import ProjectCard from "../components/ProjectCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import type { Project } from "../types";
 
+// Define our filter state type
+interface FilterState {
+  projectTypes: string[];
+  technologies: string[];
+  companies: string[];
+}
+
 const ProjectsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const projects = projectsData as Project[];
+  const [filters, setFilters] = useState<FilterState>({
+    projectTypes: [],
+    technologies: [], 
+    companies: []
+  });
+
+  // Extract unique values for filters
+  const filterOptions = useMemo(() => {
+    const projects = projectsData as Project[];
+    
+    const allCompanies = projects
+      .map(p => p.company)
+      .filter(Boolean)
+      .filter((company, index, array) => array.indexOf(company) === index);
+
+    const allTechnologies = Array.from(
+      new Set(projects.flatMap(p => p.stack || []))
+    ).sort();
+
+    const allProjectTypes = Array.from(
+      new Set(projects.map(p => p.projectType))
+    );
+
+    return {
+      companies: allCompanies,
+      technologies: allTechnologies,
+      projectTypes: allProjectTypes
+    };
+  }, []);
+
+  // === ADD THIS SECTION ===
+  // Calculate how many projects match each filter option
+  const filterCounts = useMemo(() => {
+    const projects = projectsData as Project[];
+    
+    const companyCounts: Record<string, number> = {};
+    const technologyCounts: Record<string, number> = {};
+    const projectTypeCounts: Record<string, number> = {};
+
+    // Count projects for each company
+    filterOptions.companies.forEach(company => {
+      companyCounts[company as string] = projects.filter(p => p.company === company).length;
+    });
+
+    // Count projects for each technology
+    filterOptions.technologies.forEach(tech => {
+      technologyCounts[tech] = projects.filter(p => p.stack?.includes(tech)).length;
+    });
+
+    // Count projects for each project type
+    filterOptions.projectTypes.forEach(type => {
+      projectTypeCounts[type] = projects.filter(p => p.projectType === type).length;
+    });
+
+    return {
+      companies: companyCounts,
+      technologies: technologyCounts,
+      projectTypes: projectTypeCounts
+    };
+  }, [filterOptions]);
+
+  // Helper function to format the label with count
+  const getLabelWithCount = (type: keyof typeof filterCounts, value: string | undefined) => {
+    if (!value) return '';
+    const count = filterCounts[type][value];
+    
+    // Only capitalize for project types
+    const displayName = type === 'projectTypes' 
+      ? value.charAt(0).toUpperCase() + value.slice(1)
+      : value;
+    
+    return `${displayName} (${count})`;
+  };
+
+  // Filter projects based on current filters
+  const filteredAndSortedProjects = useMemo(() => {
+    let filtered = [...projectsData as Project[]];
+    
+    // Filter by project type
+    if (filters.projectTypes.length > 0) {
+      filtered = filtered.filter(project => 
+        filters.projectTypes.includes(project.projectType)
+      );
+    }
+    
+    // Filter by technology
+    if (filters.technologies.length > 0) {
+      filtered = filtered.filter(project => 
+        filters.technologies.some(tech => 
+          project.stack?.includes(tech)
+        )
+      );
+    }
+    
+    // Filter by company
+    if (filters.companies.length > 0) {
+      filtered = filtered.filter(project => 
+        filters.companies.includes(project.company || '')
+      );
+    }
+    
+    // Sort by date (newest first)
+    return filtered.sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, [filters]);
+
+  // Handle dropdown changes
+  const handleFilterChange = (filterType: keyof FilterState) => (event: any) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: event.target.value
+    }));
+  };
+
+  const clearAllFilters = () => {
+    setFilters({
+      projectTypes: [],
+      technologies: [],
+      companies: []
+    });
+  };
+
+  const hasActiveFilters = filters.projectTypes.length > 0 || 
+                          filters.technologies.length > 0 || 
+                          filters.companies.length > 0;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -1829,35 +2014,139 @@ const ProjectsPage: React.FC = () => {
 
   return (
     <Box sx={{ padding: 3 }}>
-      <Typography 
-        variant="h4" 
-        gutterBottom 
-        sx={{ 
-          color: "text.primary",
-          mb: 4
-        }}
-      >
+      <Typography variant="h4" sx={{ 
+        marginBottom: 2,
+        fontWeight: 700,
+        color: "text.primary",
+        borderBottom: "2px solid",
+        borderColor: "primary.main",
+        paddingBottom: 1
+      }}>
         Projects
       </Typography>
 
-      {/* Projects Grid - Using latest MUI Grid syntax */}
+      {/* Filter Bar */}
+      <Box sx={{ mb: 2, p: 2, borderColor: 'divider' }}>
+        <Stack direction="row" spacing={2} alignItems="flex-start" flexWrap="wrap">
+          {/* Project Type Dropdown */}
+          <FormControl sx={{ minWidth: 180 }} size="small">
+            <InputLabel>Project Type</InputLabel>
+            <Select
+              multiple
+              value={filters.projectTypes}
+              onChange={handleFilterChange('projectTypes')}
+              input={<OutlinedInput label="Project Type" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip 
+                      key={value} 
+                      label={value.charAt(0).toUpperCase() + value.slice(1)} 
+                      size="small" 
+                    />
+                  ))}
+                </Box>
+              )}
+            >
+              {/* UPDATE THIS MENU ITEM */}
+              {filterOptions.projectTypes.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {getLabelWithCount('projectTypes', type)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Technology Dropdown */}
+          <FormControl sx={{ minWidth: 180 }} size="small">
+            <InputLabel>Technologies</InputLabel>
+            <Select
+              multiple
+              value={filters.technologies}
+              onChange={handleFilterChange('technologies')}
+              input={<OutlinedInput label="Technologies" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} size="small" />
+                  ))}
+                </Box>
+              )}
+            >
+              {/* UPDATE THIS MENU ITEM */}
+              {filterOptions.technologies.map((tech) => (
+                <MenuItem key={tech} value={tech}>
+                  {getLabelWithCount('technologies', tech)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Company Dropdown */}
+          <FormControl sx={{ minWidth: 180 }} size="small">
+            <InputLabel>Companies</InputLabel>
+            <Select
+              multiple
+              value={filters.companies}
+              onChange={handleFilterChange('companies')}
+              input={<OutlinedInput label="Companies" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} size="small" />
+                  ))}
+                </Box>
+              )}
+            >
+
+          {filterOptions.companies.map((company) => (
+            <MenuItem key={company} value={company}>
+              {getLabelWithCount('companies', company as string)}
+            </MenuItem>
+          ))}
+            </Select>
+          </FormControl>
+
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <Button 
+              onClick={clearAllFilters}
+              variant="outlined"
+              sx={{ alignSelf: 'center' }}
+            >
+              Clear All
+            </Button>
+          )}
+        </Stack>
+      </Box>
+
+      {/* Projects Grid */}
       <Grid container spacing={3}>
-        {projects.map((project, index) => (
+        {filteredAndSortedProjects.map((project, index) => (
           <Grid 
             key={index} 
-            size={{ xs: 12, sm: 6, md: 4 }} // Use size prop with responsive values
+            size={{ xs: 12, sm: 6, md: 4 }}
           >
             <ProjectCard project={project} />
           </Grid>
         ))}
       </Grid>
 
-      {/* Empty State */}
-      {projects.length === 0 && (
+      {/* No Results State */}
+      {filteredAndSortedProjects.length === 0 && (
         <Box sx={{ textAlign: "center", py: 8 }}>
-          <Typography variant="h6" color="text.secondary">
-            No projects found
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            No projects match your filters
           </Typography>
+          {hasActiveFilters && (
+            <Button 
+              onClick={clearAllFilters}
+              variant="outlined"
+              sx={{ mt: 1 }}
+            >
+              Clear all filters
+            </Button>
+          )}
         </Box>
       )}
     </Box>
@@ -1991,7 +2280,7 @@ const CVPage: React.FC = () => {
           </Box>
         )}
         <Typography variant="body2" color="text.secondary">
-          {bio.email} ❖ {bio.phone} ❖ {bio.location.display}
+          {bio.email} | {bio.phone} | {bio.location.display}
         </Typography>
       </Box>
 
@@ -2065,7 +2354,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 37
-Total Characters: 58100
+Total Characters: 67080
 
 File List:
 ----------------------------------------
@@ -2081,7 +2370,7 @@ src/components/CompanyIcon.tsx: 1633 characters
 src/components/EducationCard.tsx: 1975 characters
 src/components/ExperienceCard.tsx: 2870 characters
 src/components/LoadingSpinner.tsx: 872 characters
-src/components/ProjectCard.tsx: 4899 characters
+src/components/ProjectCard.tsx: 6208 characters
 src/components/SkillChip.tsx: 624 characters
 src/data/bio.json: 566 characters
 src/data/education.json: 944 characters
@@ -2092,7 +2381,7 @@ src/index.css: 1154 characters
 src/main.tsx: 435 characters
 src/pages/AboutMePage.tsx: 1514 characters
 src/pages/CVPage.tsx: 4012 characters
-src/pages/ProjectsPage.tsx: 1567 characters
+src/pages/ProjectsPage.tsx: 9238 characters
 src/sections/Bio.tsx: 1708 characters
 src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
@@ -2164,6 +2453,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-17 12:22:21 
-UTC:   2025-11-17 11:22:21 UTC
-Timestamp: 1763378541
+Local: 2025-11-17 23:32:46 
+UTC:   2025-11-17 22:32:46 UTC
+Timestamp: 1763418766

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, Typography, Box, Stack, Chip } from "@mui/material";
 import type { Project } from "../types";
 import { formatDateForDisplay } from "../utils/dateUtils";
@@ -8,7 +8,8 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  // Get display context based on project type
+  const [isExpanded, setIsExpanded] = useState(false);
+  
   const getProjectContext = (): string => {
     switch (project.projectType) {
       case "company":
@@ -22,14 +23,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }
   };
 
-  // Get icon path based on project type and available icons
   const getProjectIcon = (): string => {
-    // If project has specific icon, use it
     if (project.icon) {
       return project.icon;
     }
     
-    // Fallback to default icons based on project type
     switch (project.projectType) {
       case "personal":
         return "/src/assets/icons/default-personal.svg";
@@ -42,14 +40,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   };
 
   const techStack = project.stack || [];
+  const highlights = project.highlights || [];
   const context = getProjectContext();
   const displayDate = formatDateForDisplay(project.date);
   const iconSrc = getProjectIcon();
 
+  // Check if content needs expansion
+  const needsExpand = highlights.length > 2;
+
   return (
     <Card 
       sx={{ 
-        height: 280,
+        height: isExpanded ? 'auto' : 230,
         display: "flex",
         flexDirection: "column",
         cursor: "pointer",
@@ -60,9 +62,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         }
       }}
     >
-      <CardContent sx={{ flex: 1, display: "flex", flexDirection: "column", p: 2 }}>
+      <CardContent sx={{ 
+        flex: 1, 
+        display: "flex", 
+        flexDirection: "column", 
+        p: 2,
+        position: 'relative' // ← SIMPLE FIX: Add this
+      }}>
         {/* Header with Icon, Title, and Context */}
-        <Box sx={{ display: "flex", alignItems: "flex-start", mb: 1.5 }}>
+        <Box sx={{ display: "flex", alignItems: "flex-start", mb: 1 }}>
           <Box
             component="img"
             src={iconSrc}
@@ -100,7 +108,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
         {/* Tech Stack Chips */}
         {techStack.length > 0 && (
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 1 }}>
             <Stack 
               direction="row" 
               spacing={0.5} 
@@ -122,30 +130,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                   }}
                 />
               ))}
-              {techStack.length > 4 && (
-                <Chip 
-                  label={`+${techStack.length - 4}`}
-                  size="small"
-                  color="secondary"
-                  sx={{ 
-                    fontSize: "0.7rem",
-                    height: 22
-                  }}
-                />
-              )}
             </Stack>
           </Box>
         )}
 
-        {/* Summary - Fixed height with overflow */}
-        <Box sx={{ flex: 1, overflow: "hidden", mb: 1 }}>
+        {/* Project Summary */}
+        <Box sx={{ mb: 1 }}>
           <Typography 
             variant="body2" 
             sx={{ 
               lineHeight: 1.4,
-              fontSize: "0.875rem",
+              fontSize: "0.8rem",
               display: "-webkit-box",
-              WebkitLineClamp: 3,
+              WebkitLineClamp: isExpanded ? 'none' : 2,
               WebkitBoxOrient: "vertical",
               overflow: "hidden"
             }}
@@ -154,25 +151,69 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           </Typography>
         </Box>
 
-        {/* View Details Button */}
-        <Box 
-          sx={{ 
-            pt: 1,
-            borderTop: 1,
-            borderColor: "divider"
-          }}
-        >
+        {/* Key Highlights - SIMPLIFIED */}
+        {highlights.length > 0 && (
+          <Box sx={{ mb: 1 }}>
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                fontWeight: 600,
+                color: "text.primary",
+                display: 'block',
+                mb: 0.5
+              }}
+            >
+              Highlights:
+            </Typography>
+            <Box sx={{ 
+              maxHeight: isExpanded ? 'none' : 60,
+              overflow: 'hidden'
+            }}>
+              {highlights.slice(0, isExpanded ? highlights.length : 2).map((highlight, index) => (
+                <Typography 
+                  key={index}
+                  variant="caption" 
+                  sx={{ 
+                    lineHeight: 1.3,
+                    mb: 0.25,
+                    display: '-webkit-box',          // ← ADD THESE
+                    WebkitLineClamp: 1,              // ← LIMIT TO 1 LINE
+                    WebkitBoxOrient: 'vertical',     // ←
+                    overflow: 'hidden'               // ←
+                  }}
+                >
+                  • {highlight}
+                </Typography>
+              ))}
+            </Box>
+          </Box>
+        )}
+        
+        {/* Show More Button - SIMPLE POSITIONING */}
+        {needsExpand && !isExpanded && (
           <Typography 
-            variant="button" 
+            variant="caption" 
             color="primary"
             sx={{ 
-              fontSize: "0.75rem",
-              fontWeight: 600
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'block',
+              textAlign: 'center',
+              position: 'absolute',
+              bottom: 8, // ← Fixed distance from bottom
+              left: 16,
+              right: 16,
+              backgroundColor: 'background.paper',
+              py: 0.5
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(true);
             }}
           >
-            View Details →
+            + Show more
           </Typography>
-        </Box>
+        )}
       </CardContent>
     </Card>
   );

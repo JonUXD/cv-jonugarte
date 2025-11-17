@@ -56,6 +56,50 @@ const ProjectsPage: React.FC = () => {
     };
   }, []);
 
+  // === ADD THIS SECTION ===
+  // Calculate how many projects match each filter option
+  const filterCounts = useMemo(() => {
+    const projects = projectsData as Project[];
+    
+    const companyCounts: Record<string, number> = {};
+    const technologyCounts: Record<string, number> = {};
+    const projectTypeCounts: Record<string, number> = {};
+
+    // Count projects for each company
+    filterOptions.companies.forEach(company => {
+      companyCounts[company as string] = projects.filter(p => p.company === company).length;
+    });
+
+    // Count projects for each technology
+    filterOptions.technologies.forEach(tech => {
+      technologyCounts[tech] = projects.filter(p => p.stack?.includes(tech)).length;
+    });
+
+    // Count projects for each project type
+    filterOptions.projectTypes.forEach(type => {
+      projectTypeCounts[type] = projects.filter(p => p.projectType === type).length;
+    });
+
+    return {
+      companies: companyCounts,
+      technologies: technologyCounts,
+      projectTypes: projectTypeCounts
+    };
+  }, [filterOptions]);
+
+  // Helper function to format the label with count
+  const getLabelWithCount = (type: keyof typeof filterCounts, value: string | undefined) => {
+    if (!value) return '';
+    const count = filterCounts[type][value];
+    
+    // Only capitalize for project types
+    const displayName = type === 'projectTypes' 
+      ? value.charAt(0).toUpperCase() + value.slice(1)
+      : value;
+    
+    return `${displayName} (${count})`;
+  };
+
   // Filter projects based on current filters
   const filteredAndSortedProjects = useMemo(() => {
     let filtered = [...projectsData as Project[]];
@@ -156,9 +200,10 @@ const ProjectsPage: React.FC = () => {
                 </Box>
               )}
             >
+              {/* UPDATE THIS MENU ITEM */}
               {filterOptions.projectTypes.map((type) => (
                 <MenuItem key={type} value={type}>
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                  {getLabelWithCount('projectTypes', type)}
                 </MenuItem>
               ))}
             </Select>
@@ -180,9 +225,10 @@ const ProjectsPage: React.FC = () => {
                 </Box>
               )}
             >
+              {/* UPDATE THIS MENU ITEM */}
               {filterOptions.technologies.map((tech) => (
                 <MenuItem key={tech} value={tech}>
-                  {tech}
+                  {getLabelWithCount('technologies', tech)}
                 </MenuItem>
               ))}
             </Select>
@@ -190,7 +236,7 @@ const ProjectsPage: React.FC = () => {
 
           {/* Company Dropdown */}
           <FormControl sx={{ minWidth: 180 }} size="small">
-            <InputLabel> Companies</InputLabel>
+            <InputLabel>Companies</InputLabel>
             <Select
               multiple
               value={filters.companies}
@@ -204,11 +250,12 @@ const ProjectsPage: React.FC = () => {
                 </Box>
               )}
             >
-              {filterOptions.companies.map((company) => (
-                <MenuItem key={company} value={company}>
-                  {company}
-                </MenuItem>
-              ))}
+
+          {filterOptions.companies.map((company) => (
+            <MenuItem key={company} value={company}>
+              {getLabelWithCount('companies', company as string)}
+            </MenuItem>
+          ))}
             </Select>
           </FormControl>
 
