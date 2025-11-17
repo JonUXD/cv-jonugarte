@@ -122,22 +122,22 @@ const ProjectsPage: React.FC = () => {
 
   return (
     <Box sx={{ padding: 3 }}>
-      <Typography 
-        variant="h4" 
-        gutterBottom 
-        sx={{ 
-          color: "text.primary",
-          mb: 3
-        }}
-      >
+      <Typography variant="h4" sx={{ 
+        marginBottom: 2,
+        fontWeight: 700,
+        color: "text.primary",
+        borderBottom: "2px solid",
+        borderColor: "primary.main",
+        paddingBottom: 1
+      }}>
         Projects
       </Typography>
 
-      {/* Simple Filter Bar */}
-      <Box sx={{ mb: 4, p: 3, bgcolor: 'background.paper', borderRadius: 2, border: 1, borderColor: 'divider' }}>
+      {/* Filter Bar */}
+      <Box sx={{ mb: 2, p: 2, borderColor: 'divider' }}>
         <Stack direction="row" spacing={2} alignItems="flex-start" flexWrap="wrap">
           {/* Project Type Dropdown */}
-          <FormControl sx={{ minWidth: 180 }}>
+          <FormControl sx={{ minWidth: 180 }} size="small">
             <InputLabel>Project Type</InputLabel>
             <Select
               multiple
@@ -165,7 +165,7 @@ const ProjectsPage: React.FC = () => {
           </FormControl>
 
           {/* Technology Dropdown */}
-          <FormControl sx={{ minWidth: 180 }}>
+          <FormControl sx={{ minWidth: 180 }} size="small">
             <InputLabel>Technologies</InputLabel>
             <Select
               multiple
@@ -189,8 +189,8 @@ const ProjectsPage: React.FC = () => {
           </FormControl>
 
           {/* Company Dropdown */}
-          <FormControl sx={{ minWidth: 180 }}>
-            <InputLabel>Companies</InputLabel>
+          <FormControl sx={{ minWidth: 180 }} size="small">
+            <InputLabel> Companies</InputLabel>
             <Select
               multiple
               value={filters.companies}

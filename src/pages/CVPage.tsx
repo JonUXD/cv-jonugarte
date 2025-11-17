@@ -63,7 +63,7 @@ const CVPage: React.FC = () => {
           </Box>
         )}
         <Typography variant="body2" color="text.secondary">
-          {bio.email} ❖ {bio.phone} ❖ {bio.location.display}
+          {bio.email} | {bio.phone} | {bio.location.display}
         </Typography>
       </Box>
 
