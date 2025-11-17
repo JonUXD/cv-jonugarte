@@ -7,7 +7,8 @@
     "summary": "Monitors warehouse fullness across EU fulfillment centers in real time.",
     "description": "Backend tool for monitoring warehouse fullness deployed in 30+ EU fulfillment centers. Used daily by over 100 users, providing actionable insights to optimize operational throughput.",
     "stack": ["AWS", "Python", "SQL", "Redshift", "Lambda"],
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   },
   {
     "title": "Daily Onboarding Reporting Dashboard",
@@ -17,7 +18,8 @@
     "summary": "Dashboard tracking new hire onboarding programs across EU fulfillment centers.",
     "description": "Provides a consolidated view of onboarding program metrics for EU warehouse new hires. Enables teams to monitor completion, calculate savings, and inform decisions based on training effectiveness.",
     "stack": ["Quicksight", "AWS", "SQL"],
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   },
   {
     "title": "Automated Market Monitoring Tool",
@@ -27,7 +29,8 @@
     "summary": "Centralized tool to track M&A market activity using multiple financial data sources.",
     "description": "Aggregates data from Salesforce and Thomson Reuters Financial database to monitor merger and acquisition activity. Provides automated insights to support business development and strategy decisions.",
     "stack": ["SQL Server", "Power BI", "Looker"],
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/datasite.svg"
   },
   {
     "title": "Amazon Central Operations Cost Optimization",
@@ -43,7 +46,8 @@
       "Projected annual savings of $48,000 for ACES fleet"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   },
   {
     "title": "Employee Engagement Analytics Dashboard",
@@ -59,7 +63,8 @@
       "Implemented row-level security in dashboards"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   },
   {
     "title": "Performance and Learning Metrics Dashboard",
@@ -75,7 +80,8 @@
       "Achieved consistent 6-hour data refresh rate"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   },
   {
     "title": "Warehouse Throughput Optimization",
@@ -91,7 +97,8 @@
       "Enhanced decision-making for peak operations"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   },
   {
     "title": "Training Effectiveness Dashboard",
@@ -107,7 +114,8 @@
       "Enabled data-driven coaching and curriculum improvements"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   },
   {
     "title": "Language Training Effectiveness Dashboard",
@@ -123,7 +131,8 @@
       "Enhanced associate experience for non-native speakers"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   },
   {
     "title": "Cross-Skill Training Utilization Dashboard",
@@ -139,6 +148,7 @@
       "Contributed $27.5M in net cost avoidance"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": ""
+    "link": "",
+    "icon": "/src/assets/icons/companies/amazon.svg"
   }
 ]

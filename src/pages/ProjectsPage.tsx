@@ -33,12 +33,12 @@ const ProjectsPage: React.FC = () => {
         Projects
       </Typography>
 
-      {/* Projects Grid */}
+      {/* Projects Grid - Using latest MUI Grid syntax */}
       <Grid container spacing={3}>
         {projects.map((project, index) => (
           <Grid 
             key={index} 
-            size={{ xs: 12, sm: 6, md: 4 }} // 1 col mobile, 2 tablet, 3 desktop
+            size={{ xs: 12, sm: 6, md: 4 }} // Use size prop with responsive values
           >
             <ProjectCard project={project} />
           </Grid>

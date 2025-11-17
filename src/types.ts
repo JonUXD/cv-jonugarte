@@ -26,6 +26,7 @@ export interface Project {
   screenshot?: string;
   experience_ref?: string;
   link?: string;
+  icon?: string;
 }
 
 export type ProjectsData = Project[];
