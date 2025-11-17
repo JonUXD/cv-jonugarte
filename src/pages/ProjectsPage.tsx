@@ -1,13 +1,113 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import React, { useState, useEffect, useMemo } from "react";
+import { 
+  Box, 
+  Typography, 
+  Grid, 
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
+  Chip,
+  Stack,
+  Button
+} from "@mui/material";
 import projectsData from "../data/projects.json";
 import ProjectCard from "../components/ProjectCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import type { Project } from "../types";
 
+// Define our filter state type
+interface FilterState {
+  projectTypes: string[];
+  technologies: string[];
+  companies: string[];
+}
+
 const ProjectsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const projects = projectsData as Project[];
+  const [filters, setFilters] = useState<FilterState>({
+    projectTypes: [],
+    technologies: [], 
+    companies: []
+  });
+
+  // Extract unique values for filters
+  const filterOptions = useMemo(() => {
+    const projects = projectsData as Project[];
+    
+    const allCompanies = projects
+      .map(p => p.company)
+      .filter(Boolean)
+      .filter((company, index, array) => array.indexOf(company) === index);
+
+    const allTechnologies = Array.from(
+      new Set(projects.flatMap(p => p.stack || []))
+    ).sort();
+
+    const allProjectTypes = Array.from(
+      new Set(projects.map(p => p.projectType))
+    );
+
+    return {
+      companies: allCompanies,
+      technologies: allTechnologies,
+      projectTypes: allProjectTypes
+    };
+  }, []);
+
+  // Filter projects based on current filters
+  const filteredAndSortedProjects = useMemo(() => {
+    let filtered = [...projectsData as Project[]];
+    
+    // Filter by project type
+    if (filters.projectTypes.length > 0) {
+      filtered = filtered.filter(project => 
+        filters.projectTypes.includes(project.projectType)
+      );
+    }
+    
+    // Filter by technology
+    if (filters.technologies.length > 0) {
+      filtered = filtered.filter(project => 
+        filters.technologies.some(tech => 
+          project.stack?.includes(tech)
+        )
+      );
+    }
+    
+    // Filter by company
+    if (filters.companies.length > 0) {
+      filtered = filtered.filter(project => 
+        filters.companies.includes(project.company || '')
+      );
+    }
+    
+    // Sort by date (newest first)
+    return filtered.sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, [filters]);
+
+  // Handle dropdown changes
+  const handleFilterChange = (filterType: keyof FilterState) => (event: any) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: event.target.value
+    }));
+  };
+
+  const clearAllFilters = () => {
+    setFilters({
+      projectTypes: [],
+      technologies: [],
+      companies: []
+    });
+  };
+
+  const hasActiveFilters = filters.projectTypes.length > 0 || 
+                          filters.technologies.length > 0 || 
+                          filters.companies.length > 0;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -27,30 +127,131 @@ const ProjectsPage: React.FC = () => {
         gutterBottom 
         sx={{ 
           color: "text.primary",
-          mb: 4
+          mb: 3
         }}
       >
         Projects
       </Typography>
 
-      {/* Projects Grid - Using latest MUI Grid syntax */}
+      {/* Simple Filter Bar */}
+      <Box sx={{ mb: 4, p: 3, bgcolor: 'background.paper', borderRadius: 2, border: 1, borderColor: 'divider' }}>
+        <Stack direction="row" spacing={2} alignItems="flex-start" flexWrap="wrap">
+          {/* Project Type Dropdown */}
+          <FormControl sx={{ minWidth: 180 }}>
+            <InputLabel>Project Type</InputLabel>
+            <Select
+              multiple
+              value={filters.projectTypes}
+              onChange={handleFilterChange('projectTypes')}
+              input={<OutlinedInput label="Project Type" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip 
+                      key={value} 
+                      label={value.charAt(0).toUpperCase() + value.slice(1)} 
+                      size="small" 
+                    />
+                  ))}
+                </Box>
+              )}
+            >
+              {filterOptions.projectTypes.map((type) => (
+                <MenuItem key={type} value={type}>
+                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Technology Dropdown */}
+          <FormControl sx={{ minWidth: 180 }}>
+            <InputLabel>Technologies</InputLabel>
+            <Select
+              multiple
+              value={filters.technologies}
+              onChange={handleFilterChange('technologies')}
+              input={<OutlinedInput label="Technologies" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} size="small" />
+                  ))}
+                </Box>
+              )}
+            >
+              {filterOptions.technologies.map((tech) => (
+                <MenuItem key={tech} value={tech}>
+                  {tech}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Company Dropdown */}
+          <FormControl sx={{ minWidth: 180 }}>
+            <InputLabel>Companies</InputLabel>
+            <Select
+              multiple
+              value={filters.companies}
+              onChange={handleFilterChange('companies')}
+              input={<OutlinedInput label="Companies" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} size="small" />
+                  ))}
+                </Box>
+              )}
+            >
+              {filterOptions.companies.map((company) => (
+                <MenuItem key={company} value={company}>
+                  {company}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Clear Filters Button */}
+          {hasActiveFilters && (
+            <Button 
+              onClick={clearAllFilters}
+              variant="outlined"
+              sx={{ alignSelf: 'center' }}
+            >
+              Clear All
+            </Button>
+          )}
+        </Stack>
+      </Box>
+
+      {/* Projects Grid */}
       <Grid container spacing={3}>
-        {projects.map((project, index) => (
+        {filteredAndSortedProjects.map((project, index) => (
           <Grid 
             key={index} 
-            size={{ xs: 12, sm: 6, md: 4 }} // Use size prop with responsive values
+            size={{ xs: 12, sm: 6, md: 4 }}
           >
             <ProjectCard project={project} />
           </Grid>
         ))}
       </Grid>
 
-      {/* Empty State */}
-      {projects.length === 0 && (
+      {/* No Results State */}
+      {filteredAndSortedProjects.length === 0 && (
         <Box sx={{ textAlign: "center", py: 8 }}>
-          <Typography variant="h6" color="text.secondary">
-            No projects found
+          <Typography variant="h6" color="text.secondary" gutterBottom>
+            No projects match your filters
           </Typography>
+          {hasActiveFilters && (
+            <Button 
+              onClick={clearAllFilters}
+              variant="outlined"
+              sx={{ mt: 1 }}
+            >
+              Clear all filters
+            </Button>
+          )}
         </Box>
       )}
     </Box>
