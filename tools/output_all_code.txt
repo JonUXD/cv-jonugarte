@@ -1865,6 +1865,9 @@ import ProjectCard from "../components/ProjectCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import type { Project } from "../types";
 
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+
 // Define our filter state type
 interface FilterState {
   projectTypes: string[];
@@ -1874,6 +1877,7 @@ interface FilterState {
 
 const ProjectsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filters, setFilters] = useState<FilterState>({
     projectTypes: [],
     technologies: [], 
@@ -1975,11 +1979,13 @@ const ProjectsPage: React.FC = () => {
       );
     }
     
-    // Sort by date (newest first)
-    return filtered.sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-  }, [filters]);
+    // Sort by
+    return filtered.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return sortDirection === 'desc' ? dateB - dateA : dateA - dateB;
+    });
+  }, [filters, sortDirection]);
 
   // Handle dropdown changes
   const handleFilterChange = (filterType: keyof FilterState) => (event: any) => {
@@ -1995,6 +2001,10 @@ const ProjectsPage: React.FC = () => {
       technologies: [],
       companies: []
     });
+  };
+
+  const toggleSortDirection = () => {
+    setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
   };
 
   const hasActiveFilters = filters.projectTypes.length > 0 || 
@@ -2106,6 +2116,30 @@ const ProjectsPage: React.FC = () => {
           ))}
             </Select>
           </FormControl>
+
+          {/* Sort Controls */}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <FormControl sx={{ minWidth: 140 }} size="small">
+              <InputLabel>Sort by</InputLabel>
+              <Select
+                value="date"
+                label="Sort by"
+                disabled // Only one option for now
+              >
+                <MenuItem value="date">Date</MenuItem>
+              </Select>
+            </FormControl>
+            
+            <Button
+              onClick={toggleSortDirection}
+              variant="outlined"
+              size="small"
+              startIcon={sortDirection === 'desc' ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+              sx={{ minWidth: 100, color: "text.secondary" }}
+            >
+              {sortDirection === 'desc' ? 'Newest' : 'Oldest'}
+            </Button>
+          </Stack>
 
           {/* Clear Filters Button */}
           {hasActiveFilters && (
@@ -2354,7 +2388,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 37
-Total Characters: 67080
+Total Characters: 68378
 
 File List:
 ----------------------------------------
@@ -2381,7 +2415,7 @@ src/index.css: 1154 characters
 src/main.tsx: 435 characters
 src/pages/AboutMePage.tsx: 1514 characters
 src/pages/CVPage.tsx: 4012 characters
-src/pages/ProjectsPage.tsx: 9238 characters
+src/pages/ProjectsPage.tsx: 10536 characters
 src/sections/Bio.tsx: 1708 characters
 src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
@@ -2453,6 +2487,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-17 23:32:46 
-UTC:   2025-11-17 22:32:46 UTC
-Timestamp: 1763418766
+Local: 2025-11-19 08:24:59 
+UTC:   2025-11-19 07:24:59 UTC
+Timestamp: 1763537099

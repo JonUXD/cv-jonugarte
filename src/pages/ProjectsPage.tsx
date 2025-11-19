@@ -17,6 +17,9 @@ import ProjectCard from "../components/ProjectCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import type { Project } from "../types";
 
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+
 // Define our filter state type
 interface FilterState {
   projectTypes: string[];
@@ -26,6 +29,7 @@ interface FilterState {
 
 const ProjectsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filters, setFilters] = useState<FilterState>({
     projectTypes: [],
     technologies: [], 
@@ -127,11 +131,13 @@ const ProjectsPage: React.FC = () => {
       );
     }
     
-    // Sort by date (newest first)
-    return filtered.sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-  }, [filters]);
+    // Sort by
+    return filtered.sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return sortDirection === 'desc' ? dateB - dateA : dateA - dateB;
+    });
+  }, [filters, sortDirection]);
 
   // Handle dropdown changes
   const handleFilterChange = (filterType: keyof FilterState) => (event: any) => {
@@ -147,6 +153,10 @@ const ProjectsPage: React.FC = () => {
       technologies: [],
       companies: []
     });
+  };
+
+  const toggleSortDirection = () => {
+    setSortDirection(prev => prev === 'desc' ? 'asc' : 'desc');
   };
 
   const hasActiveFilters = filters.projectTypes.length > 0 || 
@@ -258,6 +268,30 @@ const ProjectsPage: React.FC = () => {
           ))}
             </Select>
           </FormControl>
+
+          {/* Sort Controls */}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <FormControl sx={{ minWidth: 140 }} size="small">
+              <InputLabel>Sort by</InputLabel>
+              <Select
+                value="date"
+                label="Sort by"
+                disabled // Only one option for now
+              >
+                <MenuItem value="date">Date</MenuItem>
+              </Select>
+            </FormControl>
+            
+            <Button
+              onClick={toggleSortDirection}
+              variant="outlined"
+              size="small"
+              startIcon={sortDirection === 'desc' ? <ArrowDownwardIcon /> : <ArrowUpwardIcon />}
+              sx={{ minWidth: 100, color: "text.secondary" }}
+            >
+              {sortDirection === 'desc' ? 'Newest' : 'Oldest'}
+            </Button>
+          </Stack>
 
           {/* Clear Filters Button */}
           {hasActiveFilters && (
