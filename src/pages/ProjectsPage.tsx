@@ -28,7 +28,6 @@ interface FilterState {
 }
 
 const ProjectsPage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filters, setFilters] = useState<FilterState>({
     projectTypes: [],
@@ -162,17 +161,6 @@ const ProjectsPage: React.FC = () => {
   const hasActiveFilters = filters.projectTypes.length > 0 || 
                           filters.technologies.length > 0 || 
                           filters.companies.length > 0;
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    return <LoadingSpinner message="Loading projects..." />;
-  }
 
   return (
     <Box sx={{ padding: 3 }}>

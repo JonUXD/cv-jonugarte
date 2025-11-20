@@ -20,44 +20,58 @@ Personal portfolio web application built with **React**, **TypeScript**, and **V
 ## **Project Structure**
 
 cv-jonugarte/
-├─ src/
-│  ├─ components/
-│  │  ├─ ExperienceCard.tsx
-│  │  ├─ Footer.tsx
-│  │  ├─ Header.tsx
-│  │  ├─ ProjectCard.tsx
-│  │  ├─ SectionTitle.tsx
-│  │  └─ SkillChip.tsx
-│  ├─ pages/
-│  │  ├─ AboutMePage.tsx
-│  │  ├─ CVPage.tsx
-│  │  └─ ProjectsPage.tsx
-│  ├─ sections/
-│  │  ├─ Bio.tsx
-│  │  ├─ Education.tsx
-│  │  ├─ Experience.tsx
-│  │  ├─ ProjectsPreview.tsx
-│  │  └─ Skills.tsx
-│  ├─ data/
-│  │  ├─ bio.json
-│  │  ├─ education.json
-│  │  ├─ experience.json
-│  │  ├─ projects.json
-│  │  └─ skills.json
-│  ├─ App.tsx
-│  ├─ main.tsx
-│  ├─ App.css
-│  └─ index.css
-├─ tools/
-│  ├─ config.json
-│  └─ generate_all_code.py
-├─ index.html
-├─ package.json
-├─ tsconfig.json
-├─ tsconfig.app.json
-├─ tsconfig.node.json
-├─ vite.config.ts
-└─ eslint.config.js
+├── public/
+├── research/
+│   ├── images/
+│   ├── design.md
+│   └── technical.md
+├── src/
+│   ├── assets/
+│   │   └── icons/
+│   │       ├── companies/
+│   │       └── other/
+│   ├── components/
+│   │   ├── CompanyIcon.tsx
+│   │   ├── EducationCard.tsx
+│   │   ├── ExperienceCard.tsx
+│   │   ├── LoadingSpinner.tsx
+│   │   ├── ProjectCard.tsx
+│   │   └── SkillChip.tsx
+│   ├── data/
+│   │   ├── bio.json
+│   │   ├── education.json
+│   │   ├── experience.json
+│   │   ├── projects.json
+│   │   └── skills.json
+│   ├── pages/
+│   │   ├── AboutMePage.tsx
+│   │   ├── CVPage.tsx
+│   │   └── ProjectsPage.tsx
+│   ├── sections/
+│   │   ├── Bio.tsx
+│   │   ├── Education.tsx
+│   │   ├── Experience.tsx
+│   │   ├── ProjectsPreview.tsx
+│   │   └── Skills.tsx
+│   ├── theme/
+│   │   └── theme.ts
+│   ├── utils/
+│   │   └── dateUtils.ts
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   └── types.ts
+├── tools/
+│   └── config.json
+├── README.md
+├── eslint.config.js
+├── index.html
+├── package.json
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 
 
 ## Installation

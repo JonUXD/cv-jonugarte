@@ -12,20 +12,6 @@ const bio = bioData as Bio;
  * Uses consistent color theme with primary cyan for headings
  */
 const AboutMePage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 600);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    return <LoadingSpinner message="Loading about me..." />;
-  }
-
   return (
     <Card sx={{ margin: 3 }}>
       <CardContent>

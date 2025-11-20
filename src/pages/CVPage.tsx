@@ -19,26 +19,12 @@ import { formatDateForDisplay } from "../utils/dateUtils"
 import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem } from "../types";
 
 const CVPage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Simulate async data loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // Type assertions
   const bio: Bio = bioData;
   const experience: ExperienceData = experienceData as ExperienceData;
   const education: EducationData = educationData;
   const skillsData: SkillsData = skillsRaw;
-
-  if (isLoading) {
-    return <LoadingSpinner message="Loading CV..." />;
-  }
 
   return (
     <Box sx={{ padding: 3 }}>

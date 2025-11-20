@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Box, useMediaQuery, useTheme } from "@mui/material";
+import { Tabs, Tab, Box, useMediaQuery, useTheme, Fade } from "@mui/material";
 import CVPage from "./pages/CVPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import AboutMePage from "./pages/AboutMePage";
@@ -46,9 +46,15 @@ const App: React.FC = () => {
         </Tabs>
 
         <Box sx={{ mt: { xs: 2, sm: 3, md: 4 } }}>
-          {selectedTab === 0 && <CVPage />}
-          {selectedTab === 1 && <ProjectsPage />}
-          {selectedTab === 2 && <AboutMePage />}
+          <Fade in={selectedTab === 0} timeout={400} unmountOnExit>
+            <div>{selectedTab === 0 && <CVPage />}</div>
+          </Fade>
+          <Fade in={selectedTab === 1} timeout={400} unmountOnExit>
+            <div>{selectedTab === 1 && <ProjectsPage />}</div>
+          </Fade>
+          <Fade in={selectedTab === 2} timeout={400} unmountOnExit>
+            <div>{selectedTab === 2 && <AboutMePage />}</div>
+          </Fade>
         </Box>
       </Box>
     </Box>
