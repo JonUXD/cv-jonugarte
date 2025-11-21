@@ -32,9 +32,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cv-jonugarte</title>
+    <title>Jon Ugarte - Data Engineer & BI Professional</title>
   </head>
   <body>
     <div id="root"></div>
@@ -98,44 +98,58 @@ Personal portfolio web application built with **React**, **TypeScript**, and **V
 ## **Project Structure**
 
 cv-jonugarte/
-├─ src/
-│  ├─ components/
-│  │  ├─ ExperienceCard.tsx
-│  │  ├─ Footer.tsx
-│  │  ├─ Header.tsx
-│  │  ├─ ProjectCard.tsx
-│  │  ├─ SectionTitle.tsx
-│  │  └─ SkillChip.tsx
-│  ├─ pages/
-│  │  ├─ AboutMePage.tsx
-│  │  ├─ CVPage.tsx
-│  │  └─ ProjectsPage.tsx
-│  ├─ sections/
-│  │  ├─ Bio.tsx
-│  │  ├─ Education.tsx
-│  │  ├─ Experience.tsx
-│  │  ├─ ProjectsPreview.tsx
-│  │  └─ Skills.tsx
-│  ├─ data/
-│  │  ├─ bio.json
-│  │  ├─ education.json
-│  │  ├─ experience.json
-│  │  ├─ projects.json
-│  │  └─ skills.json
-│  ├─ App.tsx
-│  ├─ main.tsx
-│  ├─ App.css
-│  └─ index.css
-├─ tools/
-│  ├─ config.json
-│  └─ generate_all_code.py
-├─ index.html
-├─ package.json
-├─ tsconfig.json
-├─ tsconfig.app.json
-├─ tsconfig.node.json
-├─ vite.config.ts
-└─ eslint.config.js
+├── public/
+├── research/
+│   ├── images/
+│   ├── design.md
+│   └── technical.md
+├── src/
+│   ├── assets/
+│   │   └── icons/
+│   │       ├── companies/
+│   │       └── other/
+│   ├── components/
+│   │   ├── CompanyIcon.tsx
+│   │   ├── EducationCard.tsx
+│   │   ├── ExperienceCard.tsx
+│   │   ├── LoadingSpinner.tsx
+│   │   ├── ProjectCard.tsx
+│   │   └── SkillChip.tsx
+│   ├── data/
+│   │   ├── bio.json
+│   │   ├── education.json
+│   │   ├── experience.json
+│   │   ├── projects.json
+│   │   └── skills.json
+│   ├── pages/
+│   │   ├── AboutMePage.tsx
+│   │   ├── CVPage.tsx
+│   │   └── ProjectsPage.tsx
+│   ├── sections/
+│   │   ├── Bio.tsx
+│   │   ├── Education.tsx
+│   │   ├── Experience.tsx
+│   │   ├── ProjectsPreview.tsx
+│   │   └── Skills.tsx
+│   ├── theme/
+│   │   └── theme.ts
+│   ├── utils/
+│   │   └── dateUtils.ts
+│   ├── App.css
+│   ├── App.tsx
+│   ├── index.css
+│   ├── main.tsx
+│   └── types.ts
+├── tools/
+│   └── config.json
+├── README.md
+├── eslint.config.js
+├── index.html
+├── package.json
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
 
 
 ## Installation
@@ -165,6 +179,7 @@ npm run dev
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.5",
+    "@mui/lab": "^7.0.1-beta.19",
     "@mui/material": "^7.3.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -297,7 +312,7 @@ Created by: https://www.paulaballesteros.com
 
 --- src/App.tsx ---
 import React, { useState } from "react";
-import { Tabs, Tab, Box, useMediaQuery, useTheme } from "@mui/material";
+import { Tabs, Tab, Box, useMediaQuery, useTheme, Fade } from "@mui/material";
 import CVPage from "./pages/CVPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import AboutMePage from "./pages/AboutMePage";
@@ -344,9 +359,15 @@ const App: React.FC = () => {
         </Tabs>
 
         <Box sx={{ mt: { xs: 2, sm: 3, md: 4 } }}>
-          {selectedTab === 0 && <CVPage />}
-          {selectedTab === 1 && <ProjectsPage />}
-          {selectedTab === 2 && <AboutMePage />}
+          <Fade in={selectedTab === 0} timeout={400} unmountOnExit>
+            <div>{selectedTab === 0 && <CVPage />}</div>
+          </Fade>
+          <Fade in={selectedTab === 1} timeout={400} unmountOnExit>
+            <div>{selectedTab === 1 && <ProjectsPage />}</div>
+          </Fade>
+          <Fade in={selectedTab === 2} timeout={400} unmountOnExit>
+            <div>{selectedTab === 2 && <AboutMePage />}</div>
+          </Fade>
         </Box>
       </Box>
     </Box>
@@ -546,7 +567,7 @@ export interface ExperienceRole {
 export interface ExperienceItem {
   company: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
-  end_date: string; //ISO 8601 date format: YYYY-MM-DD
+  end_date: string | null; //ISO 8601 date format: YYYY-MM-DD
   location?: GeographicLocation;
   roles: ExperienceRole[];
 }
@@ -839,6 +860,216 @@ export const formatDateRange = (startDate: string, endDate: string | null): stri
   return `${formatDateForDisplay(startDate)} – ${formatDateForDisplay(endDate)}`;
 };
 
+--- src/components/CareerTimeline.tsx ---
+import React from 'react';
+import {
+  Timeline,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineConnector,
+  TimelineContent,
+  TimelineDot,
+  TimelineOppositeContent
+} from '@mui/lab';
+import {
+  Typography,
+  Box,
+  Paper,
+  useTheme,
+  useMediaQuery
+} from '@mui/material';
+import experienceData from '../data/experience.json';
+import educationData from '../data/education.json';
+import CompanyIcon from './CompanyIcon';
+import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
+import type { ExperienceItem, EducationItem } from '../types';
+
+interface TimelineEvent {
+  id: string;
+  date: string;
+  endDate: string | null;
+  title: string;
+  subtitle: string;
+  type: 'work' | 'education';
+  company?: string;
+  institution?: string;
+}
+
+const CareerTimeline: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const events: TimelineEvent[] = [];
+
+  // Add work experience events (flatten roles)
+  experienceData.forEach((exp: ExperienceItem) => {
+    exp.roles.forEach(role => {
+      events.push({
+        id: `${exp.company}-${role.title}-${role.start_date}`,
+        date: role.start_date,
+        endDate: role.end_date,
+        title: role.title,
+        subtitle: exp.company,
+        type: 'work',
+        company: exp.company
+      });
+    });
+  });
+
+  // Add education events
+  educationData.forEach((edu: EducationItem) => {
+    events.push({
+      id: `${edu.institution}-${edu.degree}`,
+      date: edu.graduation_date,
+      endDate: edu.graduation_date,
+      title: edu.degree,
+      subtitle: edu.institution,
+      type: 'education',
+      institution: edu.institution
+    });
+  });
+
+  // Sort by date (newest first)
+  const sortedEvents = events.sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  const handleItemClick = (event: TimelineEvent) => {
+    const element = document.getElementById(event.id);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'center'
+      });
+      
+      // Add temporary highlight
+      element.style.backgroundColor = theme.palette.primary.light + '20';
+      setTimeout(() => {
+        element.style.backgroundColor = '';
+      }, 2000);
+    }
+  };
+
+  return (
+    <Box sx={{ maxHeight: { md: '500px' }, overflowY: 'auto' }}>
+      <Timeline 
+        position={isMobile ? "right" : "alternate"}
+        sx={{ 
+          p: 0, 
+          m: 0,
+          '& .MuiTimelineItem-root:before': {
+            flex: 0,
+            padding: 0,
+          }
+        }}
+      >
+        {sortedEvents.map((event, index) => (
+          <TimelineItem key={event.id}>
+            {/* Date on opposite side */}
+            <TimelineOppositeContent
+              sx={{
+                flex: 0.4,
+                px: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: isMobile ? 'flex-start' : 'flex-end',
+                textAlign: isMobile ? 'left' : 'right'
+              }}
+            >
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ fontWeight: 500, fontSize: '0.75rem' }}
+              >
+                {event.type === 'work' 
+                  ? formatDateRange(event.date, event.endDate)
+                  : formatDateForDisplay(event.date)
+                }
+              </Typography>
+            </TimelineOppositeContent>
+
+            <TimelineSeparator>
+              <TimelineDot 
+                color={event.type === 'work' ? 'primary' : 'success'}
+                variant="outlined"
+                sx={{ 
+                  borderWidth: 2,
+                  boxShadow: `0 0 0 2px ${
+                    event.type === 'work' 
+                      ? theme.palette.primary.main + '20' 
+                      : theme.palette.success.main + '20'
+                  }`
+                }}
+              />
+              {index < sortedEvents.length - 1 && (
+                <TimelineConnector sx={{ 
+                  backgroundColor: event.type === 'work' 
+                    ? theme.palette.primary.main + '30'
+                    : theme.palette.success.main + '30'
+                }} />
+              )}
+            </TimelineSeparator>
+
+            <TimelineContent sx={{ py: 1.5, px: 2 }}>
+              <Paper
+                elevation={1}
+                sx={{
+                  p: 1.5,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease-in-out',
+                  border: `1px solid ${
+                    event.type === 'work' 
+                      ? theme.palette.primary.main + '20' 
+                      : theme.palette.success.main + '20'
+                  }`,
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: 3,
+                    borderColor: event.type === 'work' 
+                      ? theme.palette.primary.main + '40' 
+                      : theme.palette.success.main + '40'
+                  }
+                }}
+                onClick={() => handleItemClick(event)}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                  <CompanyIcon 
+                    companyName={event.company || event.institution || ''} 
+                    size={20}
+                  />
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography
+                      variant="subtitle2"
+                      fontWeight="bold"
+                      sx={{
+                        color: "text.primary",
+                        lineHeight: 1.2,
+                        mb: 0.5
+                      }}
+                      noWrap
+                    >
+                      {event.title}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ lineHeight: 1.2, display: 'block' }}
+                      noWrap
+                    >
+                      {event.subtitle}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
+            </TimelineContent>
+          </TimelineItem>
+        ))}
+      </Timeline>
+    </Box>
+  );
+};
+
+export default CareerTimeline;
+
 --- src/components/CompanyIcon.tsx ---
 import React from 'react';
 import { Box } from '@mui/material';
@@ -901,11 +1132,12 @@ import CompanyIcon from "./CompanyIcon";
 
 interface ExperienceCardProps {
   experience: ExperienceItem;
+  id?: string;
 }
 
-const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
+const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience, id }) => {
   return (
-    <Card sx={{ mb: 3 }} elevation={2}>
+    <Card sx={{ mb: 3 }} elevation={2} id={id}>
       <CardContent>
         {/* Company Header */}
         <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
@@ -1279,6 +1511,7 @@ import CompanyIcon from "./CompanyIcon"; // ← Add this import
 
 interface EducationCardProps {
   education: EducationItem;
+  id?: string
 }
 
 const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
@@ -1876,7 +2109,6 @@ interface FilterState {
 }
 
 const ProjectsPage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filters, setFilters] = useState<FilterState>({
     projectTypes: [],
@@ -2010,17 +2242,6 @@ const ProjectsPage: React.FC = () => {
   const hasActiveFilters = filters.projectTypes.length > 0 || 
                           filters.technologies.length > 0 || 
                           filters.companies.length > 0;
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    return <LoadingSpinner message="Loading projects..." />;
-  }
 
   return (
     <Box sx={{ padding: 3 }}>
@@ -2204,20 +2425,6 @@ const bio = bioData as Bio;
  * Uses consistent color theme with primary cyan for headings
  */
 const AboutMePage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 600);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    return <LoadingSpinner message="Loading about me..." />;
-  }
-
   return (
     <Card sx={{ margin: 3 }}>
       <CardContent>
@@ -2263,6 +2470,7 @@ import ExperienceCard from "../components/ExperienceCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Skills from "../sections/Skills";
 import EducationCard from "../components/EducationCard";
+import CareerTimeline from '../components/CareerTimeline';
 
 import { formatDateForDisplay } from "../utils/dateUtils"
 
@@ -2270,26 +2478,12 @@ import { formatDateForDisplay } from "../utils/dateUtils"
 import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem } from "../types";
 
 const CVPage: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Simulate async data loading
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // Type assertions
   const bio: Bio = bioData;
   const experience: ExperienceData = experienceData as ExperienceData;
   const education: EducationData = educationData;
   const skillsData: SkillsData = skillsRaw;
-
-  if (isLoading) {
-    return <LoadingSpinner message="Loading CV..." />;
-  }
 
   return (
     <Box sx={{ padding: 3 }}>
@@ -2335,7 +2529,13 @@ const CVPage: React.FC = () => {
               Work Experience
             </Typography>
             {experience.map((exp, idx) => (
-              <ExperienceCard key={idx} experience={exp} />
+              exp.roles.map((role, roleIdx) => (
+                <ExperienceCard 
+                  key={`${exp.company}-${role.title}`}
+                  experience={{ ...exp, roles: [role] }} // Pass single role
+                  id={`${exp.company}-${role.title}-${role.start_date}`}
+                />
+              ))
             ))}
           </Box>
 
@@ -2352,7 +2552,11 @@ const CVPage: React.FC = () => {
               Education
             </Typography>
             {education.map((edu: EducationItem, idx) => (
-              <EducationCard key={idx} education={edu} />
+              <EducationCard 
+                key={idx} 
+                education={edu} 
+                id={`${edu.institution}-${edu.degree}`}
+              />
             ))}
           </Box>
         </Grid>
@@ -2375,7 +2579,21 @@ const CVPage: React.FC = () => {
             </Typography>
             <Skills />
           </Box>
+          <Box sx={{ marginTop: 4 }}>
+            <Typography variant="h5" sx={{ 
+              marginBottom: 3,
+              fontWeight: 600,
+              color: "text.primary",
+              borderBottom: "1px solid",
+              borderColor: "primary.main",
+              paddingBottom: 1
+            }}>
+              Career Timeline
+            </Typography>
+            <CareerTimeline />
+          </Box>
         </Grid>
+
       </Grid>
     </Box>
   );
@@ -2387,22 +2605,23 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 37
-Total Characters: 68378
+Files Parsed: 38
+Total Characters: 75461
 
 File List:
 ----------------------------------------
-README.md: 1580 characters
+README.md: 1924 characters
 eslint.config.js: 621 characters
-index.html: 361 characters
-package.json: 883 characters
+index.html: 392 characters
+package.json: 917 characters
 research/design.md: 436 characters
 research/technical.md: 115 characters
 src/App.css: 606 characters
-src/App.tsx: 1649 characters
+src/App.tsx: 1952 characters
+src/components/CareerTimeline.tsx: 6359 characters
 src/components/CompanyIcon.tsx: 1633 characters
-src/components/EducationCard.tsx: 1975 characters
-src/components/ExperienceCard.tsx: 2870 characters
+src/components/EducationCard.tsx: 1989 characters
+src/components/ExperienceCard.tsx: 2897 characters
 src/components/LoadingSpinner.tsx: 872 characters
 src/components/ProjectCard.tsx: 6208 characters
 src/components/SkillChip.tsx: 624 characters
@@ -2413,16 +2632,16 @@ src/data/projects.json: 7777 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 435 characters
-src/pages/AboutMePage.tsx: 1514 characters
-src/pages/CVPage.tsx: 4012 characters
-src/pages/ProjectsPage.tsx: 10536 characters
+src/pages/AboutMePage.tsx: 1229 characters
+src/pages/CVPage.tsx: 4544 characters
+src/pages/ProjectsPage.tsx: 10253 characters
 src/sections/Bio.tsx: 1708 characters
 src/sections/Education.tsx: 1208 characters
 src/sections/Experience.tsx: 2026 characters
 src/sections/ProjectsPreview.tsx: 385 characters
 src/sections/Skills.tsx: 1526 characters
 src/theme/theme.ts: 3289 characters
-src/types.ts: 2058 characters
+src/types.ts: 2065 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 202 characters
 tsconfig.app.json: 763 characters
@@ -2444,6 +2663,7 @@ cv-jonugarte/
 │   │       ├── companies/
 │   │       └── other/
 │   ├── components/
+│   │   ├── CareerTimeline.tsx
 │   │   ├── CompanyIcon.tsx
 │   │   ├── EducationCard.tsx
 │   │   ├── ExperienceCard.tsx
@@ -2487,6 +2707,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-20 07:40:46 
-UTC:   2025-11-20 06:40:46 UTC
-Timestamp: 1763620846
+Local: 2025-11-21 08:23:30 
+UTC:   2025-11-21 07:23:30 UTC
+Timestamp: 1763709810

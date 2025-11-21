@@ -12,6 +12,7 @@ import ExperienceCard from "../components/ExperienceCard";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Skills from "../sections/Skills";
 import EducationCard from "../components/EducationCard";
+import CareerTimeline from '../components/CareerTimeline';
 
 import { formatDateForDisplay } from "../utils/dateUtils"
 
@@ -70,7 +71,13 @@ const CVPage: React.FC = () => {
               Work Experience
             </Typography>
             {experience.map((exp, idx) => (
-              <ExperienceCard key={idx} experience={exp} />
+              exp.roles.map((role, roleIdx) => (
+                <ExperienceCard 
+                  key={`${exp.company}-${role.title}`}
+                  experience={{ ...exp, roles: [role] }} // Pass single role
+                  id={`${exp.company}-${role.title}-${role.start_date}`}
+                />
+              ))
             ))}
           </Box>
 
@@ -87,7 +94,11 @@ const CVPage: React.FC = () => {
               Education
             </Typography>
             {education.map((edu: EducationItem, idx) => (
-              <EducationCard key={idx} education={edu} />
+              <EducationCard 
+                key={idx} 
+                education={edu} 
+                id={`${edu.institution}-${edu.degree}`}
+              />
             ))}
           </Box>
         </Grid>
@@ -110,7 +121,21 @@ const CVPage: React.FC = () => {
             </Typography>
             <Skills />
           </Box>
+          <Box sx={{ marginTop: 4 }}>
+            <Typography variant="h5" sx={{ 
+              marginBottom: 3,
+              fontWeight: 600,
+              color: "text.primary",
+              borderBottom: "1px solid",
+              borderColor: "primary.main",
+              paddingBottom: 1
+            }}>
+              Career Timeline
+            </Typography>
+            <CareerTimeline />
+          </Box>
         </Grid>
+
       </Grid>
     </Box>
   );

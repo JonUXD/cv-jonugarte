@@ -54,7 +54,7 @@ export interface ExperienceRole {
 export interface ExperienceItem {
   company: string;
   start_date: string; //ISO 8601 date format: YYYY-MM-DD
-  end_date: string; //ISO 8601 date format: YYYY-MM-DD
+  end_date: string | null; //ISO 8601 date format: YYYY-MM-DD
   location?: GeographicLocation;
   roles: ExperienceRole[];
 }

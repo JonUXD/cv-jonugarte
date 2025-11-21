@@ -8,11 +8,12 @@ import CompanyIcon from "./CompanyIcon";
 
 interface ExperienceCardProps {
   experience: ExperienceItem;
+  id?: string;
 }
 
-const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience }) => {
+const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience, id }) => {
   return (
-    <Card sx={{ mb: 3 }} elevation={2}>
+    <Card sx={{ mb: 3 }} elevation={2} id={id}>
       <CardContent>
         {/* Company Header */}
         <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>

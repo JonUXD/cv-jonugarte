@@ -7,6 +7,7 @@ import CompanyIcon from "./CompanyIcon"; // ← Add this import
 
 interface EducationCardProps {
   education: EducationItem;
+  id?: string
 }
 
 const EducationCard: React.FC<EducationCardProps> = memo(({ education }) => {
