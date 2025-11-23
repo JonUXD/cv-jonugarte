@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Tabs, Tab, Box, useMediaQuery, useTheme } from "@mui/material";
 import CVPage from "./pages/CVPage";
 import ProjectsPage from "./pages/ProjectsPage";

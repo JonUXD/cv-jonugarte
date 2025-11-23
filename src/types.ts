@@ -7,6 +7,7 @@ export interface Bio {
   phone: string;
   location: GeographicLocation;
   summary?: string;
+  summary_long?: string;
   interests?: string[];
   photo?: string | null;
 }

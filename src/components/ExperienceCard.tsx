@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import SkillChip from "./SkillChip";
-import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
+import { formatDateRange } from '../utils/dateUtils';
 import CompanyIcon from "./CompanyIcon";
 
 interface ExperienceCardProps {

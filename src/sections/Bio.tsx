@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, Typography, Box, Avatar, useTheme, useMediaQuery } from "@mui/material";
+import { Card, CardContent, Typography, Box, Avatar } from "@mui/material";
 import bioData from "../data/bio.json";
 import type { Bio } from "../types";
 
@@ -9,8 +9,6 @@ import type { Bio } from "../types";
  */
 const Bio: React.FC = () => {
   const bio = bioData as Bio;
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   
   return (
     <Card sx={{ marginBottom: 3 }}>

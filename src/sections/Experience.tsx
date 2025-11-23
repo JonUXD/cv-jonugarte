@@ -2,7 +2,7 @@ import React from "react";
 import experienceData from "../data/experience.json";
 import ReactMarkdown from "react-markdown";
 import { Card, CardContent, Typography, Box, List, ListItem } from "@mui/material";
-import { formatDateRange, formatDateForDisplay } from '../utils/dateUtils';
+import { formatDateRange } from '../utils/dateUtils';
 
 const Experience: React.FC = () => (
   <div>

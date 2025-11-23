@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Box, Typography, Grid } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 
 import bioData from "../data/bio.json";
 import experienceData from "../data/experience.json";
 import educationData from "../data/education.json";
-import skillsRaw from "../data/skills.json";
 
-import SkillChip from "../components/SkillChip";
 import ExperienceCard from "../components/ExperienceCard";
-import LoadingSpinner from "../components/LoadingSpinner";
 import Skills from "../sections/Skills";
 import EducationCard from "../components/EducationCard";
 import CareerTimeline from '../components/CareerTimeline';
 
-import { formatDateForDisplay } from "../utils/dateUtils"
-
 // Types
-import type { Bio, ExperienceData, EducationData, SkillsData, EducationItem } from "../types";
+import type { Bio, ExperienceData, EducationData, EducationItem } from "../types";
 
 const CVPage: React.FC = () => {
 
@@ -25,7 +20,6 @@ const CVPage: React.FC = () => {
   const bio: Bio = bioData;
   const experience: ExperienceData = experienceData as ExperienceData;
   const education: EducationData = educationData;
-  const skillsData: SkillsData = skillsRaw;
 
   return (
     <Box sx={{ padding: 3 }}>
@@ -70,8 +64,8 @@ const CVPage: React.FC = () => {
             }}>
               Work Experience
             </Typography>
-            {experience.map((exp, idx) => (
-              exp.roles.map((role, roleIdx) => (
+            {experience.map((exp) => (
+              exp.roles.map((role) => (
                 <ExperienceCard 
                   key={`${exp.company}-${role.title}`}
                   experience={{ ...exp, roles: [role] }} // Pass single role

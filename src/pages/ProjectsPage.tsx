@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { 
   Box, 
   Typography, 
@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import projectsData from "../data/projects.json";
 import ProjectCard from "../components/ProjectCard";
-import LoadingSpinner from "../components/LoadingSpinner";
 import type { Project } from "../types";
 
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
