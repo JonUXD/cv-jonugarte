@@ -3,6 +3,9 @@ import { Card, CardContent, Typography, Box, Stack, Chip } from "@mui/material";
 import type { Project } from "../types";
 import { formatDateForDisplay } from "../utils/dateUtils";
 
+import amazonIcon from "../assets/icons/companies/amazon.svg";
+import datasiteIcon from "../assets/icons/companies/datasite.svg";
+
 import defaultCompanyIcon from "../assets/icons/other/company-default.svg";
 import defaultAcademiaIcon from "../assets/icons/other/academia-default.svg";
 import defaultPersonalIcon from "../assets/icons/other/personal-default.svg";
@@ -12,6 +15,12 @@ import defaultPersonalIcon from "../assets/icons/other/personal-default.svg";
 interface ProjectCardProps {
   project: Project;
 }
+
+const companyIcons: Record<string, string> = {
+  Amazon: amazonIcon,
+  Datasite: datasiteIcon,
+  // add more companies as needed
+};
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -29,21 +38,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }
   };
 
-  const getProjectIcon = (): string => {
-    if (project.icon) {
-      return project.icon;
+    const getProjectIcon = (): string => {
+    // Check if this is a company project with a known company icon
+    if (project.projectType === "company" && project.company && companyIcons[project.company]) {
+        return companyIcons[project.company];
     }
-    
+
+    // Fallbacks based on project type
     switch (project.projectType) {
-      case "personal":
+        case "personal":
         return defaultPersonalIcon;
-      case "academic":
+        case "academic":
         return defaultAcademiaIcon;
-      case "company":
-      default:
+        case "company":
+        default:
         return defaultCompanyIcon;
     }
-  };
+    };
 
   const techStack = project.stack || [];
   const highlights = project.highlights || [];
