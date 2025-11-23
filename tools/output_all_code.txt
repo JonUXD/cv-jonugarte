@@ -76,91 +76,104 @@
 
 
 --- README.md ---
-# cv-jonugarte
+# Jon Ugarte - Personal Portfolio & CV
 
-Personal portfolio web application built with **React**, **TypeScript**, and **Vite**, showcasing my CV, projects, skills, and work experience.
+I did this project to polish my front end development skills and learn about best practices and new challenges. Built with React, TypeScript and Meterial-UI. I used vite to create the backbone of the project. There will be ongoing developments that should match the most updated version of the CV.
 
----
+I used netlify to deploy to the web and can be accessed with the links below. I registered the domain jonugarte.me on cloudfare to make the domain name more unique.
 
-## **Features**
-
-- Single-page React application with **MUI (Material-UI) components**
-- Displays:
-  - Personal bio and contact information
-  - Work experience with roles, responsibilities, and projects
-  - Education and thesis information
-  - Skills & technical skills
-  - Projects overview
-- Responsive design with dark/light mode support
-- Modular structure with **pages**, **sections**, and **reusable components**
-- JSON-based data storage for easy content updates
-
-## **Project Structure**
-
-cv-jonugarte/
-├── public/
-├── research/
-│   ├── images/
-│   ├── design.md
-│   └── technical.md
-├── src/
-│   ├── assets/
-│   │   └── icons/
-│   │       ├── companies/
-│   │       └── other/
-│   ├── components/
-│   │   ├── CompanyIcon.tsx
-│   │   ├── EducationCard.tsx
-│   │   ├── ExperienceCard.tsx
-│   │   ├── LoadingSpinner.tsx
-│   │   ├── ProjectCard.tsx
-│   │   └── SkillChip.tsx
-│   ├── data/
-│   │   ├── bio.json
-│   │   ├── education.json
-│   │   ├── experience.json
-│   │   ├── projects.json
-│   │   └── skills.json
-│   ├── pages/
-│   │   ├── AboutMePage.tsx
-│   │   ├── CVPage.tsx
-│   │   └── ProjectsPage.tsx
-│   ├── sections/
-│   │   ├── Bio.tsx
-│   │   ├── Education.tsx
-│   │   ├── Experience.tsx
-│   │   ├── ProjectsPreview.tsx
-│   │   └── Skills.tsx
-│   ├── theme/
-│   │   └── theme.ts
-│   ├── utils/
-│   │   └── dateUtils.ts
-│   ├── App.css
-│   ├── App.tsx
-│   ├── index.css
-│   ├── main.tsx
-│   └── types.ts
-├── tools/
-│   └── config.json
-├── README.md
-├── eslint.config.js
-├── index.html
-├── package.json
-├── tsconfig.app.json
-├── tsconfig.json
-├── tsconfig.node.json
-└── vite.config.ts
+I tried to use a stracture that made sense in my mind, storing the data in JSONs and separating them by object type. I then structured the page in tabs (or pages) and components (for example skills section). So hopefully navigating through them should not be very complex for the reader.
 
 
-## Installation
+## 🚀 Live Deployment
 
-Download the package
+- **Primary Domain**: [www.jonugarte.me](https://www.jonugarte.me)
+- **Netlify Subdomain**: [https://cv-jonugarte.netlify.app/](https://cv-jonugarte.netlify.app/)
+- **Custom Domain**: Registered via Cloudflare (jonugarte.me)
+
+
+## 🚀 Installation & Development
+
+```bash
+# Clone the repository
 git clone https://github.com/JohnyUXD/cv-jonugarte.git
 cd cv-jonugarte
 
-Install Dependencies
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Lint code
+npm run lint
+
+# Preview production build
+npm run preview
+
+## ✨ Features
+
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Professional Styling**: Custom Material-UI theme with professional color palette
+- **Multi-page Navigation**: CV, Projects, and About Me sections
+- **Interactive Components**: Expandable project cards, skill chips, and career timeline
+- **TypeScript**: Fully typed for better development experience
+- **Performance Optimized**: Built with Vite for fast development and builds
+
+## 🛠 Tech Stack
+
+- **Frontend Framework**: React 19.1.1 with TypeScript
+- **UI Library**: Material-UI (MUI) v7.3.5 with custom theme
+- **Build Tool**: Vite 7.2.4
+- **Routing**: React Router DOM v7.9.6
+- **Icons**: Custom SVG icons for companies and project types
+- **Styling**: Emotion (CSS-in-JS) with Material-UI theming
+
+## 📋 Pages & Sections
+
+### CV Page
+- Professional summary and contact information
+- Work experience with detailed role descriptions
+- Education history with thesis information
+- Skills categorized by technical and professional
+- Interactive career timeline
+
+### Projects Page
+- Filterable project gallery by type, technology, and company
+- Sortable by date (newest/oldest)
+- Expandable project cards with highlights and tech stack
+- Company project icons and categorization
+
+### About Me Page
+- Personal biography and professional journey
+- Contact information
+- Personal interests with visual icons
+
+## 🎨 Design System
+
+### Color Palette
+- **Primary**: `#05DBDB` (Cyan) - Main brand color
+- **Secondary**: `#FFCE61` (Yellow) - Highlights and accents
+- **Background**: `#F8F9FA` (Light gray)
+- **Text**: `#1D1D1B` (Near black)
+- **Surface**: `#FFFFFF` (Cards and components)
+
+### Typography
+- **Font Family**: Inter, Roboto, system fonts
+- **Hierarchy**: Clear heading structure with appropriate weights
+
+## 📊 Data Structure
+
+The application uses JSON files for content management:
+
+- **bio.json**: Personal information, contact details, and summary
+- **experience.json**: Work history with roles, responsibilities, and technologies
+- **education.json**: Academic background and achievements
+- **projects.json**: Portfolio projects with metadata and tech stacks
+- **skills.json**: Categorized technical and professional skills
 
 
 --- package.json ---
@@ -1918,40 +1931,36 @@ export default theme;
 --- src/data/projects.json ---
 [
   {
-    "title": "Real-time Warehouse Monitoring Tool",
-    "projectType": "company",
-    "company": "Amazon",
-    "date": "2024-08-01",
-    "summary": "Monitors warehouse fullness across EU fulfillment centers in real time.",
-    "description": "Backend tool for monitoring warehouse fullness deployed in 30+ EU fulfillment centers. Used daily by over 100 users, providing actionable insights to optimize operational throughput.",
-    "stack": ["AWS", "Python", "SQL", "Redshift", "Lambda"],
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "title": "Personal Portfolio Webpage",
+    "projectType": "personal",
+    "date": "2025-11-23",
+    "summary": "Personal webpage and portfolio. Created using Typescript, React and Material UI. ",
+    "description": "Webpage created using Typescript, React and Material UI. Will be an expanding project and a way to learn Font-End development",
+    "stack": ["Quicksight", "AWS", "SQL"],
+    "link": "https://cv-jonugarte.netlify.app/"
   },
   {
-    "title": "Daily Onboarding Reporting Dashboard",
+    "title": "New Hire Scheduling Automation",
     "projectType": "company",
     "company": "Amazon",
     "date": "2024-05-01",
     "summary": "Dashboard tracking new hire onboarding programs across EU fulfillment centers.",
     "description": "Provides a consolidated view of onboarding program metrics for EU warehouse new hires. Enables teams to monitor completion, calculate savings, and inform decisions based on training effectiveness.",
     "stack": ["Quicksight", "AWS", "SQL"],
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "link": ""  
   },
   {
-    "title": "Automated Market Monitoring Tool",
+    "title": "M&A Deals Monitoring Tool",
     "projectType": "company",
     "company": "Datasite",
     "date": "2019-11-01",
     "summary": "Centralized tool to track M&A market activity using multiple financial data sources.",
     "description": "Aggregates data from Salesforce and Thomson Reuters Financial database to monitor merger and acquisition activity. Provides automated insights to support business development and strategy decisions.",
     "stack": ["SQL Server", "Power BI", "Looker"],
-    "link": "",
-    "icon": "/src/assets/icons/companies/datasite.svg"
+    "link": ""
   },
   {
-    "title": "Amazon Central Operations Cost Optimization",
+    "title": "AWS Cost Optimization",
     "projectType": "company",
     "company": "Amazon",
     "date": "2024-11-01",
@@ -1964,11 +1973,10 @@ export default theme;
       "Projected annual savings of $48,000 for ACES fleet"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "link": ""
   },
   {
-    "title": "Employee Engagement Analytics Dashboard",
+    "title": "Employee Engagement Dashboard",
     "projectType": "company",
     "company": "Amazon",
     "date": "2023-10-01",
@@ -1977,15 +1985,14 @@ export default theme;
     "stack": ["AWS", "SQL", "Python", "Quicksight"],
     "highlights": [
       "Reduced unexpected attrition by 846 basis points",
-      "Generated $7.15M in savings YTD 2024",
-      "Implemented row-level security in dashboards"
+      "Generated $5M+ in savings YTD 2024",
+      "First implementation of row-level security in dashboards"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "link": ""
   },
   {
-    "title": "Performance and Learning Metrics Dashboard",
+    "title": "Permission Monitoring Dashboard",
     "projectType": "company",
     "company": "Amazon",
     "date": "2023-02-01",
@@ -1993,13 +2000,12 @@ export default theme;
     "description": "Built a scalable dashboard to monitor personnel permissions, training completion, and compliance across EU fulfillment centers. Enabled centralized cleaning of permission violations and reduced operational inefficiencies.",
     "stack": ["AWS", "SQL", "Quicksight"],
     "highlights": [
-      "Managed 1.2M capability-level violations",
+      "Identified and tackled 1.2M permission errors",
       "Reduced total violations by 98% within 4 months",
       "Achieved consistent 6-hour data refresh rate"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "link": ""
   },
   {
     "title": "Warehouse Throughput Optimization",
@@ -2015,8 +2021,7 @@ export default theme;
       "Enhanced decision-making for peak operations"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "link": ""
   },
   {
     "title": "Training Effectiveness Dashboard",
@@ -2032,11 +2037,10 @@ export default theme;
       "Enabled data-driven coaching and curriculum improvements"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "link": ""
   },
   {
-    "title": "Language Training Effectiveness Dashboard",
+    "title": "Employee Language Optimization",
     "projectType": "company",
     "company": "Amazon",
     "date": "2023-04-01",
@@ -2049,25 +2053,22 @@ export default theme;
       "Enhanced associate experience for non-native speakers"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "link": ""
   },
   {
-    "title": "Cross-Skill Training Utilization Dashboard",
+    "title": "Cross Functional Training",
     "projectType": "company",
     "company": "Amazon",
     "date": "2025-06-01",
     "summary": "Tool to track and optimize cross-training of warehouse associates.",
-    "description": "Redesigned cross-training system to track subprocess-level skills and validate competency through certifications. Prioritized workforce allocation based on proficiency and labor gaps, enabling operational flexibility and cost savings.",
+    "description": "Redesigned training system to track subprocess-level skills and validate competency through certifications. Prioritized workforce allocation based on proficiency and labor gaps, enabling operational flexibility and cost savings.",
     "stack": ["Python", "SQL", "AWS"],
     "highlights": [
-      "Increased cross-training pool by 7%",
       "Identified 10K additional eligible employees",
-      "Contributed $27.5M in net cost avoidance"
+      "Contributed $20M+ in net cost avoidance"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5",
-    "link": "",
-    "icon": "/src/assets/icons/companies/amazon.svg"
+    "link": ""
   }
 ]
 
@@ -3198,11 +3199,11 @@ METADATA
 ================================================================================
 
 Files Parsed: 49
-Total Characters: 172619
+Total Characters: 173555
 
 File List:
 ----------------------------------------
-README.md: 1924 characters
+README.md: 3586 characters
 eslint.config.js: 621 characters
 index.html: 392 characters
 package.json: 972 characters
@@ -3231,7 +3232,7 @@ src/components/SkillChip.tsx: 624 characters
 src/data/bio.json: 1547 characters
 src/data/education.json: 944 characters
 src/data/experience.json: 5936 characters
-src/data/projects.json: 7777 characters
+src/data/projects.json: 7051 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 534 characters
@@ -3312,6 +3313,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-23 13:27:19 
-UTC:   2025-11-23 12:27:19 UTC
-Timestamp: 1763900839
+Local: 2025-11-23 18:14:21 
+UTC:   2025-11-23 17:14:21 UTC
+Timestamp: 1763918061
