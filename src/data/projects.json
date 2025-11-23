@@ -1,13 +1,12 @@
 [
   {
     "title": "Personal Portfolio Webpage",
-    "projectType": "company",
-    "company": "Amazon",
-    "date": "2024-05-01",
-    "summary": "Dashboard tracking new hire onboarding programs across EU fulfillment centers.",
-    "description": "Provides a consolidated view of onboarding program metrics for EU warehouse new hires. Enables teams to monitor completion, calculate savings, and inform decisions based on training effectiveness.",
+    "projectType": "personal",
+    "date": "2025-11-23",
+    "summary": "Personal webpage and portfolio. Created using Typescript, React and Material UI. ",
+    "description": "Webpage created using Typescript, React and Material UI. Will be an expanding project and a way to learn Font-End development",
     "stack": ["Quicksight", "AWS", "SQL"],
-    "link": ""
+    "link": "https://cv-jonugarte.netlify.app/"
   },
   {
     "title": "New Hire Scheduling Automation",
