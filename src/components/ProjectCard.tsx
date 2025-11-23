@@ -3,6 +3,12 @@ import { Card, CardContent, Typography, Box, Stack, Chip } from "@mui/material";
 import type { Project } from "../types";
 import { formatDateForDisplay } from "../utils/dateUtils";
 
+import defaultCompanyIcon from "../assets/icons/other/company-default.svg";
+import defaultAcademiaIcon from "../assets/icons/other/academia-default.svg";
+import defaultPersonalIcon from "../assets/icons/other/personal-default.svg";
+
+
+
 interface ProjectCardProps {
   project: Project;
 }
@@ -30,12 +36,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     
     switch (project.projectType) {
       case "personal":
-        return "/src/assets/icons/default-personal.svg";
+        return defaultPersonalIcon;
       case "academic":
-        return "/src/assets/icons/default-academic.svg";
+        return defaultAcademiaIcon;
       case "company":
       default:
-        return "/src/assets/icons/default-company.svg";
+        return defaultCompanyIcon;
     }
   };
 
