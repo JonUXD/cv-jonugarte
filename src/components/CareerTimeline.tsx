@@ -146,7 +146,7 @@ const CareerTimeline: React.FC = () => {
               />
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Typography
-                  variant="caption"
+                  variant="body1"
                   fontWeight="bold"
                   sx={{
                     color: "text.primary",
@@ -158,24 +158,19 @@ const CareerTimeline: React.FC = () => {
                   {event.title}
                 </Typography>
                 <Typography
-                  variant="caption"
+                  variant="body2"
                   color="text.secondary"
                   sx={{ 
                     lineHeight: 1.2, 
                     display: 'block',
-                    fontSize: '0.7rem'
                   }}
                   noWrap
                 >
                   {event.subtitle}
                 </Typography>
                 <Typography
-                  variant="caption"
+                  variant="body2"
                   color="text.secondary"
-                  sx={{ 
-                    fontWeight: 500,
-                    fontSize: '0.65rem'
-                  }}
                 >
                   {event.type === 'work' 
                     ? formatDateRange(event.date, event.endDate)
