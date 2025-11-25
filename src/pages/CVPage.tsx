@@ -89,7 +89,7 @@ const CVPage: React.FC = () => {
       {/* Main Content Grid */}
       <Grid container spacing={4}>
         {/* Left Column - Experience & Education */}
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={{ xs: 12, md: 8 }} >
           {/* Work Experience */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 

@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
+import { Card, Typography, Stack, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import SkillChip from "./SkillChip";
@@ -13,8 +13,8 @@ interface ExperienceCardProps {
 
 const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience, id }) => {
   return (
-    <Card sx={{ mb: 3 }} elevation={2} id={id}>
-      <CardContent>
+    <Card sx={{ mb: 2 }} elevation={2} id={id}>
+      <Box sx={{ p: 2, paddingBottom: '8px' }}>  {/* ← Changed from CardContent to Box with padding */}
         {/* Company Header */}
         <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
           <CompanyIcon companyName={experience.company}/>
@@ -64,18 +64,9 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience, id }) 
                 ))}
               </Box>
             )}
-
-            {/* Tech stack */}
-            {(role.stack || []).length > 0 && (
-              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", mt: 1, gap: 0.5 }}>
-                {(role.stack || []).map((tech, k) => (
-                  <SkillChip key={k} label={tech} />
-                ))}
-              </Stack>
-            )}
           </Box>
         ))}
-      </CardContent>
+      </Box> 
     </Card>
   );
 });
