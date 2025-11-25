@@ -130,9 +130,6 @@ const AboutMePage: React.FC = () => {
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                   {bio.email}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                  {bio.phone}
-                </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {bio.location.display}
                 </Typography>

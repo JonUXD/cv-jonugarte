@@ -4,7 +4,9 @@
 export interface Bio {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
+  github?: string;
+  linkedin?: string;
   location: GeographicLocation;
   summary?: string;
   summary_long?: string;
