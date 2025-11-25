@@ -50,7 +50,7 @@ const App: React.FC = () => {
           <Tab label="About Me" component={Link} to="/about" />
         </Tabs>
 
-        <Box sx={{ mt: { xs: 2, sm: 3, md: 4 } }}>
+        <Box sx={{ mt: { xs: 1, sm: 2, md: 2 } }}>
           <Routes>
             <Route path="/" element={<Navigate to="/cv" replace />} />
             <Route path="/cv" element={<CVPage />} />
