@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Card, Typography, Stack, Box } from "@mui/material";
+import { Card, Typography, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
 import { formatDateRange } from '../utils/dateUtils';
