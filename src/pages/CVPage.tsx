@@ -7,9 +7,10 @@ import experienceData from "../data/experience.json";
 import educationData from "../data/education.json";
 
 import ExperienceCard from "../components/ExperienceCard";
-import Skills from "../sections/Skills";
 import EducationCard from "../components/EducationCard";
 import CareerTimeline from '../components/CareerTimeline';
+import TechStack from '../components/TechStack';
+
 
 import EmailIcon from '@mui/icons-material/Email';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -142,16 +143,16 @@ const CVPage: React.FC = () => {
             marginBottom: 4
           }}>
             <Typography variant="h4" sx={{ 
-              marginBottom: 3,
+              marginBottom: 4,
               fontWeight: 700,
               color: "text.primary",
               borderBottom: "2px solid",
               borderColor: "primary.main",
               paddingBottom: 1
             }}>
-              Skills
+              Tech Stack
             </Typography>
-            <Skills />
+            <TechStack />
           </Box>
           <Box sx={{ marginTop: 4 }}>
             <Typography variant="h5" sx={{ 
