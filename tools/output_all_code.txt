@@ -378,7 +378,7 @@ const App: React.FC = () => {
           <Tab label="About Me" component={Link} to="/about" />
         </Tabs>
 
-        <Box sx={{ mt: { xs: 2, sm: 3, md: 4 } }}>
+        <Box sx={{ mt: { xs: 1, sm: 2, md: 2 } }}>
           <Routes>
             <Route path="/" element={<Navigate to="/cv" replace />} />
             <Route path="/cv" element={<CVPage />} />
@@ -881,6 +881,57 @@ export const formatDateRange = (startDate: string, endDate: string | null): stri
   return `${formatDateForDisplay(startDate)} – ${formatDateForDisplay(endDate)}`;
 };
 
+--- src/components/TechStack.tsx ---
+import React from "react";
+import { Card, CardContent, Typography, Box } from "@mui/material";
+
+import CloudIcon from '@mui/icons-material/Cloud';
+import CodeIcon from '@mui/icons-material/Code';
+import StorageIcon from '@mui/icons-material/Storage';
+import AddchartIcon from '@mui/icons-material/Addchart';
+import BuildIcon from '@mui/icons-material/Build';
+
+const techItems = [
+  { name: "AWS", icon: <CloudIcon fontSize="small" /> },
+  { name: "Python", icon: <CodeIcon fontSize="small" /> },
+  { name: "Quicksight", icon: <AddchartIcon fontSize="small" /> },
+  { name: "PowerBI", icon: <AddchartIcon fontSize="small" /> },
+  { name: "SQL", icon: <CodeIcon fontSize="small" /> },
+  { name: "SQL Server", icon: <StorageIcon fontSize="small" /> },
+  { name: "R", icon: <CodeIcon fontSize="small" /> },
+  { name: "Redshift", icon: <StorageIcon fontSize="small" /> },
+  { name: "RDS", icon: <StorageIcon fontSize="small" /> },
+  { name: "AWS CDK", icon: <CodeIcon fontSize="small" /> },
+  { name: "Typescript", icon: <CodeIcon fontSize="small" /> },
+];
+
+const TechStack: React.FC = () => {
+return (
+        <Card sx={{ marginBottom: 3 }}>
+            <CardContent>
+                <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+                gap: 1
+                }}>
+                {techItems.map((item, index) => (
+                    <Box key={index} sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 1 
+                    }}>
+                    {item.icon || <BuildIcon fontSize="small" />}
+                    <Typography variant="body2">{item.name}</Typography>
+                    </Box>
+                ))}
+                </Box>  
+            </CardContent>
+        </Card>
+    );
+};
+
+export default TechStack;
+
 --- src/components/CareerTimeline.tsx ---
 import React from 'react';
 import {
@@ -1030,7 +1081,7 @@ const CareerTimeline: React.FC = () => {
               />
               <Box sx={{ flex: 1, minWidth: 0 }}>
                 <Typography
-                  variant="caption"
+                  variant="body1"
                   fontWeight="bold"
                   sx={{
                     color: "text.primary",
@@ -1042,24 +1093,19 @@ const CareerTimeline: React.FC = () => {
                   {event.title}
                 </Typography>
                 <Typography
-                  variant="caption"
+                  variant="body2"
                   color="text.secondary"
                   sx={{ 
                     lineHeight: 1.2, 
                     display: 'block',
-                    fontSize: '0.7rem'
                   }}
                   noWrap
                 >
                   {event.subtitle}
                 </Typography>
                 <Typography
-                  variant="caption"
+                  variant="body2"
                   color="text.secondary"
-                  sx={{ 
-                    fontWeight: 500,
-                    fontSize: '0.65rem'
-                  }}
                 >
                   {event.type === 'work' 
                     ? formatDateRange(event.date, event.endDate)
@@ -1145,10 +1191,9 @@ export default CompanyIcon;
 
 --- src/components/ExperienceCard.tsx ---
 import React, { memo } from "react";
-import { Card, CardContent, Typography, Stack, Box } from "@mui/material";
+import { Card, Typography, Box } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import type { ExperienceItem, ExperienceRole } from "../types";
-import SkillChip from "./SkillChip";
 import { formatDateRange } from '../utils/dateUtils';
 import CompanyIcon from "./CompanyIcon";
 
@@ -1159,8 +1204,8 @@ interface ExperienceCardProps {
 
 const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience, id }) => {
   return (
-    <Card sx={{ mb: 3 }} elevation={2} id={id}>
-      <CardContent>
+    <Card sx={{ mb: 2 }} elevation={2} id={id}>
+      <Box sx={{ p: 2, paddingBottom: '8px' }}>  {/* ← Changed from CardContent to Box with padding */}
         {/* Company Header */}
         <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
           <CompanyIcon companyName={experience.company}/>
@@ -1210,18 +1255,9 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience, id }) 
                 ))}
               </Box>
             )}
-
-            {/* Tech stack */}
-            {(role.stack || []).length > 0 && (
-              <Stack direction="row" spacing={1} sx={{ flexWrap: "wrap", mt: 1, gap: 0.5 }}>
-                {(role.stack || []).map((tech, k) => (
-                  <SkillChip key={k} label={tech} />
-                ))}
-              </Stack>
-            )}
           </Box>
         ))}
-      </CardContent>
+      </Box> 
     </Card>
   );
 });
@@ -3064,9 +3100,14 @@ import experienceData from "../data/experience.json";
 import educationData from "../data/education.json";
 
 import ExperienceCard from "../components/ExperienceCard";
-import Skills from "../sections/Skills";
 import EducationCard from "../components/EducationCard";
 import CareerTimeline from '../components/CareerTimeline';
+import TechStack from '../components/TechStack';
+
+
+import EmailIcon from '@mui/icons-material/Email';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 // Types
 import type { Bio, ExperienceData, EducationData, EducationItem } from "../types";
@@ -3081,10 +3122,47 @@ const CVPage: React.FC = () => {
   return (
     <Box sx={{ padding: 3 }}>
       {/* Bio Section */}
+        {/* Bio Section - Updated Layout */}
       <Box sx={{ marginBottom: 6 }}>
-        <Typography variant="h4" gutterBottom color="text.primary">
-          {bio.name}
-        </Typography>
+        {/* Flex container for name + contact info */}
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'flex-start',
+          flexDirection: { xs: 'column', sm: 'row' },
+          marginBottom: 2 
+        }}>
+          {/* Name on the left */}
+          <Typography variant="h4" gutterBottom sx={{ mb: 0, mr: 2 }}>
+            {bio.name}
+          </Typography>
+          
+          {/* Contact icons */}
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            {/* Email icon/link */}
+            {bio.email && (
+              <a href={`mailto:${bio.email}`}>
+                <EmailIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
+              </a>
+            )}
+            
+            {/* GitHub icon/link */}
+            {bio.github && (
+              <a href={bio.github} target="_blank" rel="noopener noreferrer">
+                <GitHubIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
+              </a>
+            )}
+            
+            {/* LinkedIn icon/link */}
+            {bio.linkedin && (
+              <a href={bio.linkedin} target="_blank" rel="noopener noreferrer">
+                <LinkedInIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
+              </a>
+            )}
+          </Box>  
+        </Box>
+
+        {/* Summary stays below, full width */}
         {bio.summary && (
           <Box sx={{ marginBottom: 1 }}>
             <ReactMarkdown
@@ -3100,15 +3178,12 @@ const CVPage: React.FC = () => {
             </ReactMarkdown>
           </Box>
         )}
-        <Typography variant="body2" color="text.secondary">
-          {bio.email} | {bio.phone} | {bio.location.display}
-        </Typography>
       </Box>
 
       {/* Main Content Grid */}
       <Grid container spacing={4}>
         {/* Left Column - Experience & Education */}
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={{ xs: 12, md: 8 }} >
           {/* Work Experience */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 
@@ -3161,16 +3236,16 @@ const CVPage: React.FC = () => {
             marginBottom: 4
           }}>
             <Typography variant="h4" sx={{ 
-              marginBottom: 3,
+              marginBottom: 4,
               fontWeight: 700,
               color: "text.primary",
               borderBottom: "2px solid",
               borderColor: "primary.main",
               paddingBottom: 1
             }}>
-              Skills
+              Tech Stack
             </Typography>
-            <Skills />
+            <TechStack />
           </Box>
           <Box sx={{ marginTop: 4 }}>
             <Typography variant="h5" sx={{ 
@@ -3198,8 +3273,8 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 49
-Total Characters: 173531
+Files Parsed: 50
+Total Characters: 176247
 
 File List:
 ----------------------------------------
@@ -3222,13 +3297,14 @@ src/assets/icons/other/academia-default.svg: 491 characters
 src/assets/icons/other/company-default.svg: 870 characters
 src/assets/icons/other/personal-default.svg: 2594 characters
 src/assets/react.svg: 4126 characters
-src/components/CareerTimeline.tsx: 5473 characters
+src/components/CareerTimeline.tsx: 5305 characters
 src/components/CompanyIcon.tsx: 1897 characters
 src/components/EducationCard.tsx: 1989 characters
-src/components/ExperienceCard.tsx: 2875 characters
+src/components/ExperienceCard.tsx: 2556 characters
 src/components/LoadingSpinner.tsx: 872 characters
 src/components/ProjectCard.tsx: 6851 characters
 src/components/SkillChip.tsx: 624 characters
+src/components/TechStack.tsx: 1861 characters
 src/data/bio.json: 1625 characters
 src/data/education.json: 944 characters
 src/data/experience.json: 5936 characters
@@ -3237,7 +3313,7 @@ src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 534 characters
 src/pages/AboutMePage.tsx: 4422 characters
-src/pages/CVPage.tsx: 4237 characters
+src/pages/CVPage.tsx: 5579 characters
 src/pages/ProjectsPage.tsx: 10183 characters
 src/sections/Bio.tsx: 1591 characters
 src/sections/Education.tsx: 1199 characters
@@ -3275,7 +3351,8 @@ cv-jonugarte/
 │   │   ├── ExperienceCard.tsx
 │   │   ├── LoadingSpinner.tsx
 │   │   ├── ProjectCard.tsx
-│   │   └── SkillChip.tsx
+│   │   ├── SkillChip.tsx
+│   │   └── TechStack.tsx
 │   ├── data/
 │   │   ├── bio.json
 │   │   ├── education.json
@@ -3313,6 +3390,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-25 20:27:31 
-UTC:   2025-11-25 19:27:31 UTC
-Timestamp: 1764098851
+Local: 2025-11-27 07:44:31 
+UTC:   2025-11-27 06:44:31 UTC
+Timestamp: 1764225871

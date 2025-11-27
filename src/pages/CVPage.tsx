@@ -20,18 +20,14 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import type { Bio, ExperienceData, EducationData, EducationItem } from "../types";
 
 const CVPage: React.FC = () => {
-
-  // Type assertions
   const bio: Bio = bioData;
   const experience: ExperienceData = experienceData as ExperienceData;
   const education: EducationData = educationData;
 
   return (
     <Box sx={{ padding: 3 }}>
-      {/* Bio Section */}
-        {/* Bio Section - Updated Layout */}
+      {/* Bio Section - UNCHANGED */}
       <Box sx={{ marginBottom: 6 }}>
-        {/* Flex container for name + contact info */}
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -39,28 +35,21 @@ const CVPage: React.FC = () => {
           flexDirection: { xs: 'column', sm: 'row' },
           marginBottom: 2 
         }}>
-          {/* Name on the left */}
           <Typography variant="h4" gutterBottom sx={{ mb: 0, mr: 2 }}>
             {bio.name}
           </Typography>
           
-          {/* Contact icons */}
           <Box sx={{ display: 'flex', gap: 2 }}>
-            {/* Email icon/link */}
             {bio.email && (
               <a href={`mailto:${bio.email}`}>
                 <EmailIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
               </a>
             )}
-            
-            {/* GitHub icon/link */}
             {bio.github && (
               <a href={bio.github} target="_blank" rel="noopener noreferrer">
                 <GitHubIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
               </a>
             )}
-            
-            {/* LinkedIn icon/link */}
             {bio.linkedin && (
               <a href={bio.linkedin} target="_blank" rel="noopener noreferrer">
                 <LinkedInIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
@@ -69,7 +58,6 @@ const CVPage: React.FC = () => {
           </Box>  
         </Box>
 
-        {/* Summary stays below, full width */}
         {bio.summary && (
           <Box sx={{ marginBottom: 1 }}>
             <ReactMarkdown
@@ -91,7 +79,7 @@ const CVPage: React.FC = () => {
       <Grid container spacing={4}>
         {/* Left Column - Experience & Education */}
         <Grid size={{ xs: 12, md: 8 }} >
-          {/* Work Experience */}
+          {/* Work Experience - UPDATED */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 
               marginBottom: 4,
@@ -103,18 +91,18 @@ const CVPage: React.FC = () => {
             }}>
               Work Experience
             </Typography>
-            {experience.map((exp) => (
-              exp.roles.map((role) => (
-                <ExperienceCard 
-                  key={`${exp.company}-${role.title}`}
-                  experience={{ ...exp, roles: [role] }} // Pass single role
-                  id={`${exp.company}-${role.title}-${role.start_date}`}
-                />
-              ))
+            
+            {/* CHANGED: Pass full company experience instead of splitting roles */}
+            {experience.map((companyExp) => (
+              <ExperienceCard 
+                key={companyExp.company}
+                experience={companyExp}
+                id={`${companyExp.company}-${companyExp.roles[0].start_date}`}
+              />
             ))}
           </Box>
 
-          {/* Education */}
+          {/* Education - UNCHANGED */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 
               marginBottom: 4,
@@ -136,7 +124,7 @@ const CVPage: React.FC = () => {
           </Box>
         </Grid>
 
-        {/* Right Column - Skills Sidebar */}
+        {/* Right Column - UNCHANGED */}
         <Grid size={{ xs: 12, md: 4 }}>
           <Box sx={{ 
             top: { md: 20 },
@@ -168,7 +156,6 @@ const CVPage: React.FC = () => {
             <CareerTimeline />
           </Box>
         </Grid>
-
       </Grid>
     </Box>
   );
