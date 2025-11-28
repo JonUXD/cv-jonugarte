@@ -40,11 +40,9 @@ const CVPage: React.FC = () => {
           </Typography>
           
           <Box sx={{ display: 'flex', gap: 2 }}>
-            {bio.email && (
-              <a href={`mailto:${bio.email}`}>
+              <a href={"about"}>
                 <EmailIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
               </a>
-            )}
             {bio.github && (
               <a href={bio.github} target="_blank" rel="noopener noreferrer">
                 <GitHubIcon sx={{ color: 'text.secondary', fontSize: 24 }} />

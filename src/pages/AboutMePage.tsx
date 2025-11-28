@@ -12,6 +12,8 @@ import bioData from "../data/bio.json";
 import ReactMarkdown from "react-markdown";
 import type { Bio } from "../types";
 
+import ContactForm from '../components/ContactForm';
+
 // Simple icon mapping for interests
 const interestIcons: Record<string, string> = {
   "Surfing": "🏄‍♂️",
@@ -67,6 +69,9 @@ const AboutMePage: React.FC = () => {
 
         {/* Sidebar Column */}
         <Grid size={{ xs: 12, md: 4 }}>
+          {/* Contact Section */}
+          <ContactForm />
+          
           {/* Personal Interests Section */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 
@@ -108,31 +113,6 @@ const AboutMePage: React.FC = () => {
                     />
                   ))}
                 </Stack>
-              </CardContent>
-            </Card>
-          </Box>
-
-          {/* Contact Section */}
-          <Box sx={{ marginBottom: 6 }}>
-            <Typography variant="h4" sx={{ 
-              marginBottom: 4,
-              fontWeight: 700,
-              color: "text.primary",
-              borderBottom: "2px solid",
-              borderColor: "primary.main",
-              paddingBottom: 1
-            }}>
-              Contact
-            </Typography>
-            
-            <Card elevation={2}>
-              <CardContent>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                  {bio.email}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {bio.location.display}
-                </Typography>
               </CardContent>
             </Card>
           </Box>

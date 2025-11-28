@@ -3,7 +3,7 @@
 // ------------------------
 export interface Bio {
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
   github?: string;
   linkedin?: string;
