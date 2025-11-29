@@ -536,7 +536,7 @@ button:focus-visible {
 // ------------------------
 export interface Bio {
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
   github?: string;
   linkedin?: string;
@@ -1190,12 +1190,14 @@ export default CompanyIcon;
 
 
 --- src/components/ExperienceCard.tsx ---
-import React, { memo } from "react";
-import { Card, Typography, Box } from "@mui/material";
+import React, { memo, useState } from "react";
+import { Card, Typography, Box, Collapse, IconButton } from "@mui/material";
 import ReactMarkdown from "react-markdown";
-import type { ExperienceItem, ExperienceRole } from "../types";
+import type { ExperienceItem } from "../types";
 import { formatDateRange } from '../utils/dateUtils';
 import CompanyIcon from "./CompanyIcon";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 interface ExperienceCardProps {
   experience: ExperienceItem;
@@ -1203,11 +1205,32 @@ interface ExperienceCardProps {
 }
 
 const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience, id }) => {
+  // Sort roles by date (newest first)
+  const sortedRoles = [...experience.roles].sort((a, b) => 
+    new Date(b.start_date).getTime() - new Date(a.start_date).getTime()
+  );
+
+  const [expandedRoles, setExpandedRoles] = useState<Set<string>>(
+    new Set(sortedRoles.map(role => `${role.title}-${role.start_date}`))
+  );
+
+  const toggleRoleExpansion = (roleId: string) => {
+    setExpandedRoles(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(roleId)) {
+        newSet.delete(roleId);
+      } else {
+        newSet.add(roleId);
+      }
+      return newSet;
+    });
+  };
+
   return (
-    <Card sx={{ mb: 2 }} elevation={2} id={id}>
-      <Box sx={{ p: 2, paddingBottom: '8px' }}>  {/* ← Changed from CardContent to Box with padding */}
-        {/* Company Header */}
-        <Box sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
+    <Card sx={{ mb: 3 }} elevation={2} id={id}>
+      <Box sx={{ p: 2 }}>
+        {/* Company Header - UNCHANGED */}
+        <Box sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
           <CompanyIcon companyName={experience.company}/>
           <Typography variant="h5" sx={{ 
             fontWeight: 700,
@@ -1222,42 +1245,105 @@ const ExperienceCard: React.FC<ExperienceCardProps> = memo(({ experience, id }) 
           {formatDateRange(experience.start_date, experience.end_date)}
         </Typography>
 
-        {/* Roles */}
-        {experience.roles.map((role: ExperienceRole, i) => (
-          <Box key={i} sx={{ marginTop: 2, marginBottom: 1 }}>
-            {/* Role title with location */}
-            <Typography variant="h6" sx={{ 
-              fontWeight: 600,
-              color: "text.primary",
-              marginBottom: 0.5
-            }}>
-              {role.title} {" | "} {role.department}
-            </Typography>
-            
-            {/* Role-specific location and dates */}
-            <Typography variant="subtitle2" color="text.secondary">
-              {role.location.display} • {formatDateRange(role.start_date, role.end_date)}
-            </Typography>
+        <Box sx={{ mt: 2 }}>
+          {sortedRoles.map((role, index) => (
+            <Box 
+              key={`${role.title}-${role.start_date}`}
+              sx={{ 
+                display: 'flex',
+                alignItems: 'flex-start',
+                mb: 1.5,
+                position: 'relative',
+                '&:last-child': { mb: 0 }
+              }}
+            >
+              {/* Timeline dot */}
+              <Box
+                sx={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: '50%',
+                  backgroundColor: sortedRoles.length > 1 ? "primary.main" : "transparent",
+                  border: sortedRoles.length > 1 ? `2px solid white` : "none",
+                  flexShrink: 0,
+                  mt: 0.5,
+                  mr: 1.5,
+                  position: 'relative',
+                  zIndex: 2
+                }}
+              />
 
-            {/* Description */}
-            {(role.description || []).length > 0 && (
-              <Box component="ul" sx={{ 
-                paddingLeft: 2, 
-                marginTop: 1,
-                marginLeft: 1,
-              }}>
-                {(role.description || []).map((desc, j) => (
-                  <li key={j}>
-                    <ReactMarkdown components={{ p: ({ children }) => <span>{children}</span> }}>
-                      {desc}
-                    </ReactMarkdown>
-                  </li>
-                ))}
+              {/* Timeline line connector */}
+              {index < sortedRoles.length - 1 && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    left: 5,
+                    top: 20,
+                    bottom: -16,
+                    width: 2,
+                    backgroundColor: "divider",
+                    zIndex: 1
+                  }}
+                />
+              )}
+
+              {/* Role Content */}
+              <Box>
+                {/* Role Header */}
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="h6" sx={{ 
+                      fontWeight: 600,
+                      color: "text.primary",
+                      marginBottom: 0.5
+                    }}>
+                      {role.title} {role.department && `| ${role.department}`}
+                    </Typography>
+                    
+                    <Typography variant="subtitle2" color="text.secondary">
+                      {role.location.display} • {formatDateRange(role.start_date, role.end_date)}
+                    </Typography>
+                  </Box>
+
+                  {/* Expand/Collapse Button */}
+                  {(role.description || []).length > 0 && (
+                    <IconButton 
+                      size="small" 
+                      onClick={() => toggleRoleExpansion(`${role.title}-${role.start_date}`)}
+                      sx={{ ml: 1 }}
+                    >
+                      {expandedRoles.has(`${role.title}-${role.start_date}`) ? 
+                        <ExpandLessIcon /> : 
+                        <ExpandMoreIcon />
+                      }
+                    </IconButton>
+                  )}
+                </Box>
+
+                {/* Role Description - Collapsible */}
+                {(role.description || []).length > 0 && (
+                  <Collapse in={expandedRoles.has(`${role.title}-${role.start_date}`)}>
+                    <Box component="ul" sx={{ 
+                      paddingLeft: 2, 
+                      marginTop: 1,
+                      marginLeft: 1,
+                    }}>
+                      {(role.description || []).map((desc, j) => (
+                        <li key={j}>
+                          <ReactMarkdown components={{ p: ({ children }) => <span>{children}</span> }}>
+                            {desc}
+                          </ReactMarkdown>
+                        </li>
+                      ))}
+                    </Box>
+                  </Collapse>
+                )}
               </Box>
-            )}
-          </Box>
-        ))}
-      </Box> 
+            </Box>
+          ))}
+        </Box>
+      </Box>
     </Card>
   );
 });
@@ -1535,6 +1621,136 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 };
 
 export default ProjectCard;
+
+--- src/components/ContactForm.tsx ---
+import React, { useState } from 'react';
+import { TextField, Button, Box, Card, CardContent, Typography, Alert, Snackbar } from "@mui/material";
+
+const ContactForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Form submission handled by Netlify
+    setSubmitStatus('success');
+    setFormData({ name: '', email: '', message: '' });
+  };
+
+  return (
+    <Box sx={{ marginBottom: 6 }}>
+      <Typography variant="h4" sx={{ 
+        marginBottom: 4,
+        fontWeight: 700,
+        color: "text.primary",
+        borderBottom: "2px solid",
+        borderColor: "primary.main",
+        paddingBottom: 1
+      }}>
+        Get In Touch
+      </Typography>
+      
+      <Card elevation={2}>
+        <CardContent>
+          <form name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit}>
+            <input type="hidden" name="form-name" value="contact" />
+            
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <TextField
+                name="name"
+                label="Your Name"
+                variant="outlined"
+                size="small"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 1,
+                  }
+                }}
+              />
+              
+              <TextField
+                name="email"
+                label="Your Email"
+                type="email"
+                variant="outlined"
+                size="small"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 1,
+                  }
+                }}
+              />
+              
+              <TextField
+                name="message"
+                label="Your Message"
+                multiline
+                rows={4}
+                variant="outlined"
+                size="small"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 1,
+                  }
+                }}
+              />
+              
+              <Button 
+                type="submit"
+                variant="contained"
+                sx={{
+                  backgroundColor: 'primary.main',
+                  color: 'primary.contrastText',
+                  fontWeight: 600,
+                  borderRadius: 1,
+                  py: 1,
+                  '&:hover': {
+                    backgroundColor: 'primary.dark',
+                  }
+                }}
+              >
+                Send Message
+              </Button>
+            </Box>
+          </form>
+        </CardContent>
+      </Card>
+
+      <Snackbar 
+        open={submitStatus === 'success'} 
+        autoHideDuration={6000} 
+        onClose={() => setSubmitStatus('idle')}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert severity="success">
+          Message sent successfully!
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
+};
+
+export default ContactForm;
 
 --- src/components/LoadingSpinner.tsx ---
 import React from 'react';
@@ -2114,7 +2330,6 @@ export default theme;
 --- src/data/bio.json ---
 {
   "name": "Jon Ugarte",
-  "email": "j_ugarte_m@outlook.com",
   "linkedin": "https://www.linkedin.com/in/jon-ugarte-aa90181b/",
   "github": "https://github.com/JonUXD",
   "location": {
@@ -2958,6 +3173,8 @@ import bioData from "../data/bio.json";
 import ReactMarkdown from "react-markdown";
 import type { Bio } from "../types";
 
+import ContactForm from '../components/ContactForm';
+
 // Simple icon mapping for interests
 const interestIcons: Record<string, string> = {
   "Surfing": "🏄‍♂️",
@@ -3013,6 +3230,9 @@ const AboutMePage: React.FC = () => {
 
         {/* Sidebar Column */}
         <Grid size={{ xs: 12, md: 4 }}>
+          {/* Contact Section */}
+          <ContactForm />
+          
           {/* Personal Interests Section */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 
@@ -3057,31 +3277,6 @@ const AboutMePage: React.FC = () => {
               </CardContent>
             </Card>
           </Box>
-
-          {/* Contact Section */}
-          <Box sx={{ marginBottom: 6 }}>
-            <Typography variant="h4" sx={{ 
-              marginBottom: 4,
-              fontWeight: 700,
-              color: "text.primary",
-              borderBottom: "2px solid",
-              borderColor: "primary.main",
-              paddingBottom: 1
-            }}>
-              Contact
-            </Typography>
-            
-            <Card elevation={2}>
-              <CardContent>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                  {bio.email}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {bio.location.display}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Box>
         </Grid>
       </Grid>
     </Box>
@@ -3113,18 +3308,14 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import type { Bio, ExperienceData, EducationData, EducationItem } from "../types";
 
 const CVPage: React.FC = () => {
-
-  // Type assertions
   const bio: Bio = bioData;
   const experience: ExperienceData = experienceData as ExperienceData;
   const education: EducationData = educationData;
 
   return (
     <Box sx={{ padding: 3 }}>
-      {/* Bio Section */}
-        {/* Bio Section - Updated Layout */}
+      {/* Bio Section - UNCHANGED */}
       <Box sx={{ marginBottom: 6 }}>
-        {/* Flex container for name + contact info */}
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -3132,28 +3323,19 @@ const CVPage: React.FC = () => {
           flexDirection: { xs: 'column', sm: 'row' },
           marginBottom: 2 
         }}>
-          {/* Name on the left */}
           <Typography variant="h4" gutterBottom sx={{ mb: 0, mr: 2 }}>
             {bio.name}
           </Typography>
           
-          {/* Contact icons */}
           <Box sx={{ display: 'flex', gap: 2 }}>
-            {/* Email icon/link */}
-            {bio.email && (
-              <a href={`mailto:${bio.email}`}>
+              <a href={"about"}>
                 <EmailIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
               </a>
-            )}
-            
-            {/* GitHub icon/link */}
             {bio.github && (
               <a href={bio.github} target="_blank" rel="noopener noreferrer">
                 <GitHubIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
               </a>
             )}
-            
-            {/* LinkedIn icon/link */}
             {bio.linkedin && (
               <a href={bio.linkedin} target="_blank" rel="noopener noreferrer">
                 <LinkedInIcon sx={{ color: 'text.secondary', fontSize: 24 }} />
@@ -3162,7 +3344,6 @@ const CVPage: React.FC = () => {
           </Box>  
         </Box>
 
-        {/* Summary stays below, full width */}
         {bio.summary && (
           <Box sx={{ marginBottom: 1 }}>
             <ReactMarkdown
@@ -3184,7 +3365,7 @@ const CVPage: React.FC = () => {
       <Grid container spacing={4}>
         {/* Left Column - Experience & Education */}
         <Grid size={{ xs: 12, md: 8 }} >
-          {/* Work Experience */}
+          {/* Work Experience - UPDATED */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 
               marginBottom: 4,
@@ -3196,18 +3377,18 @@ const CVPage: React.FC = () => {
             }}>
               Work Experience
             </Typography>
-            {experience.map((exp) => (
-              exp.roles.map((role) => (
-                <ExperienceCard 
-                  key={`${exp.company}-${role.title}`}
-                  experience={{ ...exp, roles: [role] }} // Pass single role
-                  id={`${exp.company}-${role.title}-${role.start_date}`}
-                />
-              ))
+            
+            {/* CHANGED: Pass full company experience instead of splitting roles */}
+            {experience.map((companyExp) => (
+              <ExperienceCard 
+                key={companyExp.company}
+                experience={companyExp}
+                id={`${companyExp.company}-${companyExp.roles[0].start_date}`}
+              />
             ))}
           </Box>
 
-          {/* Education */}
+          {/* Education - UNCHANGED */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 
               marginBottom: 4,
@@ -3229,7 +3410,7 @@ const CVPage: React.FC = () => {
           </Box>
         </Grid>
 
-        {/* Right Column - Skills Sidebar */}
+        {/* Right Column - UNCHANGED */}
         <Grid size={{ xs: 12, md: 4 }}>
           <Box sx={{ 
             top: { md: 20 },
@@ -3261,7 +3442,6 @@ const CVPage: React.FC = () => {
             <CareerTimeline />
           </Box>
         </Grid>
-
       </Grid>
     </Box>
   );
@@ -3273,8 +3453,8 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 50
-Total Characters: 176247
+Files Parsed: 51
+Total Characters: 181845
 
 File List:
 ----------------------------------------
@@ -3299,21 +3479,22 @@ src/assets/icons/other/personal-default.svg: 2594 characters
 src/assets/react.svg: 4126 characters
 src/components/CareerTimeline.tsx: 5305 characters
 src/components/CompanyIcon.tsx: 1897 characters
+src/components/ContactForm.tsx: 3719 characters
 src/components/EducationCard.tsx: 1989 characters
-src/components/ExperienceCard.tsx: 2556 characters
+src/components/ExperienceCard.tsx: 5571 characters
 src/components/LoadingSpinner.tsx: 872 characters
 src/components/ProjectCard.tsx: 6851 characters
 src/components/SkillChip.tsx: 624 characters
 src/components/TechStack.tsx: 1861 characters
-src/data/bio.json: 1625 characters
+src/data/bio.json: 1588 characters
 src/data/education.json: 944 characters
 src/data/experience.json: 5936 characters
 src/data/projects.json: 7051 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 534 characters
-src/pages/AboutMePage.tsx: 4422 characters
-src/pages/CVPage.tsx: 5579 characters
+src/pages/AboutMePage.tsx: 3727 characters
+src/pages/CVPage.tsx: 5174 characters
 src/pages/ProjectsPage.tsx: 10183 characters
 src/sections/Bio.tsx: 1591 characters
 src/sections/Education.tsx: 1199 characters
@@ -3321,7 +3502,7 @@ src/sections/Experience.tsx: 2004 characters
 src/sections/ProjectsPreview.tsx: 385 characters
 src/sections/Skills.tsx: 1526 characters
 src/theme/theme.ts: 3289 characters
-src/types.ts: 2131 characters
+src/types.ts: 2132 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 210 characters
 tsconfig.app.json: 763 characters
@@ -3347,6 +3528,7 @@ cv-jonugarte/
 │   ├── components/
 │   │   ├── CareerTimeline.tsx
 │   │   ├── CompanyIcon.tsx
+│   │   ├── ContactForm.tsx
 │   │   ├── EducationCard.tsx
 │   │   ├── ExperienceCard.tsx
 │   │   ├── LoadingSpinner.tsx
@@ -3390,6 +3572,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-27 07:44:31 
-UTC:   2025-11-27 06:44:31 UTC
-Timestamp: 1764225871
+Local: 2025-11-29 14:24:44 
+UTC:   2025-11-29 13:24:44 UTC
+Timestamp: 1764422684
