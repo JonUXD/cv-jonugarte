@@ -325,6 +325,88 @@ In package.json "vite": "4.5.0"
 --- public/vite.svg ---
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
 
+--- public/success.html ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Sent Successfully - Jon Ugarte</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Roboto', sans-serif;
+            background-color: #F8F9FA;
+            color: #1D1D1B;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .success-container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(5, 219, 219, 0.1);
+            border: 1px solid #DFDFDF;
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            color: #05DBDB;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        p {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        .button {
+            background-color: #05DBDB;
+            color: #1D1D1B;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+        .button:hover {
+            background-color: #04c4c4;
+        }
+        .button-secondary {
+            background-color: transparent;
+            color: #1D1D1B;
+            border: 2px solid #05DBDB;
+        }
+        .button-secondary:hover {
+            background-color: #05DBDB;
+            color: #1D1D1B;
+        }
+        .buttons-container {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <h1>✅ Message Sent Successfully!</h1>
+        <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
+        
+        <div class="buttons-container">
+            <a href="/" class="button">Return to Home</a>
+            <a href="/about" class="button button-secondary">Back to About</a>
+        </div>
+    </div>
+</body>
+</html>
+
 --- src/App.tsx ---
 import React from "react";
 import { Tabs, Tab, Box, useMediaQuery, useTheme } from "@mui/material";
@@ -1623,31 +1705,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 export default ProjectCard;
 
 --- src/components/ContactForm.tsx ---
-import React, { useState } from 'react';
-import { TextField, Button, Box, Card, CardContent, Typography, Alert, Snackbar } from "@mui/material";
+import React from 'react';
+import { TextField, Button, Box, Card, CardContent, Typography } from "@mui/material";
 
 const ContactForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Form submission handled by Netlify
-    setSubmitStatus('success');
-    setFormData({ name: '', email: '', message: '' });
-  };
-
   return (
     <Box sx={{ marginBottom: 6 }}>
       <Typography variant="h4" sx={{ 
@@ -1663,7 +1724,12 @@ const ContactForm: React.FC = () => {
       
       <Card elevation={2}>
         <CardContent>
-          <form name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit}>
+          <form 
+            name="contact" 
+            method="POST" 
+            data-netlify="true"
+            action="/thank-you"
+          >
             <input type="hidden" name="form-name" value="contact" />
             
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -1672,9 +1738,8 @@ const ContactForm: React.FC = () => {
                 label="Your Name"
                 variant="outlined"
                 size="small"
-                value={formData.name}
-                onChange={handleChange}
                 required
+                fullWidth
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -1688,9 +1753,8 @@ const ContactForm: React.FC = () => {
                 type="email"
                 variant="outlined"
                 size="small"
-                value={formData.email}
-                onChange={handleChange}
                 required
+                fullWidth
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -1705,9 +1769,8 @@ const ContactForm: React.FC = () => {
                 rows={4}
                 variant="outlined"
                 size="small"
-                value={formData.message}
-                onChange={handleChange}
                 required
+                fullWidth
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -1735,17 +1798,6 @@ const ContactForm: React.FC = () => {
           </form>
         </CardContent>
       </Card>
-
-      <Snackbar 
-        open={submitStatus === 'success'} 
-        autoHideDuration={6000} 
-        onClose={() => setSubmitStatus('idle')}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert severity="success">
-          Message sent successfully!
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };
@@ -3453,8 +3505,8 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 51
-Total Characters: 181845
+Files Parsed: 52
+Total Characters: 183090
 
 File List:
 ----------------------------------------
@@ -3462,6 +3514,7 @@ README.md: 3586 characters
 eslint.config.js: 621 characters
 index.html: 392 characters
 package.json: 972 characters
+public/success.html: 2289 characters
 public/vite.svg: 1497 characters
 research/design.md: 436 characters
 research/technical.md: 167 characters
@@ -3479,7 +3532,7 @@ src/assets/icons/other/personal-default.svg: 2594 characters
 src/assets/react.svg: 4126 characters
 src/components/CareerTimeline.tsx: 5305 characters
 src/components/CompanyIcon.tsx: 1897 characters
-src/components/ContactForm.tsx: 3719 characters
+src/components/ContactForm.tsx: 2675 characters
 src/components/EducationCard.tsx: 1989 characters
 src/components/ExperienceCard.tsx: 5571 characters
 src/components/LoadingSpinner.tsx: 872 characters
@@ -3514,6 +3567,7 @@ Directory Structure:
 ----------------------------------------
 cv-jonugarte/
 ├── public/
+│   ├── success.html
 │   └── vite.svg
 ├── research/
 │   ├── images/
@@ -3572,6 +3626,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-29 14:24:44 
-UTC:   2025-11-29 13:24:44 UTC
-Timestamp: 1764422684
+Local: 2025-11-29 14:51:57 
+UTC:   2025-11-29 13:51:57 UTC
+Timestamp: 1764424317

@@ -1,7 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField, Button, Box, Card, CardContent, Typography } from "@mui/material";
 
 const ContactForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'contact',
+          ...formData
+        }).toString()
+      });
+      
+      // On success, mark as submitted
+      setIsSubmitted(true);
+    } catch (error) {
+      // On error, allow retry
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Box sx={{ marginBottom: 6 }}>
       <Typography variant="h4" sx={{ 
@@ -21,9 +58,11 @@ const ContactForm: React.FC = () => {
             name="contact" 
             method="POST" 
             data-netlify="true"
-            action="/thank-you"
+            data-netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
           >
             <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="bot-field" />
             
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <TextField
@@ -33,6 +72,9 @@ const ContactForm: React.FC = () => {
                 size="small"
                 required
                 fullWidth
+                value={formData.name}
+                onChange={handleChange}
+                disabled={isSubmitted || isSubmitting}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -48,6 +90,9 @@ const ContactForm: React.FC = () => {
                 size="small"
                 required
                 fullWidth
+                value={formData.email}
+                onChange={handleChange}
+                disabled={isSubmitted || isSubmitting}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -64,6 +109,9 @@ const ContactForm: React.FC = () => {
                 size="small"
                 required
                 fullWidth
+                value={formData.message}
+                onChange={handleChange}
+                disabled={isSubmitted || isSubmitting}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -74,6 +122,7 @@ const ContactForm: React.FC = () => {
               <Button 
                 type="submit"
                 variant="contained"
+                disabled={isSubmitted || isSubmitting}
                 sx={{
                   backgroundColor: 'primary.main',
                   color: 'primary.contrastText',
@@ -81,11 +130,14 @@ const ContactForm: React.FC = () => {
                   borderRadius: 1,
                   py: 1,
                   '&:hover': {
-                    backgroundColor: 'primary.dark',
+                    backgroundColor: isSubmitted ? 'grey.400' : 'primary.dark',
+                  },
+                  '&:disabled': {
+                    backgroundColor: 'grey.400',
                   }
                 }}
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : isSubmitted ? 'Message Sent!' : 'Send Message'}
               </Button>
             </Box>
           </form>
