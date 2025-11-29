@@ -17,12 +17,11 @@ const ContactForm: React.FC = () => {
       
       <Card elevation={2}>
         <CardContent>
-          {/* Netlify Form - Correct implementation */}
           <form 
             name="contact" 
             method="POST" 
             data-netlify="true"
-            // Remove the onSubmit handler - let Netlify handle it
+            action="/success.html"
           >
             <input type="hidden" name="form-name" value="contact" />
             
