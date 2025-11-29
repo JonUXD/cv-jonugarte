@@ -21,7 +21,7 @@ const ContactForm: React.FC = () => {
             name="contact" 
             method="POST" 
             data-netlify="true"
-            action="/success.html"
+            action="/thank-you"
           >
             <input type="hidden" name="form-name" value="contact" />
             
