@@ -13,6 +13,7 @@ import ReactMarkdown from "react-markdown";
 import type { Bio } from "../types";
 
 import ContactForm from '../components/ContactForm';
+import ProfileHeader from "../components/ProfileHeader";
 
 // Simple icon mapping for interests
 const interestIcons: Record<string, string> = {
@@ -31,6 +32,7 @@ const bio = bioData as Bio;
 const AboutMePage: React.FC = () => {
   return (
     <Box sx={{ padding: 3 }}>
+      <ProfileHeader />
       <Grid container spacing={4}>
         {/* Main Content Column */}
         <Grid size={{ xs: 12, md: 8 }}>
@@ -71,7 +73,7 @@ const AboutMePage: React.FC = () => {
         <Grid size={{ xs: 12, md: 4 }}>
           {/* Contact Section */}
           <ContactForm />
-          
+
           {/* Personal Interests Section */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 

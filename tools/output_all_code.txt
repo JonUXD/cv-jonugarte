@@ -1705,10 +1705,47 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 export default ProjectCard;
 
 --- src/components/ContactForm.tsx ---
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField, Button, Box, Card, CardContent, Typography } from "@mui/material";
 
 const ContactForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'contact',
+          ...formData
+        }).toString()
+      });
+      
+      // On success, mark as submitted
+      setIsSubmitted(true);
+    } catch (error) {
+      // On error, allow retry
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Box sx={{ marginBottom: 6 }}>
       <Typography variant="h4" sx={{ 
@@ -1726,11 +1763,12 @@ const ContactForm: React.FC = () => {
         <CardContent>
           <form 
             name="contact" 
-            method="POST" 
             data-netlify="true"
-            action="/thank-you"
+            data-netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
           >
             <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="bot-field" />
             
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <TextField
@@ -1740,6 +1778,9 @@ const ContactForm: React.FC = () => {
                 size="small"
                 required
                 fullWidth
+                value={formData.name}
+                onChange={handleChange}
+                disabled={isSubmitted || isSubmitting}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -1755,6 +1796,9 @@ const ContactForm: React.FC = () => {
                 size="small"
                 required
                 fullWidth
+                value={formData.email}
+                onChange={handleChange}
+                disabled={isSubmitted || isSubmitting}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -1771,6 +1815,9 @@ const ContactForm: React.FC = () => {
                 size="small"
                 required
                 fullWidth
+                value={formData.message}
+                onChange={handleChange}
+                disabled={isSubmitted || isSubmitting}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     borderRadius: 1,
@@ -1781,6 +1828,7 @@ const ContactForm: React.FC = () => {
               <Button 
                 type="submit"
                 variant="contained"
+                disabled={isSubmitted || isSubmitting}
                 sx={{
                   backgroundColor: 'primary.main',
                   color: 'primary.contrastText',
@@ -1788,11 +1836,14 @@ const ContactForm: React.FC = () => {
                   borderRadius: 1,
                   py: 1,
                   '&:hover': {
-                    backgroundColor: 'primary.dark',
+                    backgroundColor: isSubmitted ? 'grey.400' : 'primary.dark',
+                  },
+                  '&:disabled': {
+                    backgroundColor: 'grey.400',
                   }
                 }}
               >
-                Send Message
+                {isSubmitting ? 'Sending...' : isSubmitted ? 'Message Sent!' : 'Send Message'}
               </Button>
             </Box>
           </form>
@@ -3506,7 +3557,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 52
-Total Characters: 183090
+Total Characters: 184761
 
 File List:
 ----------------------------------------
@@ -3532,7 +3583,7 @@ src/assets/icons/other/personal-default.svg: 2594 characters
 src/assets/react.svg: 4126 characters
 src/components/CareerTimeline.tsx: 5305 characters
 src/components/CompanyIcon.tsx: 1897 characters
-src/components/ContactForm.tsx: 2675 characters
+src/components/ContactForm.tsx: 4346 characters
 src/components/EducationCard.tsx: 1989 characters
 src/components/ExperienceCard.tsx: 5571 characters
 src/components/LoadingSpinner.tsx: 872 characters
@@ -3626,6 +3677,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-29 14:51:57 
-UTC:   2025-11-29 13:51:57 UTC
-Timestamp: 1764424317
+Local: 2025-11-29 15:46:06 
+UTC:   2025-11-29 14:46:06 UTC
+Timestamp: 1764427566
