@@ -15,7 +15,7 @@ import type { Bio } from "../types";
 import ContactForm from '../components/ContactForm';
 import ProfileHeader from "../components/ProfileHeader";
 import VisualInterests from "../components/VisualInterests";
-
+import LocationsMap from "../components/LocationsMap";
 
 // Simple icon mapping for interests
 const interestIcons: Record<string, string> = {
@@ -80,6 +80,7 @@ const AboutMePage: React.FC = () => {
         {/* Added negative space as the gap was too big in the grid */}
         <Grid size={{ xs: 12, md: 12}} sx={{ mt: -2, mb: -12 }}> 
           <VisualInterests />
+          <LocationsMap />
         </Grid>
 
       </Grid>
