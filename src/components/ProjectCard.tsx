@@ -171,17 +171,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         {/* Key Highlights - SIMPLIFIED */}
         {highlights.length > 0 && (
           <Box sx={{ mb: 1 }}>
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                fontWeight: 600,
-                color: "text.primary",
-                display: 'block',
-                mb: 0.5
-              }}
-            >
-              Highlights:
-            </Typography>
             <Box sx={{ 
               maxHeight: isExpanded ? 'none' : 60,
               overflow: 'hidden'
@@ -193,10 +182,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                   sx={{ 
                     lineHeight: 1.3,
                     mb: 0.25,
-                    display: '-webkit-box',          // ← ADD THESE
-                    WebkitLineClamp: 1,              // ← LIMIT TO 1 LINE
-                    WebkitBoxOrient: 'vertical',     // ←
-                    overflow: 'hidden'               // ←
+                    display: '-webkit-box',
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
                   }}
                 >
                   • {highlight}

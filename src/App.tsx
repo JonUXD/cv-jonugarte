@@ -16,8 +16,8 @@ const App: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const getTabValue = (path: string) => {
-    if (path === '/projects') return 1;
-    if (path === '/about') return 2;
+    if (path === '/cv') return 1;
+    if (path === '/projects') return 2;
     return 0; // Default to Home/CV
   };
 
@@ -45,14 +45,14 @@ const App: React.FC = () => {
             }
           }}
         >
-          <Tab label="CV" component={Link} to="/" />
+          <Tab label="About Me" component={Link} to="/" />
+          <Tab label="CV" component={Link} to="/cv" />
           <Tab label="Projects" component={Link} to="/projects" />
-          <Tab label="About Me" component={Link} to="/about" />
         </Tabs>
 
         <Box sx={{ mt: { xs: 1, sm: 2, md: 2 } }}>
           <Routes>
-            <Route path="/" element={<Navigate to="/cv" replace />} />
+            <Route path="/" element={<Navigate to="/about" replace />} />
             <Route path="/cv" element={<CVPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/about" element={<AboutMePage />} />

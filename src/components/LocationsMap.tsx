@@ -71,10 +71,11 @@ const LocationsMap: React.FC = () => {
         />
         {getLocations().map((location, index) => (
             <Marker key={index} position={location.position}>
-            <Popup>
-                <strong>{location.title}</strong><br />
-                {location.type === 'work' ? 'Work' : 'Education'}
-            </Popup>
+        <Popup>
+        <strong>{location.title}</strong><br />
+        {location.role && <div>{location.role}</div>}
+        {location.type === 'work' ? 'Work' : 'Education'}
+        </Popup>
             </Marker>
         ))}
         </MapContainer>

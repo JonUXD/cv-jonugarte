@@ -74,23 +74,6 @@ const ProfileHeader: React.FC = () => {
           >
             <Button
               component={Link}
-              to="/projects"
-              variant="contained"
-                sx={{
-                  backgroundColor: 'primary.main',
-                  color: 'primary.contrastText',
-                  fontWeight: 600,
-                  borderRadius: 1,
-                  py: 1,
-                  '&:hover': {
-                    backgroundColor: 'primary.dark',
-                  }
-                }}
-            >
-              View My Work
-            </Button>
-            <Button
-              component={Link}
               to="/cv"
               variant="outlined"
                 sx={{
@@ -105,6 +88,23 @@ const ProfileHeader: React.FC = () => {
                 }}
             >
               See My CV
+            </Button>
+            <Button
+              component={Link}
+              to="/projects"
+              variant="contained"
+                sx={{
+                  backgroundColor: 'primary.main',
+                  color: 'primary.contrastText',
+                  fontWeight: 600,
+                  borderRadius: 1,
+                  py: 1,
+                  '&:hover': {
+                    backgroundColor: 'primary.dark',
+                  }
+                }}
+            >
+              View My Work
             </Button>
           </Stack>
         </Grid>

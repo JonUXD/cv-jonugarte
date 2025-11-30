@@ -4,9 +4,7 @@ import {
   CardContent, 
   Typography, 
   Box, 
-  Grid,
-  Chip,
-  Stack 
+  Grid
 } from "@mui/material";
 import bioData from "../data/bio.json";
 import ReactMarkdown from "react-markdown";
@@ -16,15 +14,6 @@ import ContactForm from '../components/ContactForm';
 import ProfileHeader from "../components/ProfileHeader";
 import VisualInterests from "../components/VisualInterests";
 import LocationsMap from "../components/LocationsMap";
-
-// Simple icon mapping for interests
-const interestIcons: Record<string, string> = {
-  "Surfing": "🏄‍♂️",
-  "Swimming": "🏊‍♂️", 
-  "Retro Games": "🎮",
-  "Movies": "🎬",
-  "Electric Guitar": "🎸"
-};
 
 const bio = bioData as Bio;
 
