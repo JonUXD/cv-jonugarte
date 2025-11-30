@@ -263,6 +263,35 @@ export default defineConfig({
 })
 
 
+--- research/hero_section_specifications.md ---
+HERO SECTION - DESIGN SPECIFICATION
+
+Layout: Centered Modern
+- Container: Same max-width (1200px) and padding as rest of site
+- All content centered vertically and horizontally
+- Vertical stack with consistent spacing between elements
+
+Photo Treatment:
+- Rectangular Iceland headshot displayed as circle via CSS
+- Responsive: 120px (mobile) → 160px (tablet) → 200px (desktop)
+- Cyan border: 4px solid #05DBDB
+- CSS: border-radius: 50%, object-fit: cover
+
+Typography:
+- Headline: h4 variant, black (#1D1D1B), bold (700 weight)
+- Mission Statement: body1 variant, black, max-width 600px
+- Proof Point: body1 variant, dark gray (#5A5A58), italic
+
+CTA Buttons:
+- Primary: "View My Work" - contained, cyan (#05DBDB), links to /projects
+- Secondary: "See My CV" - outlined, yellow (#FFCE61), links to /cv
+- Layout: Stacked on mobile, side-by-side on tablet/desktop
+
+Integration:
+- Uses existing Material-UI theme and components
+- Matches site spacing and typography system
+- Responsive behavior consistent with rest of site
+
 --- research/design.md ---
 ## Color palette
 
@@ -1703,6 +1732,121 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 };
 
 export default ProjectCard;
+
+--- src/components/ProfileHeader.tsx ---
+import React from "react";
+import { Box, Avatar, Typography, Button, Stack, Grid } from "@mui/material";
+import { Link } from "react-router-dom";
+import profilePhoto from "../assets/photos/profile-photo.jpeg";
+
+/**
+ * ProfileHeader Component - Hero section for the About Me page
+ * Features profile photo on left, content on right
+ */
+const ProfileHeader: React.FC = () => {
+  return (
+    <Box
+      sx={{
+        maxWidth: 1200,
+        mx: "auto",
+        px: { xs: 2, sm: 3, md: 4 },
+        py: { xs: 4, sm: 6 },
+      }}
+    >
+      <Grid container spacing={2} alignItems="center">
+        {/* Photo Column - Left */}
+        <Grid size={{ xs: 12, md: 3 }} sx={{ textAlign: { xs: "center", md: "left" } }}>
+          <Avatar
+            src={profilePhoto}
+            alt="Professional headshot of Jon Ugarte in Iceland"
+            sx={{
+              width: { xs: 120, sm: 160, md: 200 },
+              height: { xs: 120, sm: 160, md: 200 },
+              border: "4px solid",
+              borderColor: "primary.main",
+              mx: { xs: "auto", md: 0 },
+            }}
+          />
+        </Grid>
+
+        {/* Content Column - Right */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          {/* Main Headline */}
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              color: "text.primary",
+              lineHeight: 1.2,
+              mb: 2,
+              textAlign: { xs: "center", md: "left" },
+            }}
+          >
+            BI & Data Engineer | Navigating Complex Data Landscapes
+          </Typography>
+
+          {/* Mission Statement */}
+          <Typography
+            variant="body1"
+            sx={{
+              color: "text.primary",
+              lineHeight: 1.6,
+              mb: 2,
+              textAlign: { xs: "center", md: "left" },
+            }}
+          >
+            I build robust, cloud-native data infrastructure on AWS. I thrive on turning messy data challenges into elegant, reliable systems that teams can count on.
+          </Typography>
+
+          {/* Proof Point */}
+          <Typography
+            variant="body1"
+            sx={{
+              color: "text.secondary",
+              fontStyle: "italic",
+              fontWeight: 500,
+              mb: 3,
+              textAlign: { xs: "center", md: "left" },
+            }}
+          >
+            ...with a track record of delivering multi-million dollar operational savings.
+          </Typography>
+
+          {/* Call-to-Action Buttons */}
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+            sx={{ 
+              justifyContent: { xs: "center", md: "flex-start" },
+              alignItems: "center",
+            }}
+          >
+            <Button
+              component={Link}
+              to="/projects"
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              View My Work
+            </Button>
+            <Button
+              component={Link}
+              to="/cv"
+              variant="outlined"
+              color="secondary"
+              size="large"
+            >
+              See My CV
+            </Button>
+          </Stack>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
+
+export default ProfileHeader;
 
 --- src/components/ContactForm.tsx ---
 import React, { useState } from 'react';
@@ -3277,6 +3421,7 @@ import ReactMarkdown from "react-markdown";
 import type { Bio } from "../types";
 
 import ContactForm from '../components/ContactForm';
+import ProfileHeader from "../components/ProfileHeader";
 
 // Simple icon mapping for interests
 const interestIcons: Record<string, string> = {
@@ -3295,6 +3440,7 @@ const bio = bioData as Bio;
 const AboutMePage: React.FC = () => {
   return (
     <Box sx={{ padding: 3 }}>
+      <ProfileHeader />
       <Grid container spacing={4}>
         {/* Main Content Column */}
         <Grid size={{ xs: 12, md: 8 }}>
@@ -3335,7 +3481,7 @@ const AboutMePage: React.FC = () => {
         <Grid size={{ xs: 12, md: 4 }}>
           {/* Contact Section */}
           <ContactForm />
-          
+
           {/* Personal Interests Section */}
           <Box sx={{ marginBottom: 6 }}>
             <Typography variant="h4" sx={{ 
@@ -3556,8 +3702,8 @@ export default CVPage;
 METADATA
 ================================================================================
 
-Files Parsed: 52
-Total Characters: 184761
+Files Parsed: 54
+Total Characters: 189163
 
 File List:
 ----------------------------------------
@@ -3568,6 +3714,7 @@ package.json: 972 characters
 public/success.html: 2289 characters
 public/vite.svg: 1497 characters
 research/design.md: 436 characters
+research/hero_section_specifications.md: 1017 characters
 research/technical.md: 167 characters
 src/App.css: 606 characters
 src/App.tsx: 2038 characters
@@ -3587,6 +3734,7 @@ src/components/ContactForm.tsx: 4346 characters
 src/components/EducationCard.tsx: 1989 characters
 src/components/ExperienceCard.tsx: 5571 characters
 src/components/LoadingSpinner.tsx: 872 characters
+src/components/ProfileHeader.tsx: 3314 characters
 src/components/ProjectCard.tsx: 6851 characters
 src/components/SkillChip.tsx: 624 characters
 src/components/TechStack.tsx: 1861 characters
@@ -3597,7 +3745,7 @@ src/data/projects.json: 7051 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 534 characters
-src/pages/AboutMePage.tsx: 3727 characters
+src/pages/AboutMePage.tsx: 3798 characters
 src/pages/CVPage.tsx: 5174 characters
 src/pages/ProjectsPage.tsx: 10183 characters
 src/sections/Bio.tsx: 1591 characters
@@ -3623,12 +3771,14 @@ cv-jonugarte/
 ├── research/
 │   ├── images/
 │   ├── design.md
+│   ├── hero_section_specifications.md
 │   └── technical.md
 ├── src/
 │   ├── assets/
 │   │   ├── icons/
 │   │   │   ├── companies/
 │   │   │   └── other/
+│   │   ├── photos/
 │   │   └── react.svg
 │   ├── components/
 │   │   ├── CareerTimeline.tsx
@@ -3637,6 +3787,7 @@ cv-jonugarte/
 │   │   ├── EducationCard.tsx
 │   │   ├── ExperienceCard.tsx
 │   │   ├── LoadingSpinner.tsx
+│   │   ├── ProfileHeader.tsx
 │   │   ├── ProjectCard.tsx
 │   │   ├── SkillChip.tsx
 │   │   └── TechStack.tsx
@@ -3677,6 +3828,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-11-29 15:46:06 
-UTC:   2025-11-29 14:46:06 UTC
-Timestamp: 1764427566
+Local: 2025-11-30 12:25:53 
+UTC:   2025-11-30 11:25:53 UTC
+Timestamp: 1764501953

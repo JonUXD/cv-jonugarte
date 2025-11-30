@@ -9,6 +9,7 @@ export interface Bio {
   linkedin?: string;
   location: GeographicLocation;
   summary?: string;
+  summary_profile_header?:string;
   summary_long?: string;
   interests?: string[];
   photo?: string | null;

@@ -14,6 +14,8 @@ import type { Bio } from "../types";
 
 import ContactForm from '../components/ContactForm';
 import ProfileHeader from "../components/ProfileHeader";
+import VisualInterests from "../components/VisualInterests";
+
 
 // Simple icon mapping for interests
 const interestIcons: Record<string, string> = {
@@ -32,7 +34,9 @@ const bio = bioData as Bio;
 const AboutMePage: React.FC = () => {
   return (
     <Box sx={{ padding: 3 }}>
-      <ProfileHeader />
+      <Box sx={{ mb: 3 }}>
+      <ProfileHeader/>
+      </Box>
       <Grid container spacing={4}>
         {/* Main Content Column */}
         <Grid size={{ xs: 12, md: 8 }}>
@@ -68,57 +72,16 @@ const AboutMePage: React.FC = () => {
             </Card>
           </Box>
         </Grid>
-
         {/* Sidebar Column */}
         <Grid size={{ xs: 12, md: 4 }}>
           {/* Contact Section */}
           <ContactForm />
-
-          {/* Personal Interests Section */}
-          <Box sx={{ marginBottom: 6 }}>
-            <Typography variant="h4" sx={{ 
-              marginBottom: 4,
-              fontWeight: 700,
-              color: "text.primary",
-              borderBottom: "2px solid",
-              borderColor: "primary.main",
-              paddingBottom: 1
-            }}>
-              Personal Interests
-            </Typography>
-            
-            <Card sx={{ mb: 3 }} elevation={2}>
-              <CardContent>
-                <Stack direction="column" spacing={1}>
-                  {(bio.interests || []).map((interest) => (
-                    <Chip
-                      key={interest}
-                      icon={<span style={{ fontSize: '1.1rem' }}>{interestIcons[interest] || "🌟"}</span>}
-                      label={interest}
-                      variant="outlined"
-                      sx={{
-                        justifyContent: "flex-start",
-                        padding: 1.5,
-                        borderRadius: 2,
-                        borderWidth: 1.5,
-                        fontWeight: 500,
-                        color: 'text.primary',
-                        borderColor: 'primary.main',
-                        '&:hover': {
-                          borderColor: 'primary.dark',
-                        },
-                        '& .MuiChip-icon': {
-                          marginLeft: 1,
-                          marginRight: 1.5
-                        }
-                      }}
-                    />
-                  ))}
-                </Stack>
-              </CardContent>
-            </Card>
-          </Box>
         </Grid>
+        {/* Added negative space as the gap was too big in the grid */}
+        <Grid size={{ xs: 12, md: 12}} sx={{ mt: -2, mb: -12 }}> 
+          <VisualInterests />
+        </Grid>
+
       </Grid>
     </Box>
   );

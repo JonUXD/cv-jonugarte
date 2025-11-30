@@ -1,25 +1,26 @@
 import React from "react";
 import { Box, Avatar, Typography, Button, Stack, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
+
 import profilePhoto from "../assets/photos/profile-photo.jpeg";
+import bioData from "../data/bio.json";
+
+import type { Bio } from "../types";
 
 /**
  * ProfileHeader Component - Hero section for the About Me page
  * Features profile photo on left, content on right
  */
+
 const ProfileHeader: React.FC = () => {
+  const bio: Bio = bioData;
   return (
     <Box
-      sx={{
-        maxWidth: 1200,
-        mx: "auto",
-        px: { xs: 2, sm: 3, md: 4 },
-        py: { xs: 4, sm: 6 },
-      }}
+      sx={{ padding: 3 }}
     >
       <Grid container spacing={2} alignItems="center">
         {/* Photo Column - Left */}
-        <Grid size={{ xs: 12, md: 4 }} sx={{ textAlign: { xs: "center", md: "left" } }}>
+        <Grid size={{ xs: 12, md: 3 }} sx={{ textAlign: { xs: "center", md: "left" } }}>
           <Avatar
             src={profilePhoto}
             alt="Professional headshot of Jon Ugarte in Iceland"
@@ -34,7 +35,7 @@ const ProfileHeader: React.FC = () => {
         </Grid>
 
         {/* Content Column - Right */}
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={{ xs: 12, md: 9 }}>
           {/* Main Headline */}
           <Typography
             variant="h4"
@@ -59,21 +60,7 @@ const ProfileHeader: React.FC = () => {
               textAlign: { xs: "center", md: "left" },
             }}
           >
-            I build robust, cloud-native data infrastructure on AWS. I thrive on turning messy data challenges into elegant, reliable systems that teams can count on.
-          </Typography>
-
-          {/* Proof Point */}
-          <Typography
-            variant="body1"
-            sx={{
-              color: "text.secondary",
-              fontStyle: "italic",
-              fontWeight: 500,
-              mb: 3,
-              textAlign: { xs: "center", md: "left" },
-            }}
-          >
-            ...with a track record of delivering multi-million dollar operational savings.
+            {bio.summary_profile_header}
           </Typography>
 
           {/* Call-to-Action Buttons */}
@@ -89,8 +76,16 @@ const ProfileHeader: React.FC = () => {
               component={Link}
               to="/projects"
               variant="contained"
-              color="primary"
-              size="large"
+                sx={{
+                  backgroundColor: 'primary.main',
+                  color: 'primary.contrastText',
+                  fontWeight: 600,
+                  borderRadius: 1,
+                  py: 1,
+                  '&:hover': {
+                    backgroundColor: 'primary.dark',
+                  }
+                }}
             >
               View My Work
             </Button>
@@ -98,8 +93,16 @@ const ProfileHeader: React.FC = () => {
               component={Link}
               to="/cv"
               variant="outlined"
-              color="secondary"
-              size="large"
+                sx={{
+                  backgroundColor: 'primary.main',
+                  color: 'primary.contrastText',
+                  fontWeight: 600,
+                  borderRadius: 1,
+                  py: 1,
+                  '&:hover': {
+                    backgroundColor: 'primary.dark',
+                  }
+                }}
             >
               See My CV
             </Button>
