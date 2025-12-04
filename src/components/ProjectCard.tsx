@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, CardContent, Typography, Box, Stack, Chip } from "@mui/material";
+import { Card, CardContent, Typography, Box, Stack, Chip, Button } from "@mui/material";
 import type { Project } from "../types";
 import { formatDateForDisplay } from "../utils/dateUtils";
 
@@ -194,6 +194,49 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             </Box>
           </Box>
         )}
+
+        {/* PROJECT LINKS - Simple text links */}
+        {project.links && Object.keys(project.links).length > 0 && (
+          <Box sx={{ mb: 1 }}>
+            {Object.entries(project.links).map(([linkType, url]) => {
+              if (!url) return null;
+              
+              const labelMap: Record<string, string> = {
+                tool: 'View Tool',
+                github: 'GitHub'
+              };
+              
+              const label = labelMap[linkType];
+              if (!label) return null;
+              
+              return (
+                <Typography
+                  key={linkType}
+                  component="a"
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                  variant="caption"
+                  sx={{
+                    color: 'text.primary',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    mr: 2,
+                    cursor: 'pointer',
+                    '&:hover': {
+                      textDecoration: 'underline',
+                      textDecorationThickness: '2px',
+                      textUnderlineOffset: '3px'
+                    }
+                  }}
+                >
+                  {label}
+                </Typography>
+              );
+            })}
+          </Box>
+        )}
         
         {/* Show More Button - SIMPLE POSITIONING */}
         {needsExpand && !isExpanded && (
@@ -206,7 +249,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
               display: 'block',
               textAlign: 'center',
               position: 'absolute',
-              bottom: 8, // ← Fixed distance from bottom
+              bottom: 8,
               left: 16,
               right: 16,
               backgroundColor: 'background.paper',

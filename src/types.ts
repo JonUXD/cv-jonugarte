@@ -29,7 +29,10 @@ export interface Project {
   stack?: string[];
   screenshot?: string;
   experience_ref?: string;
-  link?: string;
+  links?: {
+    tool?: string;
+    github?: string;
+  };
   icon?: string;
 }
 
