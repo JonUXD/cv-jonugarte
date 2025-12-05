@@ -10,6 +10,7 @@ import defaultCompanyIcon from "../assets/icons/other/company-default.svg";
 import defaultAcademiaIcon from "../assets/icons/other/academia-default.svg";
 import defaultPersonalIcon from "../assets/icons/other/personal-default.svg";
 
+import SkillChip from "../components/SkillChip";
 
 
 interface ProjectCardProps {
@@ -135,16 +136,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
               }}
             >
               {techStack.slice(0, 4).map((tech, index) => (
-                <Chip 
+                <SkillChip 
                   key={index}
                   label={tech}
                   size="small"
                   color="primary"
                   variant="outlined"
-                  sx={{ 
-                    fontSize: "0.7rem",
-                    height: 22
-                  }}
                 />
               ))}
             </Stack>
@@ -195,7 +192,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           </Box>
         )}
 
-        {/* PROJECT LINKS - Simple text links */}
+        {/* PROJECT LINKS */}
         {project.links && Object.keys(project.links).length > 0 && (
           <Box sx={{ mb: 1 }}>
             {Object.entries(project.links).map(([linkType, url]) => {
@@ -218,6 +215,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                   rel="noopener noreferrer"
                   onClick={(e: React.MouseEvent) => e.stopPropagation()}
                   variant="caption"
+                  fontWeight="bold"
                   sx={{
                     color: 'text.primary',
                     textDecoration: 'none',

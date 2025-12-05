@@ -57,7 +57,7 @@ const LocationsMap: React.FC = () => {
         borderColor: "primary.main", 
         paddingBottom: 1
       }}>
-        My Journey
+        Where I've Worked & Studied
       </Typography>
       
       <Box sx={{ height: 400, borderRadius: 2, overflow: 'hidden' }}>

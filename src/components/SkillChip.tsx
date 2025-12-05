@@ -21,6 +21,7 @@ const SkillChip: React.FC<SkillChipProps> = memo(({
       label={label} 
       size={size}
       color={color}
+      sx={{ color: "text.primary" }}
       {...props}
     />
   );
