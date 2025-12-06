@@ -67,9 +67,13 @@ const AboutMePage: React.FC = () => {
           <ContactForm />
         </Grid>
         {/* Added negative space as the gap was too big in the grid */}
-        <Grid size={{ xs: 12, md: 12}} sx={{ mt: -2, mb: -12 }}> 
-          <VisualInterests />
-          <LocationsMap />
+        <Grid container spacing={4} sx={{ mt: -6 }}> 
+          <Grid size={{ xs: 12, md: 8}}>
+            <VisualInterests />
+          </Grid>
+          <Grid size={{ xs: 12, md: 4}}>
+            <LocationsMap mapHeight={250} />
+          </Grid>
         </Grid>
 
       </Grid>

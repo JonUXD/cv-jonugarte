@@ -7,6 +7,10 @@ import experienceData from "../data/experience.json";
 import educationData from "../data/education.json";
 import type { ExperienceItem, EducationItem } from "../types";
 
+interface LocationMapProps {
+    mapHeight?: number;
+}
+
 const getLocations = () => {
   const locations: Array<{
     position: [number, number];
@@ -46,7 +50,9 @@ const getLocations = () => {
   return locations;
 };
 
-const LocationsMap: React.FC = () => {
+const LocationsMap: React.FC<LocationMapProps> = ({
+    mapHeight =  400
+}) => {
   return (
     <Box sx={{ marginBottom: 6 }}>
       <Typography variant="h4" sx={{ 
@@ -60,7 +66,7 @@ const LocationsMap: React.FC = () => {
         Where I've Worked & Studied
       </Typography>
       
-      <Box sx={{ height: 400, borderRadius: 2, overflow: 'hidden' }}>
+      <Box sx={{ height: mapHeight, borderRadius: 2, overflow: 'hidden' }}>
         <MapContainer 
         center={[48.8566, 2.3522]} // Center on Europe (Paris)
         zoom={4} 
