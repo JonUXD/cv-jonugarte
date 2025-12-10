@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, CardContent, Typography, Box, Stack, Chip, Button } from "@mui/material";
+import { Card, CardContent, Typography, Box, Stack } from "@mui/material";
 import type { Project } from "../types";
 import { formatDateForDisplay } from "../utils/dateUtils";
 
