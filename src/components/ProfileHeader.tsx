@@ -47,7 +47,7 @@ const ProfileHeader: React.FC = () => {
               textAlign: { xs: "center", md: "left" },
             }}
           >
-            BI & Data Engineer | Navigating Complex Data Landscapes
+            Business Intelligence & Data Engineer
           </Typography>
 
           {/* Mission Statement */}

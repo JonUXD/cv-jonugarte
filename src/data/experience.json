@@ -37,7 +37,7 @@
         "description": [
           "Maintained a 1PB Redshift database with over 100 daily users. Reduced congestion times of the database during peak by over 50% by creating Workload Management rules.",
           "Onboarded more than 15 new team members onto the data infrastructure (database users, dashboard creation access, etc.)",
-          "Created 10+ daily reporting dashboards to support operations with over 2K unique users and 150K views, enabling savings of over 6MM."
+          "Created 10+ daily reporting dashboards to support operations with over 2K unique users and 150K views, enabling savings of over $6M."
         ],
         "stack": ["AWS", "SQL", "Python", "Redshift", "RDS"],
         "role_id": "Amazon_202106_Business_Intelligence_Engineer_I_L4"
@@ -81,7 +81,7 @@
         },
         "description": [
           "Managed over 100 transactions with high profile customers (investment bankers, lawyers) with a combined revenue of $50MM.",
-          "Lead training sessions on the use of the platform."
+          "Led training sessions on the use of the platform."
         ],
         "stack": [],
         "role_id": "Datasite_201806_Project_Manager"

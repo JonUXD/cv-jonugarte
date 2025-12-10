@@ -10,11 +10,11 @@ import videographyPhoto from "../assets/photos/profile-interests-videography.png
 
 const visualInterests = [
   { image: surfPhoto, label: "Surfing", alt: "Surfing in Basque Country" },
-  { image: paddleSurfPhoto, label: "Paddle Surf", alt: "Stand up paddle at sunrise in Barcelona" },
+  { image: paddleSurfPhoto, label: "Stand up Paddle", alt: "Stand up paddle at sunrise in Barcelona" },
   { image: retroGamesPhoto, label: "Retro Games", alt: "Retro gaming collage" },
-  { image: guitarPhoto, label: "Guitar", alt: "Playing guitar" },
+  { image: guitarPhoto, label: "Playing Music", alt: "Playing guitar" },
   { image: moviesPhoto, label: "Movies", alt: "Favorite movies collage" },
-  { image: videographyPhoto, label: "Videography", alt: "Video editing and filming" },
+  { image: videographyPhoto, label: "Videography", alt: "Making travel videos" },
 ];
 
 const VisualInterests: React.FC = () => {

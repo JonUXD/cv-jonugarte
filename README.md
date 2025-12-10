@@ -4,7 +4,7 @@ I did this project to polish my front end development skills and learn about bes
 
 I used netlify to deploy to the web and can be accessed with the links below. I registered the domain jonugarte.me on cloudfare to make the domain name more unique.
 
-I tried to use a stracture that made sense in my mind, storing the data in JSONs and separating them by object type. I then structured the page in tabs (or pages) and components (for example skills section). So hopefully navigating through them should not be very complex for the reader.
+I tried to use a structure that made sense in my mind, storing the data in JSONs and separating them by object type. I then structured the page in tabs (or pages) and components (for example skills section). So hopefully navigating through them should not be very complex for the reader.
 
 
 ## 🚀 Live Deployment
