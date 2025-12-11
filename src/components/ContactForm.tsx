@@ -22,19 +22,25 @@ const ContactForm: React.FC = () => {
     setIsSubmitting(true);
 
     try {
+      // Encode the form data as required by Netlify
+      const encodedData = new URLSearchParams({
+        'form-name': 'contact', // This must match the hidden form name
+        ...formData,
+        'bot-field': '' // Add honeypot field
+      }).toString();
+
       await fetch('/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'contact',
-          ...formData
-        }).toString()
+        body: encodedData
       });
       
       // On success, mark as submitted
       setIsSubmitted(true);
+      setFormData({ name: '', email: '', message: '' }); // Clear form
     } catch (error) {
-      // On error, allow retry
+      console.error('Form submission error:', error);
+      alert('There was an error sending your message. Please try again.');
       setIsSubmitting(false);
     }
   };
@@ -56,10 +62,12 @@ const ContactForm: React.FC = () => {
         <CardContent>
           <form 
             name="contact" 
+            method="POST"
             data-netlify="true"
             data-netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
           >
+            {/* Hidden fields that Netlify requires */}
             <input type="hidden" name="form-name" value="contact" />
             <input type="hidden" name="bot-field" />
             
@@ -123,21 +131,27 @@ const ContactForm: React.FC = () => {
                 variant="contained"
                 disabled={isSubmitted || isSubmitting}
                 sx={{
-                  backgroundColor: 'primary.main',
+                  backgroundColor: isSubmitted ? 'success.main' : 'primary.main',
                   color: 'primary.contrastText',
                   fontWeight: 600,
                   borderRadius: 1,
                   py: 1,
                   '&:hover': {
-                    backgroundColor: isSubmitted ? 'grey.400' : 'primary.dark',
+                    backgroundColor: isSubmitted ? 'success.dark' : 'primary.dark',
                   },
                   '&:disabled': {
                     backgroundColor: 'grey.400',
                   }
                 }}
               >
-                {isSubmitting ? 'Sending...' : isSubmitted ? 'Message Sent!' : 'Send Message'}
+                {isSubmitting ? 'Sending...' : isSubmitted ? '✓ Message Sent!' : 'Send Message'}
               </Button>
+              
+              {isSubmitted && (
+                <Typography variant="body2" color="success.main" sx={{ mt: 1 }}>
+                  Thank you for your message! I'll get back to you soon.
+                </Typography>
+              )}
             </Box>
           </form>
         </CardContent>
