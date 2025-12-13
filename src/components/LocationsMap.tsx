@@ -7,6 +7,20 @@ import experienceData from "../data/experience.json";
 import educationData from "../data/education.json";
 import type { ExperienceItem, EducationItem } from "../types";
 
+import L from 'leaflet';
+import { divIcon } from 'leaflet';
+
+
+// Fixing leaflet icon not found error by using html market
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({ iconRetinaUrl: '', iconUrl: '', shadowUrl: '' });
+
+// Create a simple dot marker with your theme color
+const customIcon = divIcon({
+  html: `<div style="background:#05DBDB; border:2px solid white; border-radius:50%; width:24px; height:24px; box-shadow:0 2px 4px rgba(0,0,0,0.2)"></div>`,
+  className: ''
+});
+
 interface LocationMapProps {
     mapHeight?: number;
 }
@@ -69,14 +83,14 @@ const LocationsMap: React.FC<LocationMapProps> = ({
       <Box sx={{ height: mapHeight, borderRadius: 2, overflow: 'hidden' }}>
         <MapContainer 
         center={[48.8566, 2.3522]} // Center on Europe (Paris)
-        zoom={4} 
+        zoom={3} 
         style={{ height: '100%', width: '100%' }}
         >
         <TileLayer
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
         {getLocations().map((location, index) => (
-            <Marker key={index} position={location.position}>
+            <Marker key={index} position={location.position} icon={customIcon}>
         <Popup>
         <strong>{location.title}</strong><br />
         {location.role && <div>{location.role}</div>}
