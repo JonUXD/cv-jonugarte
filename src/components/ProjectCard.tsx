@@ -17,6 +17,12 @@ interface ProjectCardProps {
   project: Project;
 }
 
+const projectIcons = import.meta.glob('../assets/icons/projects/*.svg', { eager: true, as: 'url' });
+
+// Helper to slugify title (e.g., "Personal Portfolio Webpage" → "personal-portfolio-webpage")
+const slugify = (text: string): string =>
+  text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+
 const companyIcons: Record<string, string> = {
   Amazon: amazonIcon,
   Datasite: datasiteIcon,
@@ -39,23 +45,29 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     }
   };
 
-    const getProjectIcon = (): string => {
-    // Check if this is a company project with a known company icon
-    if (project.projectType === "company" && project.company && companyIcons[project.company]) {
-        return companyIcons[project.company];
+  const getProjectIcon = (): string => {
+    // Personal project custom icon?
+    if (project.projectType === 'personal') {
+      const slug = slugify(project.title);
+      const iconPath = `../assets/icons/projects/${slug}.svg`;
+      if (projectIcons[iconPath]) return projectIcons[iconPath];
+      return defaultPersonalIcon;
     }
 
-    // Fallbacks based on project type
+    // Company project with known mapping
+    if (project.projectType === 'company' && project.company && companyIcons[project.company]) {
+      return companyIcons[project.company];
+    }
+
+    // Fallbacks
     switch (project.projectType) {
-        case "personal":
-        return defaultPersonalIcon;
-        case "academic":
+      case 'academic':
         return defaultAcademiaIcon;
-        case "company":
-        default:
+      case 'company':
+      default:
         return defaultCompanyIcon;
     }
-    };
+  };
 
   const techStack = project.stack || [];
   const highlights = project.highlights || [];

@@ -499,7 +499,7 @@ const App: React.FC = () => {
 
         <Box sx={{ mt: { xs: 1, sm: 2, md: 2 } }}>
           <Routes>
-            <Route path="/" element={<Navigate to="/about" replace />} />
+            <Route path="/" element={<Navigate to="/cv" replace />} />
             <Route path="/cv" element={<CVPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/about" element={<AboutMePage />} />
@@ -2380,7 +2380,7 @@ const theme = createTheme({
   palette: {
     // Core brand colors
     primary: {
-      main: "#05DBDB", // Cyan - Main brand, company names, primary actions
+      main: "#1399c6", // Sort of blue
       contrastText: "#1D1D1B",
     },
     secondary: {
@@ -2394,7 +2394,7 @@ const theme = createTheme({
       contrastText: "#FFFFFF",
     },
     info: {
-      main: "#05DBDB", // Cyan - Brand accents, notifications (reuse primary)
+      main: "#177D89", // Cyan - Brand accents, notifications (reuse primary)
       contrastText: "#1D1D1B",
     },
     warning: {
@@ -2480,10 +2480,10 @@ const theme = createTheme({
     },
     MuiTabs: {
       styleOverrides: {
-        indicator: {
-          backgroundColor: "#05DBDB",
+        indicator: ({theme}) => ({
+          backgroundColor: theme.palette.primary.main,
           height: 3,
-        },
+        }),
       },
     },
     MuiTab: {
@@ -2806,6 +2806,42 @@ export default theme;
       "Contributed $20M+ in net cost avoidance"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5"
+  },
+  {
+  "title": "Is the Market Cheap?",
+  "projectType": "personal",
+  "date": "2025-12-01",
+  "summary": "Dashboard for long‑term investors to see major assets' prices relative to their all‑time highs.",
+  "description": "A dashboard for long‑term investors that tracks major assets (ETFs, crypto, commodities) against their all‑time highs, showing at a glance whether each is trading at a discount, neutral, or cheap. Data is fetched from Yahoo Finance and CoinGecko and refreshed daily.",
+  "stack": ["Next.js", "React", "Material UI"],
+  "links": {
+    "tool": "https://isthemarketcheap.vercel.app/",
+    "github": "https://github.com/JonUXD/isthemarketcheap"
+    }
+  },
+  {
+  "title": "GuKamper",
+  "projectType": "personal",
+  "summary": "A static website for a handcrafted camper van conversion business.",
+  "description": "A static website for a handcrafted camper van conversion business. It showcases completed projects, outlines services, and encourages client contact via WhatsApp and phone. Designed with a cozy, artisanal aesthetic using a soft pastel color palette.",
+  "stack": ["Astro", "HTML", "CSS", "JavaScript"],
+  "links": {
+    "tool": "https://gukamper.com/",
+    "github": "https://github.com/JonUXD/gukamper"
+    },
+  "date": "2026-02-01"
+  },
+  {
+  "title": "Travel Video Portfolio",
+  "projectType": "personal",
+  "date": "2026-01-01",
+  "summary": "Cinematic portfolio showcasing travel videos with YouTube embeds, photo carousels, and detailed metadata.",
+  "description": "A travel video portfolio built with Astro and Tailwind CSS. Features include YouTube integration with custom styling, scrollable photo carousels, smart metadata grids (location, gear, music), responsive mobile-first design, and an automated workflow that updates JSON files when new stills are added. The site uses a clean white‑frame aesthetic for each video entry.",
+  "stack": ["Astro", "Tailwind CSS", "JavaScript", "Node.js"],
+  "links": {
+    "tool": "https://ju-travel-video.vercel.app/",
+    "github": "https://github.com/JonUXD/ju-travel-video"
+    }
   }
 ]
 
@@ -3428,7 +3464,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 45
-Total Characters: 102793
+Total Characters: 104854
 
 File List:
 ----------------------------------------
@@ -3441,7 +3477,7 @@ research/design.md: 436 characters
 research/hero_section_specifications.md: 1017 characters
 research/technical.md: 167 characters
 src/App.css: 606 characters
-src/App.tsx: 2035 characters
+src/App.tsx: 2032 characters
 src/components/CareerTimeline.tsx: 5305 characters
 src/components/CompanyIcon.tsx: 1897 characters
 src/components/ContactForm.tsx: 5056 characters
@@ -3457,7 +3493,7 @@ src/components/VisualInterests.tsx: 2303 characters
 src/data/bio.json: 2070 characters
 src/data/education.json: 944 characters
 src/data/experience.json: 5935 characters
-src/data/projects.json: 6983 characters
+src/data/projects.json: 9052 characters
 src/data/skills.json: 390 characters
 src/index.css: 1154 characters
 src/main.tsx: 533 characters
@@ -3469,7 +3505,7 @@ src/sections/Education.tsx: 1199 characters
 src/sections/Experience.tsx: 2004 characters
 src/sections/ProjectsPreview.tsx: 385 characters
 src/sections/Skills.tsx: 1526 characters
-src/theme/theme.ts: 3289 characters
+src/theme/theme.ts: 3284 characters
 src/types.ts: 2206 characters
 src/utils/dateUtils.ts: 583 characters
 tools/config.json: 225 characters
@@ -3492,7 +3528,8 @@ cv-jonugarte/
 │   ├── assets/
 │   │   ├── icons/
 │   │   │   ├── companies/
-│   │   │   └── other/
+│   │   │   ├── other/
+│   │   │   └── projects/
 │   │   └── photos/
 │   ├── components/
 │   │   ├── CareerTimeline.tsx
@@ -3544,6 +3581,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2026-04-15 15:52:20 
-UTC:   2026-04-15 13:52:20 UTC
-Timestamp: 1776261140
+Local: 2026-04-15 17:32:20 
+UTC:   2026-04-15 15:32:20 UTC
+Timestamp: 1776267140
