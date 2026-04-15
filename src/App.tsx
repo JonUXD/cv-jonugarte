@@ -52,7 +52,7 @@ const App: React.FC = () => {
 
         <Box sx={{ mt: { xs: 1, sm: 2, md: 2 } }}>
           <Routes>
-            <Route path="/" element={<Navigate to="/about" replace />} />
+            <Route path="/" element={<Navigate to="/cv" replace />} />
             <Route path="/cv" element={<CVPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/about" element={<AboutMePage />} />

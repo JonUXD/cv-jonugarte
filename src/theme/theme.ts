@@ -29,7 +29,7 @@ const theme = createTheme({
   palette: {
     // Core brand colors
     primary: {
-      main: "#05DBDB", // Cyan - Main brand, company names, primary actions
+      main: "#1399c6", // Sort of blue
       contrastText: "#1D1D1B",
     },
     secondary: {
@@ -43,7 +43,7 @@ const theme = createTheme({
       contrastText: "#FFFFFF",
     },
     info: {
-      main: "#05DBDB", // Cyan - Brand accents, notifications (reuse primary)
+      main: "#177D89", // Cyan - Brand accents, notifications (reuse primary)
       contrastText: "#1D1D1B",
     },
     warning: {
@@ -129,10 +129,10 @@ const theme = createTheme({
     },
     MuiTabs: {
       styleOverrides: {
-        indicator: {
-          backgroundColor: "#05DBDB",
+        indicator: ({theme}) => ({
+          backgroundColor: theme.palette.primary.main,
           height: 3,
-        },
+        }),
       },
     },
     MuiTab: {

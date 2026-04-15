@@ -358,7 +358,7 @@ In package.json "vite": "4.5.0"
 {
   "include_extensions": [".tsx", ".ts", ".json", ".js", ".css", ".md", ".html"],
   "exclude_folders": ["node_modules", "dist", ".git"],
-  "exclude_files": [".env", ".DS_Store", "package-lock.json"]
+  "exclude_files": [".env", ".DS_Store", "package-lock.json", "output_all_code.txt"]
 }
 
 
@@ -2821,7 +2821,7 @@ export default theme;
   },
   "interests": ["Surfing", "Swimming", "Retro Games", "Movies", "Electric Guitar"],
   "summary": "I build scalable, cloud-native data infrastructure on AWS to solve complex operational problems. At Amazon, I've created EU-wide data reporting tools and real-time monitoring systems that have delivered multi-million dollar project benefits. Focused on creating products that haver profound business impact in the long term by maintaining the highest standards in reliability, accuracy and maintenance.",
-  "summary_profile_header": "I build robust, cloud-native data infrastructure on AWS. I thrive on turning messy data challenges into elegant, reliable systems that teams can count on. I enable teams make data-driven decisions by creating tools.",
+  "summary_profile_header": "I build robust, cloud-native data infrastructure on AWS. I thrive on turning messy data challenges into elegant, reliable systems that teams can count on. I enable teams make data-driven decisions by creating data pipelines, managing databases and creating interfaces and dashboards.",
   "summary_long": "I build cloud-native data infrastructure that gives business teams the clarity to make faster, smarter decisions. At Amazon, I've delivered EU-wide data tools and real-time monitoring systems that directly contributed to multi-million dollars in operational savings.\n\nMy career path into data engineering began with a profound life changing decision: moving to London where I earned a Master's in Data Science and rebuilt my career from the ground up. That allowed me to get involved in data science projects at Datasite (fintech) and made a lateral career move into data analysis. Currently, I specialize in creating scalable data architecture on AWS, with a focus on turning complex data into reliable, accessible resources that empower teams and improve operations.\n\nBut life is not just about work, and when I am not working I like exploring the creative side of things by making travel videos or playing instruments, and any sport that challenges body and mind.",
   "photo": null
 }
@@ -3428,7 +3428,7 @@ METADATA
 ================================================================================
 
 Files Parsed: 45
-Total Characters: 102702
+Total Characters: 102793
 
 File List:
 ----------------------------------------
@@ -3454,7 +3454,7 @@ src/components/ProjectCard.tsx: 7839 characters
 src/components/SkillChip.tsx: 661 characters
 src/components/TechStack.tsx: 1861 characters
 src/components/VisualInterests.tsx: 2303 characters
-src/data/bio.json: 2002 characters
+src/data/bio.json: 2070 characters
 src/data/education.json: 944 characters
 src/data/experience.json: 5935 characters
 src/data/projects.json: 6983 characters
@@ -3472,7 +3472,7 @@ src/sections/Skills.tsx: 1526 characters
 src/theme/theme.ts: 3289 characters
 src/types.ts: 2206 characters
 src/utils/dateUtils.ts: 583 characters
-tools/config.json: 202 characters
+tools/config.json: 225 characters
 tsconfig.app.json: 763 characters
 tsconfig.json: 119 characters
 tsconfig.node.json: 653 characters
@@ -3544,6 +3544,6 @@ cv-jonugarte/
 └── vite.config.ts
 
 Generated at:
-Local: 2025-12-13 09:36:04 
-UTC:   2025-12-13 08:36:04 UTC
-Timestamp: 1765614964
+Local: 2026-04-15 15:52:20 
+UTC:   2026-04-15 13:52:20 UTC
+Timestamp: 1776261140

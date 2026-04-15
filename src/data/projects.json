@@ -132,5 +132,41 @@
       "Contributed $20M+ in net cost avoidance"
     ],
     "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5"
+  },
+  {
+  "title": "Is the Market Cheap?",
+  "projectType": "personal",
+  "date": "2025-12-01",
+  "summary": "Dashboard for long‑term investors to see major assets' prices relative to their all‑time highs.",
+  "description": "A dashboard for long‑term investors that tracks major assets (ETFs, crypto, commodities) against their all‑time highs, showing at a glance whether each is trading at a discount, neutral, or cheap. Data is fetched from Yahoo Finance and CoinGecko and refreshed daily.",
+  "stack": ["Next.js", "React", "Material UI"],
+  "links": {
+    "tool": "https://isthemarketcheap.vercel.app/",
+    "github": "https://github.com/JonUXD/isthemarketcheap"
+    }
+  },
+  {
+  "title": "GuKamper",
+  "projectType": "personal",
+  "summary": "A static website for a handcrafted camper van conversion business.",
+  "description": "A static website for a handcrafted camper van conversion business. It showcases completed projects, outlines services, and encourages client contact via WhatsApp and phone. Designed with a cozy, artisanal aesthetic using a soft pastel color palette.",
+  "stack": ["Astro", "HTML", "CSS", "JavaScript"],
+  "links": {
+    "tool": "https://gukamper.com/",
+    "github": "https://github.com/JonUXD/gukamper"
+    },
+  "date": "2026-02-01"
+  },
+  {
+  "title": "Travel Video Portfolio",
+  "projectType": "personal",
+  "date": "2026-01-01",
+  "summary": "Cinematic portfolio showcasing travel videos with YouTube embeds, photo carousels, and detailed metadata.",
+  "description": "A travel video portfolio built with Astro and Tailwind CSS. Features include YouTube integration with custom styling, scrollable photo carousels, smart metadata grids (location, gear, music), responsive mobile-first design, and an automated workflow that updates JSON files when new stills are added. The site uses a clean white‑frame aesthetic for each video entry.",
+  "stack": ["Astro", "Tailwind CSS", "JavaScript", "Node.js"],
+  "links": {
+    "tool": "https://ju-travel-video.vercel.app/",
+    "github": "https://github.com/JonUXD/ju-travel-video"
+    }
   }
 ]
