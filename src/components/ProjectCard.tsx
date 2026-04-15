@@ -120,9 +120,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                 fontWeight: 600,
                 lineHeight: 1.2,
                 mb: 0.5,
-                fontSize: "1rem"
+                fontSize: "1rem",
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                wordBreak: 'break-word'
               }}
-              noWrap
             >
               {project.title}
             </Typography>

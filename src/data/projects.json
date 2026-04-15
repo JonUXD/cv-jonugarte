@@ -168,5 +168,21 @@
     "tool": "https://ju-travel-video.vercel.app/",
     "github": "https://github.com/JonUXD/ju-travel-video"
     }
-  }
+  },
+  {
+  "title": "Supply Chain Defect Attribution System Upgrade",
+  "projectType": "company",
+  "company": "Amazon",
+  "date": "2026-01-15",
+  "summary": "Redesigned defect attribution system to accurately classify supply chain defects between suppliers, operations, and technical teams.",
+  "description": "Led the redesign of a defect attribution system for high-volume pallet receipt operations. Built modular pipelines with region-specific logic for NA and EU, including compressed shipment handling and multi-step ASN support. Delivered an interactive dashboard and chatbot tool to reduce defect analysis time and support tickets.",
+  "stack": ["AWS", "Python", "SQL", "QuickSight", "Lambda"],
+  "highlights": [
+    "Reduced supplier misattribution from 25% to 18%",
+    "Improved ops process efficiency from 72% to 85%",
+    "Deployed dashboard to 100+ stakeholders, cutting analysis time by 40%",
+    "Delivered 3 weeks ahead of 2026 planning deadline"
+  ],
+  "experience_ref": "Amazon_202401_Business_Intelligence_Engineer_II_L5"
+}
 ]
