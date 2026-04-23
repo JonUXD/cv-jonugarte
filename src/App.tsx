@@ -45,7 +45,7 @@ const App: React.FC = () => {
             }
           }}
         >
-          <Tab label="About Me" component={Link} to="/" />
+          <Tab label="About Me" component={Link} to="/about" />
           <Tab label="CV" component={Link} to="/cv" />
           <Tab label="Projects" component={Link} to="/projects" />
         </Tabs>
